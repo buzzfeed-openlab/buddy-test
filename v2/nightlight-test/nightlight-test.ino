@@ -79,6 +79,15 @@ void loop() {
 
 }
 
+int smooth(int current, int last, int lastavg, int t) {
+  // smooths out a variable by averaging this value over time t
+  // take modulo of millis with t
+  // if modulo not equal to 0 then can just add this value to the previous value and divide by 2
+  // also will keep a lastavg value so that can smooth between averages a bit.
+  // every interval t, we will reset lastavg and return avg
+  // every noninterval, we will return avg and average last.
+}
+
 float getBrightness() {
   // calibrates the brightness of the strip based on the incoming light
   // the resulting float should be a percent of full brightness (255)
