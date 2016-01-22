@@ -10,11 +10,24 @@
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
 
+// eyeball values
 int powerPin=D7;
 int eyeLeft=A1;
 int eyeRight=A2;
 int left; // value of left eye
 int right; // value of right eye
+int avg; // left and right values averaged
+int lightmin = 0; // value of complete darkness
+int lightmax = 300; // value of ambiently bright light
+
+// timing values
+int sunrise = 429;
+int sunriseprebuffermin = 5;
+int sunrisepostbuffermin = 5;
+int sunset = 1110;
+int sunsetprebuffermin = 5;
+int sunsetpostbuffermin = 5;
+
 
 void setup() {
   Serial.begin(9600);
@@ -29,8 +42,68 @@ void setup() {
 
   Particle.function("set",setColor);
   Particle.function("see",eyesight);
+
+  Time.zone(-8); //set time zone to PST
 }
 
+void loop() {
+
+  // in order to smooth this out need to get the average incoming light every 20 seconds or so.
+  // change the brightness based on this variable instead.
+
+  avg=eyesight("avg");
+
+  int rbase, gbase, bbase;
+
+  int currenttime = 60*Time.hour()+Time.minute();
+
+  rbase=0;
+  gbase=255;
+  bbase=255;
+  int b = getBrightness();
+
+  int red=b*rbase/100;
+  int grn=b*gbase/100;
+  int blu=b*bbase/100;
+  colorAll(strip.Color(b*red, b*grn, b*blu), 0);
+
+  Serial.print(red);
+  Serial.print("    ");
+  Serial.print(grn);
+  Serial.print("    ");
+  Serial.print(blu);
+  Serial.print("    ");
+  Serial.println(b);
+
+  delay(50);
+
+}
+
+float getBrightness() {
+  // calibrates the brightness of the strip based on the incoming light
+  // the resulting float should be a percent of full brightness (255)
+  // can calibrate these values later
+  // remember that resulting value is an integer between 0 and 100.
+
+  int val=bound(eyesight("avg"), lightmin, lightmax);
+  int brightness = 100-100*val/lightmax;
+
+  return brightness;
+}
+
+int bound(int x, int min, int max) {
+  // if higher than max, set to max
+  // if lower than min, set to min
+  if (x>max) {
+    return max;
+  }
+  else if (x<min) {
+    return min;
+  }
+  else {
+    return x;
+  }
+}
 
 int eyesight(String command) {
   if (command=="l" || command=="left") {
@@ -44,7 +117,8 @@ int eyesight(String command) {
   else if (command=="a" || command == "average" || command == "avg") {
     left = analogRead(eyeLeft);
     right = analogRead(eyeRight);
-    return (left+right)/2;
+    avg = (left+right)/2;
+    return avg;
   }
   else {
     return -1;
