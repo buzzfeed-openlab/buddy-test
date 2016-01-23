@@ -10,6 +10,9 @@
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
 
+// math values
+float pi = 3.14;
+
 // eyeball values
 int powerPin=D7;
 int eyeLeft=A1;
@@ -19,6 +22,11 @@ int right; // value of right eye
 int avg; // left and right values averaged
 int lightmin = 0; // value of complete darkness
 int lightmax = 300; // value of ambiently bright light
+
+// brightness smoothing values, defined to start but subject to change
+int b = 90;
+int b0 = 90;
+int period = 6000;
 
 // timing values
 int sunrise = 429;
@@ -60,33 +68,70 @@ void loop() {
   rbase=0;
   gbase=255;
   bbase=255;
-  int b = getBrightness();
+
+  int x = getBrightness();
+  int t = millis();
+
+  if (t%period == 0) {
+    b0=x;
+  }
+
+  b=b0+(x-b0)*t/period;
 
   int red=b*rbase/100;
   int grn=b*gbase/100;
   int blu=b*bbase/100;
   colorAll(strip.Color(b*red, b*grn, b*blu), 0);
 
-  Serial.print(red);
+  Serial.print(b);
   Serial.print("    ");
-  Serial.print(grn);
-  Serial.print("    ");
-  Serial.print(blu);
-  Serial.print("    ");
-  Serial.println(b);
-
-  delay(50);
+  Serial.println(x);
 
 }
 
-int smooth(int current, int last, int lastavg, int t) {
-  // smooths out a variable by averaging this value over time t
-  // take modulo of millis with t
-  // if modulo not equal to 0 then can just add this value to the previous value and divide by 2
-  // also will keep a lastavg value so that can smooth between averages a bit.
-  // every interval t, we will reset lastavg and return avg
-  // every noninterval, we will return avg and average last.
+/* whatever this doesn't work and is also dumb
+int *smooth(int x, int t, int avg, int period, int h0, int h2) {
+  // smooths out a variable by averaging this value over a certain period
+  // get the average for every time t and push the value towards that in a cosine curve over the next interval.
+  // variables needed:
+  // period = period
+  // t = time (millis)
+  // a = amplitude
+  // b = where the axis of the curve is centered-- should be h0+diff/2
+  // diff = difference between original point x0 and future point h2.
+  // h0 = starting point for curve, should be h at the end of last period
+  // h2 = ending point for curve, should be the avg from the last period
+  // h = current point, to be output.
+  // avg = the average value, to be kept for resetting h2.
+  // x = the current incoming value, to be added to the average.
+
+  // recalibrate b
+  int b = h0 + (h2-h0)/2;
+  // recalibrate a
+  int a = (h2-h0)/2;
+
+  int h = b + a*cos(pi*t/(period));
+
+  // get averages
+  avg = (avg+x)/2;
+
+  // find out if we're at interval
+
+  if (t % period == 0) {
+    // we are at interval
+    // replace h0
+    h0 = h2;
+    // replace h2
+    h2 = avg;
+    // replace avg
+    avg = x;
+  }
+
+  int r [4] = {h, avg, h0, h2};
+  return r;
+
 }
+*/
 
 float getBrightness() {
   // calibrates the brightness of the strip based on the incoming light
