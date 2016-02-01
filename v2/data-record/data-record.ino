@@ -105,6 +105,7 @@ int amplitude() {
         y=th+midPower+midPower*sin(2*pi*t/period);
         if (actionstate!=3) {
           Particle.publish("output","purr",60,PRIVATE);
+          actionstate=3;
         }
     }
 
@@ -115,6 +116,7 @@ int amplitude() {
         y=th+midPower+midPower*sin(2*pi*t/period);
         if (actionstate!=4) {
           Particle.publish("output","no purr",60,PRIVATE);
+          actionstate=4;
         }
       }
     }
