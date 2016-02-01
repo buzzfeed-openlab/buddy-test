@@ -38,6 +38,9 @@ int sunsetpostbuffermin = 5;
 
 
 void setup() {
+
+  STARTUP(WiFi.selectAntenna(ANT_EXTERNAL));
+
   Serial.begin(9600);
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'

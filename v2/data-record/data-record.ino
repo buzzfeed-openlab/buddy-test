@@ -1,40 +1,10 @@
-// test for both light and vibration
-// in this case vibration will just respond to light stretch (petting) while light will be an independent variable
-// light should in this case get brighter when Buddy "sees" less (aka less light coming in through photoresistors)
-// color changes based on squeeze
-
-
 #include "math.h"
-#include "neopixel.h"
-
-#define PIXEL_PIN D1
-#define PIXEL_COUNT 1
-#define PIXEL_TYPE WS2812B
-
-
-SYSTEM_MODE(SEMI_AUTOMATIC);
-
-
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
-
-// values for LED
-int squeezeMax = 500;
-int squeezeMin;
-// recalibrated values
-int redCal;
-int grnCal;
-int bluCal;
-
-// eyesight values
-int left;
-int right;
-int avg;
 
 int vibpin=D0;
 int powerPin=D7;
 int squeezePin=A0;
-int eyeLeft=A1;
-int eyeRight=A2;
+
+int actionstate=0;
 
 int threshold=35; //power threshold added for vibration to be felt
 int th=30; // the current level of base power, to be varied up to threshold.
@@ -78,76 +48,26 @@ void setup() {
     pinMode(powerPin, OUTPUT);
     pinMode(squeezePin, INPUT);
 
-    strip.begin();
-    strip.show(); // Initialize all pixels to 'off'
-
     digitalWrite(powerPin,HIGH);
-    squeezeMin=analogRead(A0);
 
     Particle.function("analogread",tinkerAnalogRead);
     Particle.function("vib",vibrate);
-    Particle.function("see",eyesight);
 
 }
 
 
 void loop() {
 
-    // do vibration
     int amp = amplitude();
+
+ /*
+    Serial.print(amp);
+    Serial.print("    ");
+    Serial.println(Q);
+*/
+
     analogWrite(vibpin,amp);
 
-    // do light
-    // get how compressed it is
-    // this gives us how squeezed it is. 100 is most compressed possible and 0 is not compressed at all.
-    int squeezeRange=squeezeMax-squeezeMin;
-    int analogvalue = analogRead(squeezePin);
-    if (analogvalue > (1.5*squeezeMax)) {
-        squeezeMax=analogvalue;
-    }
-
-    if (analogvalue<squeezeMin) {
-        analogvalue=squeezeMin;
-    }
-
-    int redCal=255*(analogvalue-squeezeMin)/squeezeRange;
-    int grnCal=255-255*(analogvalue-squeezeMin)/squeezeRange;
-    int bluCal=255-255*(analogvalue-squeezeMin)/squeezeRange;
-    //    grnCal=155-(squeezeConst)*100;
-    //    bluCal=155-(squeezeConst)*100;
-
-    eyesight("avg");
-
-    Serial.print(left);
-    Serial.print("     ");
-    Serial.println(right);
-
-    // translate that into the light pattern
-    strip.setPixelColor(0, strip.Color(redCal,grnCal,bluCal));
-    strip.show();
-//    colorAll(strip.Color(redCal,grnCal,bluCal),50);
-
-
-}
-
-int eyesight(String command) {
-  if (command=="l" || command=="left") {
-    left = analogRead(eyeLeft);
-    return left;
-  }
-  else if (command=="r" || command=="right") {
-    right = analogRead(eyeRight);
-    return right;
-  }
-  else if (command=="a" || command == "average" || command == "avg") {
-    left = analogRead(eyeLeft);
-    right = analogRead(eyeRight);
-    avg = (left+right)/2;
-    return avg;
-  }
-  else {
-    return -1;
-  }
 }
 
 int vibrate(String command) {
@@ -183,6 +103,9 @@ int amplitude() {
           th++;
         }
         y=th+midPower+midPower*sin(2*pi*t/period);
+        if (actionstate!=3) {
+          Particle.publish("output","purr",60,PRIVATE);
+        }
     }
 
     if (Q>0) {
@@ -190,6 +113,9 @@ int amplitude() {
       if (th>0) {
         th--;
         y=th+midPower+midPower*sin(2*pi*t/period);
+        if (actionstate!=4) {
+          Particle.publish("output","no purr",60,PRIVATE);
+        }
       }
     }
 
@@ -246,16 +172,29 @@ int getpenalty(int analogvalue) {
 
     // inaction range
     if (diff<inactionThreshold) {
+        if (actionstate!=0) {
+          actionstate=0;
+          Particle.publish("input","quiet",60,PRIVATE);
+        }
         M = inactionM;
         B = inactionB;
     }
     // pet range
     if (diff>inactionThreshold && diff < petThreshold) {
+      if (actionstate!=1) {
+        actionstate=1;
+        Particle.publish("input","pet",60,PRIVATE);
+      }
         M = petM;
         B = petB;
     }
     // squeeze range
     if (diff>squeezeThreshold) {
+      if (actionstate!=2) {
+        actionstate=2;
+        Particle.publish("input","squeeze",60,PRIVATE);
+      }
+
         M = squeezeM;
         B = squeezeB;
     }
