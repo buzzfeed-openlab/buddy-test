@@ -1,17 +1,26 @@
 #include "math.h"
 
 int vibpin=D0;
-int powerPin=D7;
+int powerPin=D6;
 int squeezePin=A0;
 
-int threshold=35; //power threshold added for vibration to be felt
-int th=30; // the current level of base power, to be varied up to threshold.
+// for testing
+int analogvalue;
+int valuevar=10; // the amount of acceptable variation in analogvalue before triggering a Serial print
+int lastvalue=0;
+int diff;
+int lastdiff;
+int state;
+int laststate;
+
+int threshold=50; //power threshold added for vibration to be felt
+int th=5; // the current level of base power, to be varied up to threshold.
 
 // wave function definitions
-int period=1500;
+int period=2000;
 int t=0;
 float pi=3.14;
-int maxPower=25;
+int maxPower=50;
 int midPower=maxPower/2;
 
 // decay function definitions
@@ -36,6 +45,8 @@ int petB=-500;
 int inactionB=0; // no base value
 
 int r=1;
+
+SYSTEM_MODE(SEMI_AUTOMATIC);
 
 
 void setup() {
@@ -66,6 +77,35 @@ void loop() {
 
     analogWrite(vibpin,amp);
 
+    checkpublish("sl");
+
+}
+
+void checkpublish(String command) {
+
+  if (abs(lastvalue-analogvalue)>valuevar && state!=laststate) {
+
+    if (command=="serial" || command=="sl") {
+      Serial.print(analogvalue);
+      Serial.print("    ");
+      Serial.print(diff);
+      Serial.print("    ");
+      Serial.println(baseline);
+    }
+    else if (command=="publish" || command=="p") {
+      char buddyskin[64];
+      char bline[64];
+      sprintf(buddyskin, "%2.2f", analogvalue);
+      sprintf(bline, "%2.2f", baseline);
+      Particle.publish("librato_buddyskin",buddyskin);
+      Particle.publish("librato_buddyavg",bline);
+    }
+    else if (command=="SD" || command=="sd") {
+      // write to sd card
+    }
+
+  }
+
 }
 
 int vibrate(String command) {
@@ -89,7 +129,7 @@ int amplitude() {
     // first integrate the penalty calculated (q) into the overall penalty (Q)
     // and subtract the current general decay
 
-    int analogvalue = analogRead(squeezePin);
+    analogvalue = analogRead(squeezePin);
 
     Q = Q + getpenalty(analogvalue) + decayrate;
 
@@ -107,8 +147,8 @@ int amplitude() {
       // ramp down the vibration by changing th within threshold
       if (th>0) {
         th--;
-        y=th+midPower+midPower*sin(2*pi*t/period);
       }
+      y=th+midPower+midPower*sin(2*pi*t/period);
     }
 
     if (Q<-10000) {
@@ -117,6 +157,8 @@ int amplitude() {
     else if (Q>10000) {
         Q=10000;
     }
+
+    lastvalue=analogvalue;
 
     return y;
 
@@ -158,7 +200,7 @@ int getpenalty(int analogvalue) {
 
     // get diff
 
-    int diff = abs(analogvalue-baseline);
+    diff = abs(analogvalue-baseline);
     int M=0;
     int B=0;
 
@@ -166,16 +208,22 @@ int getpenalty(int analogvalue) {
     if (diff<inactionThreshold) {
         M = inactionM;
         B = inactionB;
+        laststate=state;
+        state=0;
     }
     // pet range
     if (diff>inactionThreshold && diff < petThreshold) {
         M = petM;
         B = petB;
+        laststate=state;
+        state=1;
     }
     // squeeze range
     if (diff>squeezeThreshold) {
         M = squeezeM;
         B = squeezeB;
+        laststate=state;
+        state=2;
     }
 
     int q=M*diff+B;
@@ -191,6 +239,9 @@ int getpenalty(int analogvalue) {
     Serial.print("   ");
     Serial.println(Q);
 //*/
+
+    lastdiff=diff;
+
     return q;
 
 }
