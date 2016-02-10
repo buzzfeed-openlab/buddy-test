@@ -78,11 +78,15 @@ int inactionB=0; // no base value
 
 int r=1;
 
+<<<<<<< Updated upstream
 int lastrecord=0;
 int recthreshold=5000; // record on sd card every 5 seconds
 
 // if photon:
 // SYSTEM_MODE(SEMI_AUTOMATIC);
+=======
+SYSTEM_MODE(SEMI_AUTOMATIC);
+>>>>>>> Stashed changes
 
 
 void setup() {
@@ -127,12 +131,16 @@ void loop() {
     analogWrite(vibpin,amp);
 
     checkpublish("sl");
+<<<<<<< Updated upstream
     checkpublish("sd");
+=======
+>>>>>>> Stashed changes
 
 }
 
 void checkpublish(String command) {
 
+<<<<<<< Updated upstream
   if (command=="serial" || command=="sl") {
     Serial.print(analogvalue);
     Serial.print("    ");
@@ -191,6 +199,27 @@ void checkpublish(String command) {
 
       lastrecord=millisNow;
 
+=======
+  if (abs(lastvalue-analogvalue)>valuevar && state!=laststate) {
+
+    if (command=="serial" || command=="sl") {
+      Serial.print(analogvalue);
+      Serial.print("    ");
+      Serial.print(diff);
+      Serial.print("    ");
+      Serial.println(baseline);
+    }
+    else if (command=="publish" || command=="p") {
+      char buddyskin[64];
+      char bline[64];
+      sprintf(buddyskin, "%2.2f", analogvalue);
+      sprintf(bline, "%2.2f", baseline);
+      Particle.publish("librato_buddyskin",buddyskin);
+      Particle.publish("librato_buddyavg",bline);
+    }
+    else if (command=="SD" || command=="sd") {
+      // write to sd card
+>>>>>>> Stashed changes
     }
 
   }
