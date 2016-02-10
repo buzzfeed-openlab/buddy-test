@@ -1,19 +1,58 @@
+// Recording data locally with the SdFat library by grieman
+// https://github.com/greiman/SdFat-Particle
+
 #include "math.h"
+#include "SdFat.h"
+
+#define SPI_CONFIGURATION 0
+//------------------------------------------------------------------------------
+// Setup SPI configuration.
+#if SPI_CONFIGURATION == 0
+// Primary SPI with DMA
+// SCK => A3, MISO => A4, MOSI => A5, SS => A2 (default)
+SdFat sd;
+const uint8_t chipSelect = SS;
+#elif SPI_CONFIGURATION == 1
+// Secondary SPI with DMA
+// SCK => D4, MISO => D3, MOSI => D2, SS => D1
+SdFat sd(1);
+const uint8_t chipSelect = D1;
+#elif SPI_CONFIGURATION == 2
+// Primary SPI with Arduino SPI library style byte I/O.
+// SCK => A3, MISO => A4, MOSI => A5, SS => A2 (default)
+SdFatLibSpi sd;
+const uint8_t chipSelect = SS;
+#elif SPI_CONFIGURATION == 3
+// Software SPI.  Use any digital pins.
+// MISO => D5, MOSI => D6, SCK => D7, SS => D0
+SdFatSoftSpi<D5, D6, D7> sd;
+const uint8_t chipSelect = D0;
+#endif  // SPI_CONFIGURATION
+//------------------------------------------------------------------------------
+
+File myFile;
 
 int vibpin=D0;
-int powerPin=D7;
+int powerPin=D6;
 int squeezePin=A0;
 
-int actionstate=0;
+// for testing
+int analogvalue;
+int valuevar=10; // the amount of acceptable variation in analogvalue before triggering a Serial print
+int lastvalue=0;
+int diff;
+int lastdiff;
+int state;
+int laststate;
 
-int threshold=35; //power threshold added for vibration to be felt
-int th=30; // the current level of base power, to be varied up to threshold.
+int threshold=50; //power threshold added for vibration to be felt
+int th=5; // the current level of base power, to be varied up to threshold.
 
 // wave function definitions
-int period=1500;
+int period=2000;
 int t=0;
 float pi=3.14;
-int maxPower=25;
+int maxPower=50;
 int midPower=maxPower/2;
 
 // decay function definitions
@@ -39,8 +78,23 @@ int inactionB=0; // no base value
 
 int r=1;
 
+int lastrecord=0;
+int recthreshold=5000; // record on sd card every 5 seconds
+
+// if photon:
+// SYSTEM_MODE(SEMI_AUTOMATIC);
+
 
 void setup() {
+
+    // Get the time
+    // if photon
+//    WiFi.on();
+    Time.zone(-8);
+//    Time.setFormat(TIME_FORMAT_ISO8601_FULL);
+    Particle.syncTime();
+//    if photon
+//    WiFi.off();
 
     Serial.begin(9600);
 
@@ -52,6 +106,10 @@ void setup() {
 
     Particle.function("analogread",tinkerAnalogRead);
     Particle.function("vib",vibrate);
+
+    if (!sd.begin(chipSelect, SPI_HALF_SPEED)) {
+      sd.initErrorHalt();
+    }
 
 }
 
@@ -67,6 +125,75 @@ void loop() {
 */
 
     analogWrite(vibpin,amp);
+
+    checkpublish("sl");
+    checkpublish("sd");
+
+}
+
+void checkpublish(String command) {
+
+  if (command=="serial" || command=="sl") {
+    Serial.print(analogvalue);
+    Serial.print("    ");
+    Serial.print(diff);
+    Serial.print("    ");
+    Serial.println(baseline);
+  }
+  else if (command=="publish" || command=="p") {
+    char buddyskin[64];
+    char bline[64];
+    sprintf(buddyskin, "%2.2f", analogvalue);
+    sprintf(bline, "%2.2f", baseline);
+    if (abs(lastvalue-analogvalue)>valuevar && state!=laststate) {
+      Particle.publish("librato_buddyskin",buddyskin);
+      Particle.publish("librato_buddyavg",bline);
+    }
+  }
+  else if (command=="SD" || command=="sd") {
+
+    int millisNow=millis();
+    time_t logTime=Time.now();
+
+    // only record once every 5 seconds so you don't go crazy
+
+    if ((millisNow-lastrecord)>recthreshold) {
+
+      // write to sd card
+      if (!sd.begin(chipSelect, SPI_HALF_SPEED)) {
+        sd.initErrorHalt();
+      }
+
+      // open the file for write at end like the "Native SD library"
+      if (!myFile.open("buddylog.txt", O_RDWR | O_CREAT | O_AT_END)) {
+        sd.errorHalt("opening buddylog.txt for write failed");
+      }
+
+      // if the file opened okay, write to it:
+      myFile.print(Time.year(logTime));
+      myFile.print("-");
+      myFile.print(Time.month(logTime));
+      myFile.print("-");
+      myFile.print(Time.day(logTime));
+      myFile.print("-");
+      myFile.print(Time.hour(logTime));
+      myFile.print(":");
+      myFile.print(Time.minute(logTime));
+      myFile.print(":");
+      myFile.print(Time.second(logTime));
+      myFile.print(",");
+      myFile.print(analogvalue);
+      myFile.print(",");
+      myFile.println(baseline);
+
+      // close the file:
+      myFile.close();
+
+      lastrecord=millisNow;
+
+    }
+
+  }
 
 }
 
@@ -91,7 +218,7 @@ int amplitude() {
     // first integrate the penalty calculated (q) into the overall penalty (Q)
     // and subtract the current general decay
 
-    int analogvalue = analogRead(squeezePin);
+    analogvalue = analogRead(squeezePin);
 
     Q = Q + getpenalty(analogvalue) + decayrate;
 
@@ -103,22 +230,14 @@ int amplitude() {
           th++;
         }
         y=th+midPower+midPower*sin(2*pi*t/period);
-        if (actionstate!=3) {
-          Particle.publish("output","purr",60,PRIVATE);
-          actionstate=3;
-        }
     }
 
     if (Q>0) {
       // ramp down the vibration by changing th within threshold
       if (th>0) {
         th--;
-        y=th+midPower+midPower*sin(2*pi*t/period);
-        if (actionstate!=4) {
-          Particle.publish("output","no purr",60,PRIVATE);
-          actionstate=4;
-        }
       }
+      y=th+midPower+midPower*sin(2*pi*t/period);
     }
 
     if (Q<-10000) {
@@ -127,6 +246,8 @@ int amplitude() {
     else if (Q>10000) {
         Q=10000;
     }
+
+    lastvalue=analogvalue;
 
     return y;
 
@@ -168,37 +289,30 @@ int getpenalty(int analogvalue) {
 
     // get diff
 
-    int diff = abs(analogvalue-baseline);
+    diff = abs(analogvalue-baseline);
     int M=0;
     int B=0;
 
     // inaction range
     if (diff<inactionThreshold) {
-        if (actionstate!=0) {
-          actionstate=0;
-          Particle.publish("input","quiet",60,PRIVATE);
-        }
         M = inactionM;
         B = inactionB;
+        laststate=state;
+        state=0;
     }
     // pet range
     if (diff>inactionThreshold && diff < petThreshold) {
-      if (actionstate!=1) {
-        actionstate=1;
-        Particle.publish("input","pet",60,PRIVATE);
-      }
         M = petM;
         B = petB;
+        laststate=state;
+        state=1;
     }
     // squeeze range
     if (diff>squeezeThreshold) {
-      if (actionstate!=2) {
-        actionstate=2;
-        Particle.publish("input","squeeze",60,PRIVATE);
-      }
-
         M = squeezeM;
         B = squeezeB;
+        laststate=state;
+        state=2;
     }
 
     int q=M*diff+B;
@@ -214,6 +328,9 @@ int getpenalty(int analogvalue) {
     Serial.print("   ");
     Serial.println(Q);
 //*/
+
+    lastdiff=diff;
+
     return q;
 
 }
