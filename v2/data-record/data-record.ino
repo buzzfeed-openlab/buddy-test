@@ -57,6 +57,7 @@ int midPower=maxPower/2;
 
 // decay function definitions
 int readperiod=3000; // the time over which we take and average readings
+int lastread=0;
 int baseline; // baseline, to be calculated every readperiod
 int currentavg; // average, taken every readperiod, just in case
 int Q = 1000; // "penalty" value, 1 s to start
@@ -78,16 +79,11 @@ int inactionB=0; // no base value
 
 int r=1;
 
-<<<<<<< Updated upstream
 int lastrecord=0;
-int recthreshold=5000; // record on sd card every 5 seconds
+int recthreshold=1000; // record on sd card every 5 seconds
 
 // if photon:
 // SYSTEM_MODE(SEMI_AUTOMATIC);
-=======
-SYSTEM_MODE(SEMI_AUTOMATIC);
->>>>>>> Stashed changes
-
 
 void setup() {
 
@@ -131,16 +127,13 @@ void loop() {
     analogWrite(vibpin,amp);
 
     checkpublish("sl");
-<<<<<<< Updated upstream
     checkpublish("sd");
-=======
->>>>>>> Stashed changes
+    checkpublish("p");
 
 }
 
 void checkpublish(String command) {
 
-<<<<<<< Updated upstream
   if (command=="serial" || command=="sl") {
     Serial.print(analogvalue);
     Serial.print("    ");
@@ -199,27 +192,6 @@ void checkpublish(String command) {
 
       lastrecord=millisNow;
 
-=======
-  if (abs(lastvalue-analogvalue)>valuevar && state!=laststate) {
-
-    if (command=="serial" || command=="sl") {
-      Serial.print(analogvalue);
-      Serial.print("    ");
-      Serial.print(diff);
-      Serial.print("    ");
-      Serial.println(baseline);
-    }
-    else if (command=="publish" || command=="p") {
-      char buddyskin[64];
-      char bline[64];
-      sprintf(buddyskin, "%2.2f", analogvalue);
-      sprintf(bline, "%2.2f", baseline);
-      Particle.publish("librato_buddyskin",buddyskin);
-      Particle.publish("librato_buddyavg",bline);
-    }
-    else if (command=="SD" || command=="sd") {
-      // write to sd card
->>>>>>> Stashed changes
     }
 
   }
@@ -306,10 +278,11 @@ int getpenalty(int analogvalue) {
     // take average of the last `readperiod` ms of readings and compare to current readings up until 1800, at which point average
 
 
-    if ((millis() % readperiod)==0) {
+    if ((millis()-lastread) > readperiod) {
         // if it is time to average the values, then average the values
         baseline=currentavg;
         currentavg=analogvalue;
+        lastread=millis();
     }
     else {
         // otherwise, update your average log
@@ -347,15 +320,15 @@ int getpenalty(int analogvalue) {
     int q=M*diff+B;
 
 //    Serial commands for testing
-    Serial.print(M);
-    Serial.print("   ");
-    Serial.print(B);
-    Serial.print("   ");
-    Serial.print(diff);
-    Serial.print("   ");
-    Serial.print(q);
-    Serial.print("   ");
-    Serial.println(Q);
+//    Serial.print(M);
+//    Serial.print("   ");
+//    Serial.print(B);
+//    Serial.print("   ");
+//    Serial.print(diff);
+//    Serial.print("   ");
+//    Serial.print(q);
+//    Serial.print("   ");
+//    Serial.println(Q);
 //*/
 
     lastdiff=diff;
