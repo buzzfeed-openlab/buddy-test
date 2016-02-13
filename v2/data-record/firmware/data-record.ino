@@ -324,9 +324,9 @@ void recordCloud() {
   char bline[64];
   sprintf(buddyskin, "%d", analogvalue);
   sprintf(bline, "%d", baseline);
-  if (abs(plastvalue-analogvalue) > pvaluevar && state % 2 == 0) {
-    Particle.publish("librato_buddyskin",buddyskin);
-    Particle.publish("librato_buddyavg",bline);
+  if (state==0 || state == 2 || state == 4) {
+    Particle.publish("librato_buddyskin",buddyskin,PRIVATE);
+    Particle.publish("librato_buddyavg",bline,PRIVATE);
   }
   plastvalue=analogvalue;
 }
