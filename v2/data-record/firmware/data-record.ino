@@ -94,8 +94,9 @@ int state;                // buddy's current state
 //    For recording purposes, we don't always want to publish the analogvalue.
 //    Especially if using celluar, that would take up too much data.
 //    Here's some stuff we do to restrict that
-int pvaluevar=10;          // The amount of acceptable variation in analogvalue before triggering a publish
-int plastvalue=0;          // Need to log the last analogvalue in order to determine the above variation
+int publishflag=0;         // tells us if we should publish or not, based on the state
+int lastpublish=0;         // gives time of last publish
+int publishthreshold=5000; // the min time that must pass between publishes
 int sdlastrecord=0;        // the last time we recorded to an SD card
 int sdrecthreshold=1000;   // the amount of time that needs to pass between SD card recordings
 File myFile;               // this is our SD card file variable
@@ -164,7 +165,10 @@ void loop() {
 
     recordSerial();
     recordSD();
-    recordCloud();
+
+    if (publishflag==1) {
+      recordCloud();
+    }
 
 }
 
@@ -189,13 +193,28 @@ int getDiff() {
 
 int getState() {
   if (diff<inactionThreshold) {
-    return 0;
+    if (state==0 || state==1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
   if (diff>inactionThreshold && diff < petThreshold) {
-    return 2;
+    if (state==2 || state==3) {
+      return 3;
+    }
+    else {
+      return 2;
+    }
   }
   if (diff>squeezeThreshold) {
-    return 4;
+    if (state==4 || state==5) {
+      return 5;
+    }
+    else {
+      return 4;
+    }
   }
 }
 
@@ -207,31 +226,34 @@ int doState() {
     int q;
 
     if (state==0) {
-      state=1;
+      publishflag=1;
       M=0;
       B=0;
     }
     else if (state==1) {
+      publishflag=0;
       M = inactionM;
       B = inactionB;
     }
     else if (state==2) {
-      state=3;
+      publishflag=1;
       M=0;
       B=0;
     }
     else if (state==3) {
+      publishflag=0;
       M = petM;
       B = petB;
     }
     else if (state==4) {
-      state=5;
+      publishflag=1;
       M=0;
       B=0;
     }
     else if (state==5) {
-        M = squeezeM;
-        B = squeezeB;
+      publishflag=0;
+      M = squeezeM;
+      B = squeezeB;
     }
 
     q=M*diff+B;
@@ -274,6 +296,8 @@ int getVibration() {
 }
 
 void recordSerial() {
+  Serial.print(state);
+  Serial.print("    ");
   Serial.print(analogvalue);
   Serial.print("    ");
   Serial.print(diff);
@@ -317,16 +341,23 @@ void recordSD() {
 
     sdlastrecord=t;
   }
+  if (sdlastrecord>t) {
+    sdlastrecord=t;
+  }
 }
 
 void recordCloud() {
-  char buddyskin[64];
-  char bline[64];
-  sprintf(buddyskin, "%d", analogvalue);
-  sprintf(bline, "%d", baseline);
-  if (state==0 || state == 2 || state == 4) {
-    Particle.publish("librato_buddyskin",buddyskin,PRIVATE);
-    Particle.publish("librato_buddyavg",bline,PRIVATE);
+  char val[64];
+  char base[64];
+  sprintf(val, "%d", analogvalue);
+  sprintf(base, "%d", baseline);
+  if ((t-lastpublish)>publishthreshold) {
+    Particle.publish("librato_bVal",val,PRIVATE);
+    Particle.publish("librato_bBase",base,PRIVATE);
+    lastpublish=t;
   }
-  plastvalue=analogvalue;
+  // in case of values wrapping around
+  if (lastpublish>t) {
+    lastpublish=t;
+  }
 }
