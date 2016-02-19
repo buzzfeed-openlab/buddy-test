@@ -9,17 +9,18 @@
 
 // send serial command to receiver every loop
 
-#define VIBPIN D0
-#define LED D7
-#define RECEIVER
+//#define VIBPIN D0
+//#define LED D7
+//#define RECEIVER
 
 
 char msg; // the message you plan to send to the other module
 char feedback; // any messages you get back from the other module
 
 void setup() {
-  pinMode(VIBPIN, OUTPUT);
-  pinMode(LED, OUTPUT);
+//  pinMode(VIBPIN, OUTPUT);
+//  pinMode(LED, OUTPUT);
+
   Serial1.begin(38400);
   Serial.begin(38400);
 
@@ -33,12 +34,10 @@ void setup() {
 }
 
 void loop() {
-  if (Serial1.available()>0) {
-    feedback=Serial1.read();
-    Serial.println(feedback);
-    Serial.println("printed feedback");
-  }
-  else {
-    Serial1.write("AT\r\n");
+  Serial1.write("AT\r\n");
+  Serial1.print("AT\r\n");
+  while(Serial1.available()) { // read all available bytes
+    Serial.write((char)Serial1.read()); // write does no fancy stuff like print might
+    Serial.println("."); // to 'see' how many bytes we get at a time
   }
 }
