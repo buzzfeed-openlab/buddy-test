@@ -4,9 +4,7 @@
 #include "math.h"
 #include "SdFat.h"
 
-
 // Some definitions for the SD card
-
 #define SPI_CONFIGURATION 0
 //------------------------------------------------------------------------------
 // Setup SPI configuration.
@@ -78,9 +76,9 @@ int currentavg;           // average, taken every loop and factored into baselin
 int diff;                 // the difference between analogvalue and baseline
 //   State is determined by diff.
 //   Here are the thresholds that we use to determine which state we are in.
-int squeezeThreshold=500;
-int petThreshold=200;
-int inactionThreshold=50;
+int squeezeThreshold=350;
+int petThreshold=150;
+int inactionThreshold=10;
 //   Here is the actual state.
 int state;                // buddy's current state
                           //    0: just started up / returned to inaction state
@@ -163,7 +161,7 @@ void loop() {
     // write that value to the vibration motor
     analogWrite(VIBPIN,y);
 
-    recordSerial();
+//    recordSerial();
     recordSD();
 
     if (publishflag==1) {
