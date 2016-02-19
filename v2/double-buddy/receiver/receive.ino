@@ -83,7 +83,7 @@ typedef enum { role_ping_out = 1, role_pong_back } role_e;
 const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 
 // The role of the current running sketch
-role_e role = role_ping_out; // Start as a Transmitter
+role_e role = role_pong_back; // Start as a Receiver
 
 void setup(void)
 {
@@ -93,8 +93,8 @@ void setup(void)
 
   Serial.begin(57600); // make sure serial terminal is closed before booting the Core
   while(!Serial.available()) Particle.process(); // wait for user to open serial terminal and press enter
-  SERIAL("ROLE: TRANSMITTING\n\r");
-  SERIAL("*** PRESS 'R' to begin receiving from the other node\n\r");
+  SERIAL("ROLE: RECEIVING\n\r");
+  SERIAL("*** PRESS 'T' to begin transmitting to the other node\n\r");
 
   //
   // Setup and configure rf radio
