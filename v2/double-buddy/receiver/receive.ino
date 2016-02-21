@@ -1,24 +1,7 @@
-/*
- * RF24 LIBRARY FOR SPARK CORE
- * =======================================================
- * Copy this into a new application at:
- * https://www.spark.io/build and go nuts!
- * !! Pinouts on line 44 below !!
- * -------------------------------------------------------
- *  Author: BDub
- * Website: http://technobly.com
- *    Date: Feb 19th 2014
- * =======================================================
- * https://github.com/technobly/SparkCore-RF24
- */
-
-/*
- Copyright (C) 2011 J. Coliz <maniacbug@ymail.com>
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- version 2 as published by the Free Software Foundation.
- */
+// Adapted from BDub's example in his RF24 Library for Spark Core
+// https://github.com/technobly/SparkCore-RF24
+// Original example Copyright (C) 2011 J. Coliz <maniacbug@ymail.com>
+// distributed under GNU General Public License version 2 as published by the Free Software Foundation.
 
 /**
  * Example for Getting Started with nRF24L01+ radios.
@@ -35,6 +18,15 @@
 
 #include "nRF24L01.h"
 #include "SparkCore-RF24.h"
+
+// Pins for vibration output and fabric input (transmitter needs both)
+#define VIBPIN D0
+#define SQUEEZEPIN A0
+#define POWERPIN D7
+
+int analogvalue;  // the actual value of squeeze coming from SQUEEZEPIN
+int threshold=50; // y displacement of the sin function-- a power threshold added for vibration to be felt
+
 
 //
 // Hardware configuration
@@ -87,6 +79,9 @@ role_e role = role_pong_back; // Start as a Receiver
 
 void setup(void)
 {
+
+  pinMode(VIBPIN,OUTPUT);
+
   //
   // Print preamble
   //
@@ -143,6 +138,7 @@ void setup(void)
   radio.printDetails();
 }
 
+
 void loop(void)
 {
   //
@@ -151,6 +147,9 @@ void loop(void)
 
   if (role == role_ping_out)
   {
+
+    int viblevel = analogRead(SQUEEZEPIN);
+    analogWrite(VIBPIN,viblevel);
     // Switch to a Receiver before each transmission,
     // or this will only transmit once.
     radio.startListening();
@@ -163,9 +162,8 @@ void loop(void)
     radio.stopListening();
 
     // Take the time, and send it.  This will block until complete
-    unsigned long time = millis();
-    SERIAL("Now sending %lu...",time);
-    bool ok = radio.write( &time, sizeof(unsigned long) );
+    SERIAL("Now sending %i...",viblevel);
+    bool ok = radio.write( &viblevel, sizeof(int) );
 
     if (ok)
       SERIAL("ok...\n\r");
@@ -186,16 +184,18 @@ void loop(void)
     if ( radio.available() )
     {
       // Dump the payloads until we've gotten everything
-      unsigned long got_time;
+      int viblevel;
       bool done = false;
       while (!done)
       {
         // Fetch the payload, and see if this was the last one.
-        done = radio.read( &got_time, sizeof(unsigned long) );
+        done = radio.read( &viblevel, sizeof(int) );
 
         // Spew it
         //printf("Got payload %lu...\n\r",got_time);
-        Serial.print("Got payload "); Serial.println(got_time);
+        Serial.print("Got payload "); Serial.println(viblevel);
+
+        analogWrite(VIBPIN,viblevel);
 
 	      // Delay just a little bit to let the other unit
 	      // make the transition to receiver
