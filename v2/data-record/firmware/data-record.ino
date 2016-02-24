@@ -159,7 +159,8 @@ void loop() {
     int y = getVibration();
 
     // write that value to the vibration motor
-    analogWrite(VIBPIN,y);
+    // can comment this out for pure data record
+//    analogWrite(VIBPIN,y);
 
 //    recordSerial();
     recordSD();
