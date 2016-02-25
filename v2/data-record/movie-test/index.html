@@ -2,30 +2,39 @@
 <meta charset="utf-8">
 <style> /* set the CSS */
 
-body { font: 12px Arial;}
-
-path { 
-    stroke: #00adef;
-    stroke-width: 2;
-    fill: none;
-}
+body { font: 10px sans-serif;}
 
 .axis path,
 .axis line {
-    fill: none;
-    stroke: grey;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.y.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
 }
 
 </style>
 <body>
 
 <select id="target">
-    <option value="data.csv">All Data</option>
-    <option value="data-nervous.csv">nervous</option>
-    <option value="data-interested.csv">interested</option>
-    <option value="data-nothing.csv">no action</option>
+    <option value="1400">Maximum</option>
+    <option value="100">Max 100</option>
+    <option value="10">Max 10</option>
+    <option value="5">Max 5</option>
 <select>
 
 <div id="option">
@@ -41,109 +50,165 @@ path {
 <script>
 
 // Set the dimensions of the canvas / graph
-var margin = {top: 30, right: 20, bottom: 30, left: 50},
-    width = 1200 - margin.left - margin.right,
-    height = 480 - margin.top - margin.bottom;
+var margin = {top: 10, right: 10, bottom: 100, left: 40},
+    margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom,
+    height2 = 500 - margin2.top - margin2.bottom;
+
+var color = d3.scale.category10();
 
 // Parse the date / time
 var parseDate = d3.time.format("%H:%M:%S").parse;
 
 // Set the ranges
-var x = d3.time.scale().range([0, width]);
-var y = d3.scale.linear().range([height, 0]);
-
+var x = d3.time.scale().range([0, width]),
+    x2 = d3.time.scale().range([0, width]),
+    y = d3.scale.linear().range([height, 0]),
+    y2 = d3.scale.linear().range([height2, 0]);
 // Define the axes
-var xAxis = d3.svg.axis().scale(x)
-    .orient("bottom").ticks(20)
-    .tickFormat(d3.time.format("%H:%M"));
+var  xAxis = d3.svg.axis().scale(x)
+    .orient("bottom").ticks(12)
+    .tickFormat(d3.time.format("%H:%M:%S")),
 
-var yAxis = d3.svg.axis().scale(y)
+    xAxis2 = d3.svg.axis().scale(x2).orient("bottom").tickFormat(d3.time.format("%H:%M:%S")),
+
+    yAxis = d3.svg.axis().scale(y)
     .orient("left").ticks(10);
 
-// Define the line
-var valueline = d3.svg.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.close); });
-    
+var brush = d3.svg.brush()
+    .x(x2)
+    .on("brush", brush);
+
+var line,line2;
 // Adds the svg canvas
 var svg = d3.select("body")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", 
-              "translate(" + margin.left + "," + margin.top + ")");
+        .attr("height", height + margin.top + margin.bottom);
 
-// Get the data
+
+var focus,context;
+
+updateSVG();
+
+function updateSVG() {
+
+ svg.remove();
+// Define the axes
+
+ svg = d3.select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+ 
+
+ line = d3.svg.line()
+    .defined(function(d) { return !isNaN(d.close); })
+    .interpolate("cubic")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+ line2 = d3.svg.line()
+    .defined(function(d) { return !isNaN(d.close); })
+    .interpolate("cubic")
+    .x(function(d) {return x2(d.date); })
+    .y(function(d) {return y2(d.close); });
+    
+
+svg.append("defs").append("clipPath")
+    .attr("id", "clip")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+ focus = svg.append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+ context = svg.append("g")
+  .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+}
+
+function updateData() {
+    updateSVG();
+    target=document.getElementById("target").value;
+
 d3.csv("data.csv", function(error, data) {
+ 
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+ 
     data.forEach(function(d) {
-        d.date = parseDate(d.date);
-        d.close = +d.close;
+      d.date = parseDate(d.date);
+    });
+ 
+  var sources = color.domain().map(function(name) {
+      return {
+        name: name,
+        values: data.map(function(d) {
+          return {date: d.date, close: +d[name]};
+        })
+      };
     });
 
-
-    // Scale the range of the data
     x.domain(d3.extent(data, function(d) { return d.date; }));
-    y.domain([0, d3.max(data, function(d) { return d.close; })]);
-//  y.domain([0,20]);
 
-    // Add the valueline path.
-    svg.append("path")
-        .attr("class", "line")
-        .attr("d", valueline(data));
+    y.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }), target]);
 
-    // Add the X Axis
-    svg.append("g")
+    x2.domain(x.domain());
+    y2.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
+               d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
+    
+
+
+
+    var focuslineGroups = focus.selectAll("g")
+        .data(sources)
+      .enter().append("g");
+      
+    var focuslines = focuslineGroups.append("path")
+        .attr("class","line")
+        .attr("d", function(d) { return line(d.values); })
+        .style("stroke", function(d) {return color(d.name);})
+        .attr("clip-path", "url(#clip)");
+    
+    focus.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
-
-    // Add the Y Axis
-    svg.append("g")
+ 
+    focus.append("g")
         .attr("class", "y axis")
         .call(yAxis);
-
+        
+    var contextlineGroups = context.selectAll("g")
+        .data(sources)
+      .enter().append("g");
+    
+    var contextLines = contextlineGroups.append("path")
+        .attr("class", "line")
+        .attr("d", function(d) { return line2(d.values); })
+        .style("stroke", function(d) {return color(d.name);})
+        .attr("clip-path", "url(#clip)");
+ 
+    context.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height2 + ")")
+        .call(xAxis2);
+ 
+    context.append("g")
+        .attr("class", "x brush")
+        .call(brush)
+      .selectAll("rect")
+        .attr("y", -6)
+        .attr("height", height2 + 7);
 });
-
-
-function updateData() {
-    target=document.getElementById("target").value;
-    // Get the data again
-    d3.csv(target, function(error, data) {
-        data.forEach(function(d) {
-            d.date = parseDate(d.date);
-            d.close = +d.close;
-        });
-
-        // Scale the range of the data again 
-
-        if (target=="data.csv") {
-            x.domain(d3.extent(data, function(d) { return d.date; }));
-            y.domain([0, d3.max(data, function(d) { return d.close; })]);
-        }
-        else {
-            x.domain(d3.extent(data, function(d) { return d.date; }));
-            y.domain([0, 20]);
-            var xAxis = d3.svg.axis().scale(x)
-            .orient("bottom").ticks(20)
-            .tickFormat(d3.time.format("%H:%M:%S"));
-        }
-
-    // Select the section we want to apply our changes to
-    var svg = d3.select("body").transition();
-
-    // Make the changes
-        svg.select(".line")   // change the line
-            .duration(750)
-            .attr("d", valueline(data));
-        svg.select(".x.axis") // change the x axis
-            .duration(750)
-            .call(xAxis);
-        svg.select(".y.axis") // change the y axis
-            .duration(750)
-            .call(yAxis);
-
-    });
+}
+ 
+function brush() {
+  x.domain(brush.empty() ? x2.domain() : brush.extent());
+  focus.selectAll("path.line").attr("d",  function(d) {return line(d.values)});
+  focus.select(".x.axis").call(xAxis);
+  focus.select(".y.axis").call(yAxis);
 }
 
 </script>
