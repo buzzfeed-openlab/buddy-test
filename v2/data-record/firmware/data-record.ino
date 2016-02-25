@@ -324,7 +324,7 @@ void recordSD() {
     myFile.print(Time.month(logTime));
     myFile.print("-");
     myFile.print(Time.day(logTime));
-    myFile.print("-");
+    myFile.print(",");
     myFile.print(Time.hour(logTime));
     myFile.print(":");
     myFile.print(Time.minute(logTime));

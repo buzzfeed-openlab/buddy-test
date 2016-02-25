@@ -3,21 +3,14 @@
 // Original example Copyright (C) 2011 J. Coliz <maniacbug@ymail.com>
 // distributed under GNU General Public License version 2 as published by the Free Software Foundation.
 
-/**
- * Example for Getting Started with nRF24L01+ radios.
- *
- * This is an example of how to use the RF24 class.  Write this sketch to two
- * different nodes.  Put one of the nodes into 'transmit' mode by connecting
- * with the serial monitor and sending a 'T'.  The ping node sends the current
- * time to the pong node, which responds by sending the value back.  The ping
- * node can then see how long the whole cycle took.
- */
-
 
 #include <application.h>
 
 #include "nRF24L01.h"
 #include "SparkCore-RF24.h"
+
+// Don't need wifi for this demo
+SYSTEM_MODE(SEMI_AUTOMATIC);
 
 // Pins for vibration output and fabric input (transmitter needs both)
 #define VIBPIN D0
