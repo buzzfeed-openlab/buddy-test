@@ -116,8 +116,15 @@ function updateData() {
         });
 
         // Scale the range of the data again 
-        x.domain(d3.extent(data, function(d) { return d.date; }));
-        y.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+        if (target=="data.csv") {
+            x.domain(d3.extent(data, function(d) { return d.date; }));
+            y.domain([0, d3.max(data, function(d) { return d.close; })]);
+        }
+        else {
+            x.domain(d3.extent(data, function(d) { return d.date; }));
+            y.domain([0, 20]);
+        }
 
     // Select the section we want to apply our changes to
     var svg = d3.select("body").transition();
