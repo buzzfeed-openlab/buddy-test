@@ -1,0 +1,1759 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'http-request' ]
+2 info using npm@2.11.2
+3 info using node@v0.12.5
+4 verbose install initial load of /Users/christine/npm-global/lib/package.json
+5 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/package.json
+6 silly cache add args [ 'http-request', null ]
+7 verbose cache add spec http-request
+8 silly cache add parsed spec { raw: 'http-request',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'http-request',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: '*',
+8 silly cache add   type: 'range' }
+9 silly addNamed http-request@*
+10 verbose addNamed "*" is a valid semver range for http-request
+11 silly addNameRange { name: 'http-request', range: '*', hasData: false }
+12 silly mapToRegistry name http-request
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/http-request
+16 verbose addNameRange registry:https://registry.npmjs.org/http-request not in flight; fetching
+17 verbose request uri https://registry.npmjs.org/http-request
+18 verbose request no auth needed
+19 info attempt registry request try #1 at 9:15:27 PM
+20 verbose request id 8f7bfcdd0b295110
+21 verbose etag "8QFMSTBLM0RTCE8X61U0XUGNA"
+22 http request GET https://registry.npmjs.org/http-request
+23 http 304 https://registry.npmjs.org/http-request
+24 silly get cb [ 304,
+24 silly get   { date: 'Thu, 25 Feb 2016 05:15:27 GMT',
+24 silly get     via: '1.1 varnish',
+24 silly get     'cache-control': 'max-age=300',
+24 silly get     etag: '"8QFMSTBLM0RTCE8X61U0XUGNA"',
+24 silly get     age: '13',
+24 silly get     connection: 'keep-alive',
+24 silly get     'x-served-by': 'cache-sjc3128-SJC',
+24 silly get     'x-cache': 'HIT',
+24 silly get     'x-cache-hits': '1',
+24 silly get     'x-timer': 'S1456377327.474822,VS0,VE0',
+24 silly get     vary: 'Accept' } ]
+25 verbose etag https://registry.npmjs.org/http-request from cache
+26 verbose get saving http-request to /Users/christine/.npm/registry.npmjs.org/http-request/.cache.json
+27 silly addNameRange number 2 { name: 'http-request', range: '*', hasData: true }
+28 silly addNameRange versions [ 'http-request',
+28 silly addNameRange   [ '0.6.0', '0.6.1', '0.6.2', '0.6.3', '0.7.0' ] ]
+29 silly addNamed http-request@0.7.0
+30 verbose addNamed "0.7.0" is a plain semver version for http-request
+31 silly cache afterAdd http-request@0.7.0
+32 verbose afterAdd /Users/christine/.npm/http-request/0.7.0/package/package.json not in flight; writing
+33 verbose afterAdd /Users/christine/.npm/http-request/0.7.0/package/package.json written
+34 silly install resolved [ { name: 'http-request',
+34 silly install resolved     version: '0.7.0',
+34 silly install resolved     main: './lib/main.js',
+34 silly install resolved     description: 'General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.',
+34 silly install resolved     engines: { node: '>= 0.8.5' },
+34 silly install resolved     dependencies: { 'form-data': '>= 0.1.2', mmmagic: '>= 0.3.4' },
+34 silly install resolved     devDependencies:
+34 silly install resolved      { mocha: '>= 1.8.2',
+34 silly install resolved        chai: '>= 1.5.0',
+34 silly install resolved        'js-beautify': '>= 0.4.2',
+34 silly install resolved        jshint: '>= 2.5.6',
+34 silly install resolved        multiparty: '>= 3.0.0' },
+34 silly install resolved     homepage: 'https://github.com/SaltwaterC/http-get',
+34 silly install resolved     author: { name: 'Stefan Rusu', url: 'http://www.saltwaterc.eu/' },
+34 silly install resolved     contributors: [ [Object], [Object], [Object], [Object] ],
+34 silly install resolved     repository: { type: 'git', url: 'git://github.com/SaltwaterC/http-get.git' },
+34 silly install resolved     keywords:
+34 silly install resolved      [ 'http',
+34 silly install resolved        'https',
+34 silly install resolved        'get',
+34 silly install resolved        'head',
+34 silly install resolved        'post',
+34 silly install resolved        'put',
+34 silly install resolved        'delete',
+34 silly install resolved        'download',
+34 silly install resolved        'upload',
+34 silly install resolved        'gzip',
+34 silly install resolved        'deflate',
+34 silly install resolved        'mime' ],
+34 silly install resolved     scripts: { test: 'make test' },
+34 silly install resolved     gitHead: '8a6698a7fa41096b91327e3e910988f838756518',
+34 silly install resolved     bugs: { url: 'https://github.com/SaltwaterC/http-get/issues' },
+34 silly install resolved     _id: 'http-request@0.7.0',
+34 silly install resolved     _shasum: 'd037e2b14d68ce26ec6a1dd397ad160e8871acc6',
+34 silly install resolved     _from: 'http-request@*',
+34 silly install resolved     _npmVersion: '1.4.28',
+34 silly install resolved     _npmUser: { name: 'saltwaterc', email: 'saltwaterc@gmail.com' },
+34 silly install resolved     maintainers: [ [Object] ],
+34 silly install resolved     dist:
+34 silly install resolved      { shasum: 'd037e2b14d68ce26ec6a1dd397ad160e8871acc6',
+34 silly install resolved        tarball: 'http://registry.npmjs.org/http-request/-/http-request-0.7.0.tgz' },
+34 silly install resolved     directories: {},
+34 silly install resolved     _resolved: 'https://registry.npmjs.org/http-request/-/http-request-0.7.0.tgz',
+34 silly install resolved     readme: 'ERROR: No README data found!' } ]
+35 info install http-request@0.7.0 into /Users/christine/npm-global/lib
+36 info installOne http-request@0.7.0
+37 verbose installOne of http-request to /Users/christine/npm-global/lib not in flight; installing
+38 verbose lock using /Users/christine/.npm/_locks/http-request-96840ff6994acc41.lock for /Users/christine/npm-global/lib/node_modules/http-request
+39 silly install write writing http-request 0.7.0 to /Users/christine/npm-global/lib/node_modules/http-request
+40 verbose unbuild lib/node_modules/http-request
+41 info preuninstall http-request@0.7.0
+42 info uninstall http-request@0.7.0
+43 verbose unbuild rmStuff http-request@0.7.0 from /Users/christine/npm-global/lib/node_modules
+44 info postuninstall http-request@0.7.0
+45 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request is being purged from base /Users/christine/npm-global
+46 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request
+47 silly vacuum-fs purging /Users/christine/npm-global/lib/node_modules/http-request
+48 silly vacuum-fs quitting because other entries in /Users/christine/npm-global/lib/node_modules
+49 verbose tar unpack /Users/christine/.npm/http-request/0.7.0/package.tgz
+50 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request
+51 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request is being purged
+52 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request
+53 silly gunzTarPerm modes [ '755', '644' ]
+54 silly gunzTarPerm extractEntry package.json
+55 silly gunzTarPerm extractEntry .npmignore
+56 silly gunzTarPerm extractEntry README.md
+57 silly gunzTarPerm extractEntry ca-bundle/ca-bundle.crt
+58 silly gunzTarPerm extractEntry ca-bundle/certdata.txt
+59 silly gunzTarPerm extractEntry CHANGELOG.md
+60 silly gunzTarPerm extractEntry LICENSE.md
+61 silly gunzTarPerm extractEntry Makefile
+62 silly gunzTarPerm extractEntry config/jshint.json
+63 silly gunzTarPerm extractEntry lib/main.js
+64 silly gunzTarPerm extractEntry lib/request.js
+65 silly gunzTarPerm extractEntry lib/tools.js
+66 silly gunzTarPerm extractEntry lib/ca-bundle.json
+67 silly gunzTarPerm extractEntry test/request.test.js
+68 silly gunzTarPerm extractEntry test/common.js
+69 silly gunzTarPerm extractEntry test/put.test.js
+70 silly gunzTarPerm extractEntry test/debug.js
+71 silly gunzTarPerm extractEntry test/delete.test.js
+72 silly gunzTarPerm extractEntry test/ca.js
+73 silly gunzTarPerm extractEntry test/head.test.js
+74 silly gunzTarPerm extractEntry test/mime.test.js
+75 silly gunzTarPerm extractEntry test/post.test.js
+76 silly gunzTarPerm extractEntry test/get.test.js
+77 silly gunzTarPerm extractEntry test/data/bzip2.foo
+78 silly gunzTarPerm extractEntry test/data/gzip.foo
+79 silly gunzTarPerm extractEntry test/data/pdf.foo
+80 silly gunzTarPerm extractEntry test/data/tar.foo
+81 silly gunzTarPerm extractEntry test/data/text.foo
+82 silly gunzTarPerm extractEntry test/data/zip.foo
+83 silly gunzTarPerm extractEntry test/ca.crt
+84 silly gunzTarPerm extractEntry .travis.yml
+85 silly gunzTarPerm extractEntry tools/mk-ca-bundle.js
+86 silly gunzTarPerm extractEntry tools/beautify.sh
+87 silly gunzTarPerm extractEntry tools/development.sh
+88 silly gunzTarPerm extractEntry tools/lint.sh
+89 silly gunzTarPerm extractEntry tools/mk-ca-bundle.pl
+90 silly gunzTarPerm extractEntry tools/production.sh
+91 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/package.json
+92 info preinstall http-request@0.7.0
+93 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/package.json
+94 silly prepareForInstallMany adding form-data@>= 0.1.2 from http-request dependencies
+95 silly prepareForInstallMany adding mmmagic@>= 0.3.4 from http-request dependencies
+96 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/package.json
+97 silly cache add args [ 'form-data@>= 0.1.2', null ]
+98 verbose cache add spec form-data@>= 0.1.2
+99 silly cache add args [ 'mmmagic@>= 0.3.4', null ]
+100 verbose cache add spec mmmagic@>= 0.3.4
+101 silly cache add parsed spec { raw: 'form-data@>= 0.1.2',
+101 silly cache add   scope: null,
+101 silly cache add   name: 'form-data',
+101 silly cache add   rawSpec: '>= 0.1.2',
+101 silly cache add   spec: '>=0.1.2',
+101 silly cache add   type: 'range' }
+102 silly addNamed form-data@>=0.1.2
+103 verbose addNamed ">=0.1.2" is a valid semver range for form-data
+104 silly addNameRange { name: 'form-data', range: '>=0.1.2', hasData: false }
+105 silly mapToRegistry name form-data
+106 silly mapToRegistry using default registry
+107 silly mapToRegistry registry https://registry.npmjs.org/
+108 silly mapToRegistry uri https://registry.npmjs.org/form-data
+109 verbose addNameRange registry:https://registry.npmjs.org/form-data not in flight; fetching
+110 silly cache add parsed spec { raw: 'mmmagic@>= 0.3.4',
+110 silly cache add   scope: null,
+110 silly cache add   name: 'mmmagic',
+110 silly cache add   rawSpec: '>= 0.3.4',
+110 silly cache add   spec: '>=0.3.4',
+110 silly cache add   type: 'range' }
+111 silly addNamed mmmagic@>=0.3.4
+112 verbose addNamed ">=0.3.4" is a valid semver range for mmmagic
+113 silly addNameRange { name: 'mmmagic', range: '>=0.3.4', hasData: false }
+114 silly mapToRegistry name mmmagic
+115 silly mapToRegistry using default registry
+116 silly mapToRegistry registry https://registry.npmjs.org/
+117 silly mapToRegistry uri https://registry.npmjs.org/mmmagic
+118 verbose addNameRange registry:https://registry.npmjs.org/mmmagic not in flight; fetching
+119 verbose request uri https://registry.npmjs.org/mmmagic
+120 verbose request no auth needed
+121 info attempt registry request try #1 at 9:16:14 PM
+122 verbose etag "ZKL1GJI41XZE9U3Z6OPVHCR5"
+123 http request GET https://registry.npmjs.org/mmmagic
+124 verbose request uri https://registry.npmjs.org/form-data
+125 verbose request no auth needed
+126 info attempt registry request try #1 at 9:16:14 PM
+127 verbose etag "5HWKV325QQY34YZ8WIRWGKNPZ"
+128 http request GET https://registry.npmjs.org/form-data
+129 http 304 https://registry.npmjs.org/mmmagic
+130 silly get cb [ 304,
+130 silly get   { date: 'Thu, 25 Feb 2016 05:16:14 GMT',
+130 silly get     via: '1.1 varnish',
+130 silly get     'cache-control': 'max-age=300',
+130 silly get     etag: '"ZKL1GJI41XZE9U3Z6OPVHCR5"',
+130 silly get     age: '80',
+130 silly get     connection: 'keep-alive',
+130 silly get     'x-served-by': 'cache-lax1428-LAX',
+130 silly get     'x-cache': 'HIT',
+130 silly get     'x-cache-hits': '1',
+130 silly get     'x-timer': 'S1456377374.629608,VS0,VE0',
+130 silly get     vary: 'Accept' } ]
+131 verbose etag https://registry.npmjs.org/mmmagic from cache
+132 verbose get saving mmmagic to /Users/christine/.npm/registry.npmjs.org/mmmagic/.cache.json
+133 http 304 https://registry.npmjs.org/form-data
+134 silly get cb [ 304,
+134 silly get   { date: 'Thu, 25 Feb 2016 05:16:14 GMT',
+134 silly get     via: '1.1 varnish',
+134 silly get     'cache-control': 'max-age=300',
+134 silly get     etag: '"5HWKV325QQY34YZ8WIRWGKNPZ"',
+134 silly get     age: '294',
+134 silly get     connection: 'keep-alive',
+134 silly get     'x-served-by': 'cache-lax1432-LAX',
+134 silly get     'x-cache': 'HIT',
+134 silly get     'x-cache-hits': '14',
+134 silly get     'x-timer': 'S1456377374.630993,VS0,VE0',
+134 silly get     vary: 'Accept' } ]
+135 verbose etag https://registry.npmjs.org/form-data from cache
+136 verbose get saving form-data to /Users/christine/.npm/registry.npmjs.org/form-data/.cache.json
+137 silly addNameRange number 2 { name: 'mmmagic', range: '>=0.3.4', hasData: true }
+138 silly addNameRange versions [ 'mmmagic',
+138 silly addNameRange   [ '0.0.1',
+138 silly addNameRange     '0.0.2',
+138 silly addNameRange     '0.1.0',
+138 silly addNameRange     '0.1.1',
+138 silly addNameRange     '0.1.2',
+138 silly addNameRange     '0.2.0',
+138 silly addNameRange     '0.2.1',
+138 silly addNameRange     '0.2.5',
+138 silly addNameRange     '0.3.0',
+138 silly addNameRange     '0.3.1',
+138 silly addNameRange     '0.3.2',
+138 silly addNameRange     '0.3.3',
+138 silly addNameRange     '0.3.4',
+138 silly addNameRange     '0.3.5',
+138 silly addNameRange     '0.3.6',
+138 silly addNameRange     '0.3.7',
+138 silly addNameRange     '0.3.8',
+138 silly addNameRange     '0.3.9',
+138 silly addNameRange     '0.3.10',
+138 silly addNameRange     '0.3.11',
+138 silly addNameRange     '0.3.12',
+138 silly addNameRange     '0.3.13',
+138 silly addNameRange     '0.3.14',
+138 silly addNameRange     '0.3.15',
+138 silly addNameRange     '0.3.16',
+138 silly addNameRange     '0.4.0',
+138 silly addNameRange     '0.4.1' ] ]
+139 silly addNamed mmmagic@0.4.1
+140 verbose addNamed "0.4.1" is a plain semver version for mmmagic
+141 silly addNameRange number 2 { name: 'form-data', range: '>=0.1.2', hasData: true }
+142 silly addNameRange versions [ 'form-data',
+142 silly addNameRange   [ '0.0.0',
+142 silly addNameRange     '0.0.2',
+142 silly addNameRange     '0.0.3',
+142 silly addNameRange     '0.0.4',
+142 silly addNameRange     '0.0.5',
+142 silly addNameRange     '0.0.6',
+142 silly addNameRange     '0.0.7',
+142 silly addNameRange     '0.0.8',
+142 silly addNameRange     '0.0.9',
+142 silly addNameRange     '0.0.10',
+142 silly addNameRange     '0.1.0',
+142 silly addNameRange     '0.1.1',
+142 silly addNameRange     '0.1.2',
+142 silly addNameRange     '0.1.3',
+142 silly addNameRange     '0.1.4',
+142 silly addNameRange     '0.2.0',
+142 silly addNameRange     '1.0.0-rc1',
+142 silly addNameRange     '1.0.0-rc2',
+142 silly addNameRange     '1.0.0-rc3' ] ]
+143 silly addNamed form-data@0.2.0
+144 verbose addNamed "0.2.0" is a plain semver version for form-data
+145 silly cache afterAdd mmmagic@0.4.1
+146 verbose afterAdd /Users/christine/.npm/mmmagic/0.4.1/package/package.json not in flight; writing
+147 silly cache afterAdd form-data@0.2.0
+148 verbose afterAdd /Users/christine/.npm/form-data/0.2.0/package/package.json not in flight; writing
+149 verbose afterAdd /Users/christine/.npm/mmmagic/0.4.1/package/package.json written
+150 verbose afterAdd /Users/christine/.npm/form-data/0.2.0/package/package.json written
+151 silly install resolved [ { name: 'mmmagic',
+151 silly install resolved     version: '0.4.1',
+151 silly install resolved     author: { name: 'Brian White', email: 'mscdex@mscdex.net' },
+151 silly install resolved     description: 'An async libmagic binding for node.js for detecting content types by data inspection',
+151 silly install resolved     main: './lib/index',
+151 silly install resolved     dependencies: { nan: '^2.0.8' },
+151 silly install resolved     scripts: { install: 'node-gyp rebuild', test: 'node test/test.js' },
+151 silly install resolved     engines: { node: '>=0.10.0' },
+151 silly install resolved     keywords: [ 'magic', 'libmagic', 'file', 'filetype', 'mime', 'mimetype' ],
+151 silly install resolved     licenses: [ [Object] ],
+151 silly install resolved     repository:
+151 silly install resolved      { type: 'git',
+151 silly install resolved        url: 'git+ssh://git@github.com/mscdex/mmmagic.git' },
+151 silly install resolved     gypfile: true,
+151 silly install resolved     bugs: { url: 'https://github.com/mscdex/mmmagic/issues' },
+151 silly install resolved     homepage: 'https://github.com/mscdex/mmmagic#readme',
+151 silly install resolved     _id: 'mmmagic@0.4.1',
+151 silly install resolved     _shasum: '29299edb303fc9a5a0ecedc4ac9384a6c02970fd',
+151 silly install resolved     _resolved: 'https://registry.npmjs.org/mmmagic/-/mmmagic-0.4.1.tgz',
+151 silly install resolved     _from: 'mmmagic@>=0.3.4',
+151 silly install resolved     _npmVersion: '2.14.1',
+151 silly install resolved     _nodeVersion: '0.10.40',
+151 silly install resolved     _npmUser: { name: 'mscdex', email: 'mscdex@mscdex.net' },
+151 silly install resolved     maintainers: [ [Object] ],
+151 silly install resolved     dist:
+151 silly install resolved      { shasum: '29299edb303fc9a5a0ecedc4ac9384a6c02970fd',
+151 silly install resolved        tarball: 'http://registry.npmjs.org/mmmagic/-/mmmagic-0.4.1.tgz' },
+151 silly install resolved     directories: {},
+151 silly install resolved     readme: 'ERROR: No README data found!' },
+151 silly install resolved   { author:
+151 silly install resolved      { name: 'Felix Geisendörfer',
+151 silly install resolved        email: 'felix@debuggable.com',
+151 silly install resolved        url: 'http://debuggable.com/' },
+151 silly install resolved     name: 'form-data',
+151 silly install resolved     description: 'A module to create readable "multipart/form-data" streams.  Can be used to submit forms and file uploads to other web applications.',
+151 silly install resolved     version: '0.2.0',
+151 silly install resolved     repository:
+151 silly install resolved      { type: 'git',
+151 silly install resolved        url: 'git://github.com/felixge/node-form-data.git' },
+151 silly install resolved     main: './lib/form_data',
+151 silly install resolved     scripts: { test: 'node test/run.js' },
+151 silly install resolved     engines: { node: '>= 0.8' },
+151 silly install resolved     dependencies:
+151 silly install resolved      { async: '~0.9.0',
+151 silly install resolved        'combined-stream': '~0.0.4',
+151 silly install resolved        'mime-types': '~2.0.3' },
+151 silly install resolved     licenses: [ [Object] ],
+151 silly install resolved     devDependencies:
+151 silly install resolved      { fake: '~0.2.2',
+151 silly install resolved        far: '~0.0.7',
+151 silly install resolved        formidable: '~1.0.14',
+151 silly install resolved        request: '~2.36.0' },
+151 silly install resolved     gitHead: 'dfc1a2aef40b97807e2ffe477da06cb2c37e259f',
+151 silly install resolved     bugs: { url: 'https://github.com/felixge/node-form-data/issues' },
+151 silly install resolved     homepage: 'https://github.com/felixge/node-form-data',
+151 silly install resolved     _id: 'form-data@0.2.0',
+151 silly install resolved     _shasum: '26f8bc26da6440e299cbdcfb69035c4f77a6e466',
+151 silly install resolved     _from: 'form-data@>=0.1.2',
+151 silly install resolved     _npmVersion: '1.4.28',
+151 silly install resolved     _npmUser: { name: 'alexindigo', email: 'iam@alexindigo.com' },
+151 silly install resolved     maintainers: [ [Object], [Object], [Object], [Object], [Object] ],
+151 silly install resolved     dist:
+151 silly install resolved      { shasum: '26f8bc26da6440e299cbdcfb69035c4f77a6e466',
+151 silly install resolved        tarball: 'http://registry.npmjs.org/form-data/-/form-data-0.2.0.tgz' },
+151 silly install resolved     directories: {},
+151 silly install resolved     _resolved: 'https://registry.npmjs.org/form-data/-/form-data-0.2.0.tgz',
+151 silly install resolved     readme: 'ERROR: No README data found!' } ]
+152 info install mmmagic@0.4.1 into /Users/christine/npm-global/lib/node_modules/http-request
+153 info install form-data@0.2.0 into /Users/christine/npm-global/lib/node_modules/http-request
+154 info installOne mmmagic@0.4.1
+155 verbose installOne of mmmagic to /Users/christine/npm-global/lib/node_modules/http-request not in flight; installing
+156 info installOne form-data@0.2.0
+157 verbose installOne of form-data to /Users/christine/npm-global/lib/node_modules/http-request not in flight; installing
+158 verbose lock using /Users/christine/.npm/_locks/mmmagic-2874fc52d56b1185.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+159 verbose lock using /Users/christine/.npm/_locks/form-data-8c73daf32bc53c3a.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+160 silly install write writing mmmagic 0.4.1 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+161 silly install write writing form-data 0.2.0 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+162 verbose unbuild lib/node_modules/http-request/node_modules/mmmagic
+163 verbose unbuild lib/node_modules/http-request/node_modules/form-data
+164 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic is being purged from base /Users/christine/npm-global
+165 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+166 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data is being purged from base /Users/christine/npm-global
+167 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+168 verbose tar unpack /Users/christine/.npm/mmmagic/0.4.1/package.tgz
+169 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+170 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic is being purged
+171 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+172 verbose tar unpack /Users/christine/.npm/form-data/0.2.0/package.tgz
+173 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+174 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data is being purged
+175 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+176 silly gunzTarPerm modes [ '755', '644' ]
+177 silly gunzTarPerm modes [ '755', '644' ]
+178 silly gunzTarPerm extractEntry package.json
+179 silly gunzTarPerm extractEntry
+180 silly gunzTarPerm modified mode [ '', 509, 493 ]
+181 silly gunzTarPerm extractEntry lib/form_data.js
+182 silly gunzTarPerm extractEntry License
+183 silly gunzTarPerm extractEntry .travis.yml
+184 silly gunzTarPerm modified mode [ '.travis.yml', 436, 420 ]
+185 silly gunzTarPerm extractEntry LICENSE
+186 silly gunzTarPerm modified mode [ 'LICENSE', 436, 420 ]
+187 silly gunzTarPerm extractEntry README.md
+188 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+189 silly gunzTarPerm extractEntry appveyor.yml
+190 silly gunzTarPerm modified mode [ 'appveyor.yml', 436, 420 ]
+191 silly gunzTarPerm extractEntry binding.gyp
+192 silly gunzTarPerm modified mode [ 'binding.gyp', 436, 420 ]
+193 silly gunzTarPerm extractEntry Readme.md
+194 silly gunzTarPerm extractEntry deps/
+195 silly gunzTarPerm modified mode [ 'deps/', 509, 493 ]
+196 silly gunzTarPerm extractEntry deps/libmagic/
+197 silly gunzTarPerm modified mode [ 'deps/libmagic/', 509, 493 ]
+198 silly gunzTarPerm extractEntry deps/libmagic/AUTHORS
+199 silly gunzTarPerm modified mode [ 'deps/libmagic/AUTHORS', 436, 420 ]
+200 silly gunzTarPerm extractEntry deps/libmagic/COPYING
+201 silly gunzTarPerm modified mode [ 'deps/libmagic/COPYING', 436, 420 ]
+202 silly gunzTarPerm extractEntry deps/libmagic/ChangeLog
+203 silly gunzTarPerm modified mode [ 'deps/libmagic/ChangeLog', 436, 420 ]
+204 silly gunzTarPerm extractEntry deps/libmagic/INSTALL
+205 silly gunzTarPerm modified mode [ 'deps/libmagic/INSTALL', 436, 420 ]
+206 silly gunzTarPerm extractEntry deps/libmagic/MAINT
+207 silly gunzTarPerm modified mode [ 'deps/libmagic/MAINT', 436, 420 ]
+208 silly gunzTarPerm extractEntry deps/libmagic/NEWS
+209 silly gunzTarPerm modified mode [ 'deps/libmagic/NEWS', 436, 420 ]
+210 silly gunzTarPerm extractEntry deps/libmagic/README
+211 silly gunzTarPerm modified mode [ 'deps/libmagic/README', 436, 420 ]
+212 silly gunzTarPerm extractEntry deps/libmagic/TODO
+213 silly gunzTarPerm modified mode [ 'deps/libmagic/TODO', 436, 420 ]
+214 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/package.json
+215 silly gunzTarPerm extractEntry deps/libmagic/config/
+216 silly gunzTarPerm modified mode [ 'deps/libmagic/config/', 509, 493 ]
+217 silly gunzTarPerm extractEntry deps/libmagic/config/freebsd/
+218 silly gunzTarPerm modified mode [ 'deps/libmagic/config/freebsd/', 509, 493 ]
+219 silly gunzTarPerm extractEntry deps/libmagic/config/freebsd/config.h
+220 silly gunzTarPerm modified mode [ 'deps/libmagic/config/freebsd/config.h', 436, 420 ]
+221 info preinstall form-data@0.2.0
+222 silly gunzTarPerm extractEntry deps/libmagic/config/linux/
+223 silly gunzTarPerm modified mode [ 'deps/libmagic/config/linux/', 509, 493 ]
+224 silly gunzTarPerm extractEntry deps/libmagic/config/linux/config.h
+225 silly gunzTarPerm modified mode [ 'deps/libmagic/config/linux/config.h', 436, 420 ]
+226 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/package.json
+227 silly prepareForInstallMany adding async@~0.9.0 from form-data dependencies
+228 silly prepareForInstallMany adding combined-stream@~0.0.4 from form-data dependencies
+229 silly prepareForInstallMany adding mime-types@~2.0.3 from form-data dependencies
+230 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/package.json
+231 silly gunzTarPerm extractEntry deps/libmagic/config/mac/
+232 silly gunzTarPerm modified mode [ 'deps/libmagic/config/mac/', 509, 493 ]
+233 silly gunzTarPerm extractEntry deps/libmagic/config/mac/config.h
+234 silly gunzTarPerm modified mode [ 'deps/libmagic/config/mac/config.h', 436, 420 ]
+235 silly cache add args [ 'async@~0.9.0', null ]
+236 verbose cache add spec async@~0.9.0
+237 silly cache add args [ 'combined-stream@~0.0.4', null ]
+238 verbose cache add spec combined-stream@~0.0.4
+239 silly cache add parsed spec { raw: 'async@~0.9.0',
+239 silly cache add   scope: null,
+239 silly cache add   name: 'async',
+239 silly cache add   rawSpec: '~0.9.0',
+239 silly cache add   spec: '>=0.9.0 <0.10.0',
+239 silly cache add   type: 'range' }
+240 silly addNamed async@>=0.9.0 <0.10.0
+241 verbose addNamed ">=0.9.0 <0.10.0" is a valid semver range for async
+242 silly addNameRange { name: 'async', range: '>=0.9.0 <0.10.0', hasData: false }
+243 silly mapToRegistry name async
+244 silly mapToRegistry using default registry
+245 silly mapToRegistry registry https://registry.npmjs.org/
+246 silly mapToRegistry uri https://registry.npmjs.org/async
+247 verbose addNameRange registry:https://registry.npmjs.org/async not in flight; fetching
+248 silly cache add parsed spec { raw: 'combined-stream@~0.0.4',
+248 silly cache add   scope: null,
+248 silly cache add   name: 'combined-stream',
+248 silly cache add   rawSpec: '~0.0.4',
+248 silly cache add   spec: '>=0.0.4 <0.1.0',
+248 silly cache add   type: 'range' }
+249 silly addNamed combined-stream@>=0.0.4 <0.1.0
+250 verbose addNamed ">=0.0.4 <0.1.0" is a valid semver range for combined-stream
+251 silly addNameRange { name: 'combined-stream',
+251 silly addNameRange   range: '>=0.0.4 <0.1.0',
+251 silly addNameRange   hasData: false }
+252 silly mapToRegistry name combined-stream
+253 silly mapToRegistry using default registry
+254 silly mapToRegistry registry https://registry.npmjs.org/
+255 silly mapToRegistry uri https://registry.npmjs.org/combined-stream
+256 verbose addNameRange registry:https://registry.npmjs.org/combined-stream not in flight; fetching
+257 silly cache add args [ 'mime-types@~2.0.3', null ]
+258 verbose cache add spec mime-types@~2.0.3
+259 silly cache add parsed spec { raw: 'mime-types@~2.0.3',
+259 silly cache add   scope: null,
+259 silly cache add   name: 'mime-types',
+259 silly cache add   rawSpec: '~2.0.3',
+259 silly cache add   spec: '>=2.0.3 <2.1.0',
+259 silly cache add   type: 'range' }
+260 silly addNamed mime-types@>=2.0.3 <2.1.0
+261 verbose addNamed ">=2.0.3 <2.1.0" is a valid semver range for mime-types
+262 silly addNameRange { name: 'mime-types', range: '>=2.0.3 <2.1.0', hasData: false }
+263 silly mapToRegistry name mime-types
+264 silly mapToRegistry using default registry
+265 silly mapToRegistry registry https://registry.npmjs.org/
+266 silly mapToRegistry uri https://registry.npmjs.org/mime-types
+267 verbose addNameRange registry:https://registry.npmjs.org/mime-types not in flight; fetching
+268 silly gunzTarPerm extractEntry deps/libmagic/config/openbsd/
+269 silly gunzTarPerm modified mode [ 'deps/libmagic/config/openbsd/', 509, 493 ]
+270 silly gunzTarPerm extractEntry deps/libmagic/config/openbsd/config.h
+271 silly gunzTarPerm modified mode [ 'deps/libmagic/config/openbsd/config.h', 436, 420 ]
+272 silly gunzTarPerm extractEntry deps/libmagic/config/sunos/
+273 silly gunzTarPerm modified mode [ 'deps/libmagic/config/sunos/', 509, 493 ]
+274 verbose request uri https://registry.npmjs.org/combined-stream
+275 verbose request no auth needed
+276 info attempt registry request try #1 at 9:16:14 PM
+277 verbose etag "B4WTGKY32M1VDZX0V45HEIVUL"
+278 http request GET https://registry.npmjs.org/combined-stream
+279 verbose request uri https://registry.npmjs.org/mime-types
+280 verbose request no auth needed
+281 info attempt registry request try #1 at 9:16:14 PM
+282 verbose etag "EEQ4ED7W7M76MNXBZXZVA8JBJ"
+283 http request GET https://registry.npmjs.org/mime-types
+284 verbose request uri https://registry.npmjs.org/async
+285 verbose request no auth needed
+286 info attempt registry request try #1 at 9:16:14 PM
+287 verbose etag "15GZ7RBEI8FG545PZZV6H5S35"
+288 http request GET https://registry.npmjs.org/async
+289 silly gunzTarPerm extractEntry deps/libmagic/config/sunos/config.h
+290 silly gunzTarPerm modified mode [ 'deps/libmagic/config/sunos/config.h', 436, 420 ]
+291 silly gunzTarPerm extractEntry deps/libmagic/config/win/
+292 silly gunzTarPerm modified mode [ 'deps/libmagic/config/win/', 509, 493 ]
+293 silly gunzTarPerm extractEntry deps/libmagic/config/win/config.h
+294 silly gunzTarPerm modified mode [ 'deps/libmagic/config/win/config.h', 436, 420 ]
+295 silly gunzTarPerm extractEntry deps/libmagic/libmagic.gyp
+296 silly gunzTarPerm modified mode [ 'deps/libmagic/libmagic.gyp', 436, 420 ]
+297 silly gunzTarPerm extractEntry deps/libmagic/msvc/
+298 silly gunzTarPerm modified mode [ 'deps/libmagic/msvc/', 509, 493 ]
+299 silly gunzTarPerm extractEntry deps/libmagic/msvc/dirent.h
+300 silly gunzTarPerm modified mode [ 'deps/libmagic/msvc/dirent.h', 436, 420 ]
+301 silly gunzTarPerm extractEntry deps/libmagic/msvc/inttypes.h
+302 silly gunzTarPerm modified mode [ 'deps/libmagic/msvc/inttypes.h', 436, 420 ]
+303 silly gunzTarPerm extractEntry deps/libmagic/msvc/stdint.h
+304 silly gunzTarPerm modified mode [ 'deps/libmagic/msvc/stdint.h', 436, 420 ]
+305 silly gunzTarPerm extractEntry deps/libmagic/pcre/
+306 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/', 509, 493 ]
+307 silly gunzTarPerm extractEntry deps/libmagic/pcre/AUTHORS
+308 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/AUTHORS', 436, 420 ]
+309 silly gunzTarPerm extractEntry deps/libmagic/pcre/COPYING
+310 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/COPYING', 436, 420 ]
+311 silly gunzTarPerm extractEntry deps/libmagic/pcre/ChangeLog
+312 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/ChangeLog', 436, 420 ]
+313 silly gunzTarPerm extractEntry deps/libmagic/pcre/HACKING
+314 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/HACKING', 436, 420 ]
+315 silly gunzTarPerm extractEntry deps/libmagic/pcre/INSTALL
+316 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/INSTALL', 436, 420 ]
+317 silly gunzTarPerm extractEntry deps/libmagic/pcre/LICENCE
+318 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/LICENCE', 436, 420 ]
+319 silly gunzTarPerm extractEntry deps/libmagic/pcre/NEWS
+320 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/NEWS', 436, 420 ]
+321 silly gunzTarPerm extractEntry deps/libmagic/pcre/NON-AUTOTOOLS-BUILD
+322 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/NON-AUTOTOOLS-BUILD', 436, 420 ]
+323 silly gunzTarPerm extractEntry deps/libmagic/pcre/NON-UNIX-USE
+324 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/NON-UNIX-USE', 436, 420 ]
+325 silly gunzTarPerm extractEntry deps/libmagic/pcre/README
+326 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/README', 436, 420 ]
+327 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/
+328 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/', 509, 493 ]
+329 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/freebsd/
+330 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/freebsd/', 509, 493 ]
+331 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/freebsd/config.h
+332 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/freebsd/config.h', 436, 420 ]
+333 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/linux/
+334 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/linux/', 509, 493 ]
+335 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/linux/config.h
+336 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/linux/config.h', 436, 420 ]
+337 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/mac/
+338 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/mac/', 509, 493 ]
+339 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/mac/config.h
+340 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/mac/config.h', 436, 420 ]
+341 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/openbsd/
+342 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/openbsd/', 509, 493 ]
+343 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/openbsd/config.h
+344 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/openbsd/config.h', 436, 420 ]
+345 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/sunos/
+346 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/sunos/', 509, 493 ]
+347 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/sunos/config.h
+348 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/sunos/config.h', 436, 420 ]
+349 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/win/
+350 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/win/', 509, 493 ]
+351 silly gunzTarPerm extractEntry deps/libmagic/pcre/config/win/config.h
+352 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/config/win/config.h', 436, 420 ]
+353 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre.gyp
+354 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre.gyp', 436, 420 ]
+355 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre.h
+356 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre.h', 436, 420 ]
+357 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_byte_order.c
+358 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_byte_order.c', 436, 420 ]
+359 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_chartables.c
+360 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_chartables.c', 436, 420 ]
+361 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_compile.c
+362 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_compile.c', 436, 420 ]
+363 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_config.c
+364 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_config.c', 436, 420 ]
+365 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_dfa_exec.c
+366 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_dfa_exec.c', 436, 420 ]
+367 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_exec.c
+368 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_exec.c', 436, 420 ]
+369 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_fullinfo.c
+370 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_fullinfo.c', 436, 420 ]
+371 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_get.c
+372 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_get.c', 436, 420 ]
+373 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_globals.c
+374 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_globals.c', 436, 420 ]
+375 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_internal.h
+376 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_internal.h', 436, 420 ]
+377 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_jit_compile.c
+378 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_jit_compile.c', 436, 420 ]
+379 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_maketables.c
+380 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_maketables.c', 436, 420 ]
+381 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_newline.c
+382 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_newline.c', 436, 420 ]
+383 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_ord2utf8.c
+384 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_ord2utf8.c', 436, 420 ]
+385 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_printint.c
+386 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_printint.c', 436, 420 ]
+387 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_refcount.c
+388 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_refcount.c', 436, 420 ]
+389 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_string_utils.c
+390 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_string_utils.c', 436, 420 ]
+391 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_study.c
+392 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_study.c', 436, 420 ]
+393 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_tables.c
+394 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_tables.c', 436, 420 ]
+395 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_ucd.c
+396 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_ucd.c', 436, 420 ]
+397 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_valid_utf8.c
+398 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_valid_utf8.c', 436, 420 ]
+399 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_version.c
+400 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_version.c', 436, 420 ]
+401 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcre_xclass.c
+402 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcre_xclass.c', 436, 420 ]
+403 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcreposix.c
+404 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcreposix.c', 436, 420 ]
+405 silly gunzTarPerm extractEntry deps/libmagic/pcre/pcreposix.h
+406 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/pcreposix.h', 436, 420 ]
+407 silly gunzTarPerm extractEntry deps/libmagic/pcre/regex.h
+408 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/regex.h', 436, 420 ]
+409 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/
+410 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/', 509, 493 ]
+411 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitConfig.h
+412 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitConfig.h', 436, 420 ]
+413 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitConfigInternal.h
+414 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitConfigInternal.h', 436, 420 ]
+415 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitExecAllocator.c
+416 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitExecAllocator.c', 436, 420 ]
+417 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitLir.c
+418 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitLir.c', 436, 420 ]
+419 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitLir.h
+420 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitLir.h', 436, 420 ]
+421 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeARM_Thumb2.c
+422 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeARM_Thumb2.c', 436, 420 ]
+423 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeARM_v5.c
+424 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeARM_v5.c', 436, 420 ]
+425 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeMIPS_32.c
+426 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeMIPS_32.c', 436, 420 ]
+427 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeMIPS_common.c
+428 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeMIPS_common.c', 436, 420 ]
+429 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativePPC_32.c
+430 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativePPC_32.c', 436, 420 ]
+431 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativePPC_64.c
+432 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativePPC_64.c', 436, 420 ]
+433 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativePPC_common.c
+434 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativePPC_common.c', 436, 420 ]
+435 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeSPARC_32.c
+436 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeSPARC_32.c', 436, 420 ]
+437 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeSPARC_common.c
+438 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeSPARC_common.c',
+438 silly gunzTarPerm   436,
+438 silly gunzTarPerm   420 ]
+439 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeX86_32.c
+440 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeX86_32.c', 436, 420 ]
+441 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeX86_64.c
+442 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeX86_64.c', 436, 420 ]
+443 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitNativeX86_common.c
+444 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitNativeX86_common.c', 436, 420 ]
+445 silly gunzTarPerm extractEntry deps/libmagic/pcre/sljit/sljitUtils.c
+446 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/sljit/sljitUtils.c', 436, 420 ]
+447 silly gunzTarPerm extractEntry deps/libmagic/pcre/ucp.h
+448 silly gunzTarPerm modified mode [ 'deps/libmagic/pcre/ucp.h', 436, 420 ]
+449 silly gunzTarPerm extractEntry deps/libmagic/src/
+450 silly gunzTarPerm modified mode [ 'deps/libmagic/src/', 509, 493 ]
+451 silly gunzTarPerm extractEntry deps/libmagic/src/BNF
+452 silly gunzTarPerm modified mode [ 'deps/libmagic/src/BNF', 436, 420 ]
+453 silly gunzTarPerm extractEntry deps/libmagic/src/apprentice.c
+454 silly gunzTarPerm modified mode [ 'deps/libmagic/src/apprentice.c', 436, 420 ]
+455 silly gunzTarPerm extractEntry deps/libmagic/src/apptype.c
+456 silly gunzTarPerm modified mode [ 'deps/libmagic/src/apptype.c', 436, 420 ]
+457 silly gunzTarPerm extractEntry deps/libmagic/src/ascmagic.c
+458 silly gunzTarPerm modified mode [ 'deps/libmagic/src/ascmagic.c', 436, 420 ]
+459 silly gunzTarPerm extractEntry deps/libmagic/src/asctime_r.c
+460 silly gunzTarPerm modified mode [ 'deps/libmagic/src/asctime_r.c', 436, 420 ]
+461 silly gunzTarPerm extractEntry deps/libmagic/src/asprintf.c
+462 silly gunzTarPerm modified mode [ 'deps/libmagic/src/asprintf.c', 436, 420 ]
+463 silly gunzTarPerm extractEntry deps/libmagic/src/cdf.c
+464 silly gunzTarPerm modified mode [ 'deps/libmagic/src/cdf.c', 436, 420 ]
+465 silly gunzTarPerm extractEntry deps/libmagic/src/cdf.h
+466 silly gunzTarPerm modified mode [ 'deps/libmagic/src/cdf.h', 436, 420 ]
+467 silly gunzTarPerm extractEntry deps/libmagic/src/cdf_time.c
+468 silly gunzTarPerm modified mode [ 'deps/libmagic/src/cdf_time.c', 436, 420 ]
+469 silly gunzTarPerm extractEntry deps/libmagic/src/compress.c
+470 silly gunzTarPerm modified mode [ 'deps/libmagic/src/compress.c', 436, 420 ]
+471 silly gunzTarPerm extractEntry deps/libmagic/src/ctime_r.c
+472 silly gunzTarPerm modified mode [ 'deps/libmagic/src/ctime_r.c', 436, 420 ]
+473 silly gunzTarPerm extractEntry deps/libmagic/src/elfclass.h
+474 silly gunzTarPerm modified mode [ 'deps/libmagic/src/elfclass.h', 436, 420 ]
+475 silly gunzTarPerm extractEntry deps/libmagic/src/encoding.c
+476 silly gunzTarPerm modified mode [ 'deps/libmagic/src/encoding.c', 436, 420 ]
+477 silly gunzTarPerm extractEntry deps/libmagic/src/file.c
+478 silly gunzTarPerm modified mode [ 'deps/libmagic/src/file.c', 436, 420 ]
+479 silly gunzTarPerm extractEntry deps/libmagic/src/file.h
+480 silly gunzTarPerm modified mode [ 'deps/libmagic/src/file.h', 436, 420 ]
+481 silly gunzTarPerm extractEntry deps/libmagic/src/file_opts.h
+482 silly gunzTarPerm modified mode [ 'deps/libmagic/src/file_opts.h', 436, 420 ]
+483 silly gunzTarPerm extractEntry deps/libmagic/src/fmtcheck.c
+484 silly gunzTarPerm modified mode [ 'deps/libmagic/src/fmtcheck.c', 436, 420 ]
+485 silly gunzTarPerm extractEntry deps/libmagic/src/fsmagic.c
+486 silly gunzTarPerm modified mode [ 'deps/libmagic/src/fsmagic.c', 436, 420 ]
+487 silly gunzTarPerm extractEntry deps/libmagic/src/funcs.c
+488 silly gunzTarPerm modified mode [ 'deps/libmagic/src/funcs.c', 436, 420 ]
+489 silly gunzTarPerm extractEntry deps/libmagic/src/getline.c
+490 silly gunzTarPerm modified mode [ 'deps/libmagic/src/getline.c', 436, 420 ]
+491 silly gunzTarPerm extractEntry deps/libmagic/src/getopt_long.c
+492 silly gunzTarPerm modified mode [ 'deps/libmagic/src/getopt_long.c', 436, 420 ]
+493 silly gunzTarPerm extractEntry deps/libmagic/src/gmtime_r.c
+494 silly gunzTarPerm modified mode [ 'deps/libmagic/src/gmtime_r.c', 436, 420 ]
+495 silly gunzTarPerm extractEntry deps/libmagic/src/is_tar.c
+496 silly gunzTarPerm modified mode [ 'deps/libmagic/src/is_tar.c', 436, 420 ]
+497 silly gunzTarPerm extractEntry deps/libmagic/src/localtime_r.c
+498 silly gunzTarPerm modified mode [ 'deps/libmagic/src/localtime_r.c', 436, 420 ]
+499 silly gunzTarPerm extractEntry deps/libmagic/src/magic.c
+500 silly gunzTarPerm modified mode [ 'deps/libmagic/src/magic.c', 436, 420 ]
+501 silly gunzTarPerm extractEntry deps/libmagic/src/magic.h
+502 silly gunzTarPerm modified mode [ 'deps/libmagic/src/magic.h', 436, 420 ]
+503 silly gunzTarPerm extractEntry deps/libmagic/src/mygetopt.h
+504 silly gunzTarPerm modified mode [ 'deps/libmagic/src/mygetopt.h', 436, 420 ]
+505 silly gunzTarPerm extractEntry deps/libmagic/src/pread.c
+506 silly gunzTarPerm modified mode [ 'deps/libmagic/src/pread.c', 436, 420 ]
+507 silly gunzTarPerm extractEntry deps/libmagic/src/print.c
+508 silly gunzTarPerm modified mode [ 'deps/libmagic/src/print.c', 436, 420 ]
+509 http 304 https://registry.npmjs.org/async
+510 silly get cb [ 304,
+510 silly get   { date: 'Thu, 25 Feb 2016 05:16:14 GMT',
+510 silly get     via: '1.1 varnish',
+510 silly get     'cache-control': 'max-age=300',
+510 silly get     etag: '"15GZ7RBEI8FG545PZZV6H5S35"',
+510 silly get     age: '172',
+510 silly get     connection: 'keep-alive',
+510 silly get     'x-served-by': 'cache-lax1426-LAX',
+510 silly get     'x-cache': 'HIT',
+510 silly get     'x-cache-hits': '12',
+510 silly get     'x-timer': 'S1456377374.913696,VS0,VE0',
+510 silly get     vary: 'Accept' } ]
+511 verbose etag https://registry.npmjs.org/async from cache
+512 verbose get saving async to /Users/christine/.npm/registry.npmjs.org/async/.cache.json
+513 http 304 https://registry.npmjs.org/combined-stream
+514 silly get cb [ 304,
+514 silly get   { date: 'Thu, 25 Feb 2016 05:16:14 GMT',
+514 silly get     via: '1.1 varnish',
+514 silly get     'cache-control': 'max-age=300',
+514 silly get     etag: '"B4WTGKY32M1VDZX0V45HEIVUL"',
+514 silly get     age: '275',
+514 silly get     connection: 'keep-alive',
+514 silly get     'x-served-by': 'cache-lax1427-LAX',
+514 silly get     'x-cache': 'HIT',
+514 silly get     'x-cache-hits': '13',
+514 silly get     'x-timer': 'S1456377374.914579,VS0,VE0',
+514 silly get     vary: 'Accept' } ]
+515 verbose etag https://registry.npmjs.org/combined-stream from cache
+516 verbose get saving combined-stream to /Users/christine/.npm/registry.npmjs.org/combined-stream/.cache.json
+517 silly addNameRange number 2 { name: 'combined-stream',
+517 silly addNameRange   range: '>=0.0.4 <0.1.0',
+517 silly addNameRange   hasData: true }
+518 silly addNameRange versions [ 'combined-stream',
+518 silly addNameRange   [ '0.0.0',
+518 silly addNameRange     '0.0.1',
+518 silly addNameRange     '0.0.2',
+518 silly addNameRange     '0.0.3',
+518 silly addNameRange     '0.0.4',
+518 silly addNameRange     '0.0.5',
+518 silly addNameRange     '0.0.7',
+518 silly addNameRange     '1.0.0',
+518 silly addNameRange     '1.0.1',
+518 silly addNameRange     '1.0.2',
+518 silly addNameRange     '1.0.3',
+518 silly addNameRange     '1.0.4',
+518 silly addNameRange     '1.0.5' ] ]
+519 silly addNamed combined-stream@0.0.7
+520 verbose addNamed "0.0.7" is a plain semver version for combined-stream
+521 silly addNameRange number 2 { name: 'async', range: '>=0.9.0 <0.10.0', hasData: true }
+522 silly addNameRange versions [ 'async',
+522 silly addNameRange   [ '0.1.0',
+522 silly addNameRange     '0.1.1',
+522 silly addNameRange     '0.1.2',
+522 silly addNameRange     '0.1.3',
+522 silly addNameRange     '0.1.4',
+522 silly addNameRange     '0.1.5',
+522 silly addNameRange     '0.1.6',
+522 silly addNameRange     '0.1.7',
+522 silly addNameRange     '0.1.8',
+522 silly addNameRange     '0.1.9',
+522 silly addNameRange     '0.1.10',
+522 silly addNameRange     '0.1.11',
+522 silly addNameRange     '0.1.12',
+522 silly addNameRange     '0.1.13',
+522 silly addNameRange     '0.1.14',
+522 silly addNameRange     '0.1.15',
+522 silly addNameRange     '0.1.16',
+522 silly addNameRange     '0.1.17',
+522 silly addNameRange     '0.1.18',
+522 silly addNameRange     '0.1.19',
+522 silly addNameRange     '0.1.20',
+522 silly addNameRange     '0.1.21',
+522 silly addNameRange     '0.1.22',
+522 silly addNameRange     '0.2.0',
+522 silly addNameRange     '0.2.1',
+522 silly addNameRange     '0.2.2',
+522 silly addNameRange     '0.2.3',
+522 silly addNameRange     '0.2.4',
+522 silly addNameRange     '0.2.5',
+522 silly addNameRange     '0.2.6',
+522 silly addNameRange     '0.2.7',
+522 silly addNameRange     '0.2.8',
+522 silly addNameRange     '0.2.9',
+522 silly addNameRange     '0.2.10',
+522 silly addNameRange     '0.3.0',
+522 silly addNameRange     '0.4.0',
+522 silly addNameRange     '0.4.1',
+522 silly addNameRange     '0.5.0',
+522 silly addNameRange     '0.6.0',
+522 silly addNameRange     '0.6.1',
+522 silly addNameRange     '0.6.2',
+522 silly addNameRange     '0.7.0',
+522 silly addNameRange     '0.8.0',
+522 silly addNameRange     '0.9.0',
+522 silly addNameRange     '0.9.2',
+522 silly addNameRange     '1.0.0',
+522 silly addNameRange     '1.1.0',
+522 silly addNameRange     '1.2.0',
+522 silly addNameRange     '1.1.1',
+522 silly addNameRange     '1.2.1',
+522 silly addNameRange     '1.3.0',
+522 silly addNameRange     '1.4.0',
+522 silly addNameRange     '1.4.1',
+522 silly addNameRange     '1.4.2',
+522 silly addNameRange     '1.5.0',
+522 silly addNameRange     '1.5.1',
+522 silly addNameRange     '1.5.2' ] ]
+523 silly addNamed async@0.9.2
+524 verbose addNamed "0.9.2" is a plain semver version for async
+525 http 304 https://registry.npmjs.org/mime-types
+526 silly get cb [ 304,
+526 silly get   { date: 'Thu, 25 Feb 2016 05:16:14 GMT',
+526 silly get     via: '1.1 varnish',
+526 silly get     'cache-control': 'max-age=300',
+526 silly get     etag: '"EEQ4ED7W7M76MNXBZXZVA8JBJ"',
+526 silly get     age: '244',
+526 silly get     connection: 'keep-alive',
+526 silly get     'x-served-by': 'cache-lax1424-LAX',
+526 silly get     'x-cache': 'HIT',
+526 silly get     'x-cache-hits': '12',
+526 silly get     'x-timer': 'S1456377374.930423,VS0,VE0',
+526 silly get     vary: 'Accept' } ]
+527 verbose etag https://registry.npmjs.org/mime-types from cache
+528 verbose get saving mime-types to /Users/christine/.npm/registry.npmjs.org/mime-types/.cache.json
+529 silly gunzTarPerm extractEntry deps/libmagic/src/readcdf.c
+530 silly gunzTarPerm modified mode [ 'deps/libmagic/src/readcdf.c', 436, 420 ]
+531 silly gunzTarPerm extractEntry deps/libmagic/src/readelf.c
+532 silly gunzTarPerm modified mode [ 'deps/libmagic/src/readelf.c', 436, 420 ]
+533 silly gunzTarPerm extractEntry deps/libmagic/src/readelf.h
+534 silly gunzTarPerm modified mode [ 'deps/libmagic/src/readelf.h', 436, 420 ]
+535 silly cache afterAdd combined-stream@0.0.7
+536 verbose afterAdd /Users/christine/.npm/combined-stream/0.0.7/package/package.json not in flight; writing
+537 silly cache afterAdd async@0.9.2
+538 verbose afterAdd /Users/christine/.npm/async/0.9.2/package/package.json not in flight; writing
+539 silly gunzTarPerm extractEntry deps/libmagic/src/snprintf.c
+540 silly gunzTarPerm modified mode [ 'deps/libmagic/src/snprintf.c', 436, 420 ]
+541 silly gunzTarPerm extractEntry deps/libmagic/src/softmagic.c
+542 silly gunzTarPerm modified mode [ 'deps/libmagic/src/softmagic.c', 436, 420 ]
+543 silly addNameRange number 2 { name: 'mime-types', range: '>=2.0.3 <2.1.0', hasData: true }
+544 silly addNameRange versions [ 'mime-types',
+544 silly addNameRange   [ '0.1.0',
+544 silly addNameRange     '1.0.0',
+544 silly addNameRange     '1.0.1',
+544 silly addNameRange     '1.0.2',
+544 silly addNameRange     '2.0.0',
+544 silly addNameRange     '2.0.1',
+544 silly addNameRange     '2.0.2',
+544 silly addNameRange     '2.0.3',
+544 silly addNameRange     '2.0.4',
+544 silly addNameRange     '2.0.5',
+544 silly addNameRange     '2.0.6',
+544 silly addNameRange     '2.0.7',
+544 silly addNameRange     '2.0.8',
+544 silly addNameRange     '2.0.9',
+544 silly addNameRange     '2.0.10',
+544 silly addNameRange     '2.0.11',
+544 silly addNameRange     '2.0.12',
+544 silly addNameRange     '2.0.13',
+544 silly addNameRange     '2.0.14',
+544 silly addNameRange     '2.1.0',
+544 silly addNameRange     '2.1.1',
+544 silly addNameRange     '2.1.2',
+544 silly addNameRange     '2.1.3',
+544 silly addNameRange     '2.1.4',
+544 silly addNameRange     '2.1.5',
+544 silly addNameRange     '2.1.6',
+544 silly addNameRange     '2.1.7',
+544 silly addNameRange     '2.1.8',
+544 silly addNameRange     '2.1.9',
+544 silly addNameRange     '2.1.10' ] ]
+545 silly addNamed mime-types@2.0.14
+546 verbose addNamed "2.0.14" is a plain semver version for mime-types
+547 verbose afterAdd /Users/christine/.npm/combined-stream/0.0.7/package/package.json written
+548 verbose afterAdd /Users/christine/.npm/async/0.9.2/package/package.json written
+549 silly cache afterAdd mime-types@2.0.14
+550 verbose afterAdd /Users/christine/.npm/mime-types/2.0.14/package/package.json not in flight; writing
+551 verbose afterAdd /Users/christine/.npm/mime-types/2.0.14/package/package.json written
+552 silly install resolved [ { author:
+552 silly install resolved      { name: 'Felix Geisendörfer',
+552 silly install resolved        email: 'felix@debuggable.com',
+552 silly install resolved        url: 'http://debuggable.com/' },
+552 silly install resolved     name: 'combined-stream',
+552 silly install resolved     description: 'A stream that emits multiple other streams one after another.',
+552 silly install resolved     version: '0.0.7',
+552 silly install resolved     homepage: 'https://github.com/felixge/node-combined-stream',
+552 silly install resolved     repository:
+552 silly install resolved      { type: 'git',
+552 silly install resolved        url: 'git://github.com/felixge/node-combined-stream.git' },
+552 silly install resolved     main: './lib/combined_stream',
+552 silly install resolved     scripts: { test: 'node test/run.js' },
+552 silly install resolved     engines: { node: '>= 0.8' },
+552 silly install resolved     dependencies: { 'delayed-stream': '0.0.5' },
+552 silly install resolved     devDependencies: { far: '~0.0.7' },
+552 silly install resolved     bugs: { url: 'https://github.com/felixge/node-combined-stream/issues' },
+552 silly install resolved     _id: 'combined-stream@0.0.7',
+552 silly install resolved     dist:
+552 silly install resolved      { shasum: '0137e657baa5a7541c57ac37ac5fc07d73b4dc1f',
+552 silly install resolved        tarball: 'http://registry.npmjs.org/combined-stream/-/combined-stream-0.0.7.tgz' },
+552 silly install resolved     _from: 'combined-stream@>=0.0.4 <0.1.0',
+552 silly install resolved     _npmVersion: '1.4.3',
+552 silly install resolved     _npmUser: { name: 'felixge', email: 'felix@debuggable.com' },
+552 silly install resolved     maintainers: [ [Object], [Object], [Object] ],
+552 silly install resolved     directories: {},
+552 silly install resolved     _shasum: '0137e657baa5a7541c57ac37ac5fc07d73b4dc1f',
+552 silly install resolved     _resolved: 'https://registry.npmjs.org/combined-stream/-/combined-stream-0.0.7.tgz',
+552 silly install resolved     readme: 'ERROR: No README data found!' },
+552 silly install resolved   { name: 'async',
+552 silly install resolved     description: 'Higher-order functions and common patterns for asynchronous code',
+552 silly install resolved     main: 'lib/async.js',
+552 silly install resolved     author: { name: 'Caolan McMahon' },
+552 silly install resolved     version: '0.9.2',
+552 silly install resolved     keywords: [ 'async', 'callback', 'utility', 'module' ],
+552 silly install resolved     repository: { type: 'git', url: 'git+https://github.com/caolan/async.git' },
+552 silly install resolved     bugs: { url: 'https://github.com/caolan/async/issues' },
+552 silly install resolved     license: 'MIT',
+552 silly install resolved     devDependencies:
+552 silly install resolved      { nodeunit: '>0.0.0',
+552 silly install resolved        'uglify-js': '1.2.x',
+552 silly install resolved        nodelint: '>0.0.0',
+552 silly install resolved        lodash: '>=2.4.1' },
+552 silly install resolved     jam: { main: 'lib/async.js', include: [Object], categories: [Object] },
+552 silly install resolved     scripts: { test: 'nodeunit test/test-async.js' },
+552 silly install resolved     spm: { main: 'lib/async.js' },
+552 silly install resolved     volo: { main: 'lib/async.js', ignore: [Object] },
+552 silly install resolved     gitHead: 'de3a16091d5125384eff4a54deb3998b13c3814c',
+552 silly install resolved     homepage: 'https://github.com/caolan/async#readme',
+552 silly install resolved     _id: 'async@0.9.2',
+552 silly install resolved     _shasum: 'aea74d5e61c1f899613bf64bda66d4c78f2fd17d',
+552 silly install resolved     _from: 'async@>=0.9.0 <0.10.0',
+552 silly install resolved     _npmVersion: '2.9.0',
+552 silly install resolved     _nodeVersion: '2.0.1',
+552 silly install resolved     _npmUser: { name: 'beaugunderson', email: 'beau@beaugunderson.com' },
+552 silly install resolved     maintainers: [ [Object], [Object] ],
+552 silly install resolved     dist:
+552 silly install resolved      { shasum: 'aea74d5e61c1f899613bf64bda66d4c78f2fd17d',
+552 silly install resolved        tarball: 'http://registry.npmjs.org/async/-/async-0.9.2.tgz' },
+552 silly install resolved     directories: {},
+552 silly install resolved     _resolved: 'https://registry.npmjs.org/async/-/async-0.9.2.tgz',
+552 silly install resolved     readme: 'ERROR: No README data found!' },
+552 silly install resolved   { name: 'mime-types',
+552 silly install resolved     description: 'The ultimate javascript content-type utility.',
+552 silly install resolved     version: '2.0.14',
+552 silly install resolved     contributors: [ [Object], [Object], [Object] ],
+552 silly install resolved     license: 'MIT',
+552 silly install resolved     keywords: [ 'mime', 'types' ],
+552 silly install resolved     repository: { type: 'git', url: 'https://github.com/jshttp/mime-types' },
+552 silly install resolved     dependencies: { 'mime-db': '~1.12.0' },
+552 silly install resolved     devDependencies: { istanbul: '0.3.9', mocha: '~1.21.5' },
+552 silly install resolved     files: [ 'HISTORY.md', 'LICENSE', 'index.js' ],
+552 silly install resolved     engines: { node: '>= 0.6' },
+552 silly install resolved     scripts:
+552 silly install resolved      { test: 'mocha --reporter spec test/test.js',
+552 silly install resolved        'test-cov': 'istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot test/test.js',
+552 silly install resolved        'test-travis': 'istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter dot test/test.js' },
+552 silly install resolved     gitHead: '7d53a3351581eb3d7ae1e846ea860037bce6fe3f',
+552 silly install resolved     bugs: { url: 'https://github.com/jshttp/mime-types/issues' },
+552 silly install resolved     homepage: 'https://github.com/jshttp/mime-types',
+552 silly install resolved     _id: 'mime-types@2.0.14',
+552 silly install resolved     _shasum: '310e159db23e077f8bb22b748dabfa4957140aa6',
+552 silly install resolved     _from: 'mime-types@>=2.0.3 <2.1.0',
+552 silly install resolved     _npmVersion: '1.4.28',
+552 silly install resolved     _npmUser: { name: 'dougwilson', email: 'doug@somethingdoug.com' },
+552 silly install resolved     maintainers: [ [Object], [Object], [Object] ],
+552 silly install resolved     dist:
+552 silly install resolved      { shasum: '310e159db23e077f8bb22b748dabfa4957140aa6',
+552 silly install resolved        tarball: 'http://registry.npmjs.org/mime-types/-/mime-types-2.0.14.tgz' },
+552 silly install resolved     directories: {},
+552 silly install resolved     _resolved: 'https://registry.npmjs.org/mime-types/-/mime-types-2.0.14.tgz',
+552 silly install resolved     readme: 'ERROR: No README data found!' } ]
+553 info install combined-stream@0.0.7 into /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+554 info install async@0.9.2 into /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+555 info install mime-types@2.0.14 into /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+556 info installOne combined-stream@0.0.7
+557 verbose installOne of combined-stream to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data not in flight; installing
+558 info installOne async@0.9.2
+559 verbose installOne of async to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data not in flight; installing
+560 info installOne mime-types@2.0.14
+561 verbose installOne of mime-types to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data not in flight; installing
+562 verbose lock using /Users/christine/.npm/_locks/combined-stream-4495861877c9ce20.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+563 verbose lock using /Users/christine/.npm/_locks/async-a2b03d9e4787ca85.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+564 verbose lock using /Users/christine/.npm/_locks/mime-types-6018aa8eb94f7d91.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+565 silly install write writing combined-stream 0.0.7 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+566 silly install write writing async 0.9.2 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+567 silly install write writing mime-types 2.0.14 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+568 silly gunzTarPerm extractEntry deps/libmagic/src/strcasestr.c
+569 silly gunzTarPerm modified mode [ 'deps/libmagic/src/strcasestr.c', 436, 420 ]
+570 silly gunzTarPerm extractEntry deps/libmagic/src/strlcat.c
+571 silly gunzTarPerm modified mode [ 'deps/libmagic/src/strlcat.c', 436, 420 ]
+572 verbose unbuild lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+573 verbose unbuild lib/node_modules/http-request/node_modules/form-data/node_modules/async
+574 verbose unbuild lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+575 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream is being purged from base /Users/christine/npm-global
+576 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+577 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async is being purged from base /Users/christine/npm-global
+578 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+579 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types is being purged from base /Users/christine/npm-global
+580 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+581 verbose tar unpack /Users/christine/.npm/combined-stream/0.0.7/package.tgz
+582 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+583 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream is being purged
+584 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+585 verbose tar unpack /Users/christine/.npm/async/0.9.2/package.tgz
+586 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+587 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async is being purged
+588 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+589 verbose tar unpack /Users/christine/.npm/mime-types/2.0.14/package.tgz
+590 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+591 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types is being purged
+592 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+593 silly gunzTarPerm extractEntry deps/libmagic/src/strlcpy.c
+594 silly gunzTarPerm modified mode [ 'deps/libmagic/src/strlcpy.c', 436, 420 ]
+595 silly gunzTarPerm extractEntry deps/libmagic/src/tar.h
+596 silly gunzTarPerm modified mode [ 'deps/libmagic/src/tar.h', 436, 420 ]
+597 silly gunzTarPerm modes [ '755', '644' ]
+598 silly gunzTarPerm modes [ '755', '644' ]
+599 silly gunzTarPerm modes [ '755', '644' ]
+600 silly gunzTarPerm extractEntry package.json
+601 silly gunzTarPerm extractEntry package.json
+602 silly gunzTarPerm extractEntry package.json
+603 silly gunzTarPerm modified mode [ 'package.json', 438, 420 ]
+604 silly gunzTarPerm extractEntry License
+605 silly gunzTarPerm extractEntry Readme.md
+606 silly gunzTarPerm extractEntry README.md
+607 silly gunzTarPerm extractEntry LICENSE
+608 silly gunzTarPerm extractEntry README.md
+609 silly gunzTarPerm modified mode [ 'README.md', 438, 420 ]
+610 silly gunzTarPerm extractEntry LICENSE
+611 silly gunzTarPerm modified mode [ 'LICENSE', 438, 420 ]
+612 silly gunzTarPerm extractEntry lib/combined_stream.js
+613 silly gunzTarPerm extractEntry component.json
+614 silly gunzTarPerm extractEntry .travis.yml
+615 silly gunzTarPerm extractEntry bower.json
+616 silly gunzTarPerm extractEntry index.js
+617 silly gunzTarPerm modified mode [ 'index.js', 438, 420 ]
+618 silly gunzTarPerm extractEntry HISTORY.md
+619 silly gunzTarPerm modified mode [ 'HISTORY.md', 438, 420 ]
+620 silly gunzTarPerm extractEntry deps/libmagic/src/vasprintf.c
+621 silly gunzTarPerm modified mode [ 'deps/libmagic/src/vasprintf.c', 436, 420 ]
+622 silly gunzTarPerm extractEntry lib/
+623 silly gunzTarPerm modified mode [ 'lib/', 509, 493 ]
+624 silly gunzTarPerm extractEntry lib/index.js
+625 silly gunzTarPerm modified mode [ 'lib/index.js', 436, 420 ]
+626 silly gunzTarPerm extractEntry magic/
+627 silly gunzTarPerm modified mode [ 'magic/', 509, 493 ]
+628 silly gunzTarPerm extractEntry magic/magic.mgc
+629 silly gunzTarPerm modified mode [ 'magic/magic.mgc', 436, 420 ]
+630 silly gunzTarPerm extractEntry lib/async.js
+631 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/package.json
+632 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/package.json
+633 info preinstall combined-stream@0.0.7
+634 info preinstall mime-types@2.0.14
+635 silly gunzTarPerm extractEntry support/sync-package-managers.js
+636 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/package.json
+637 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/package.json
+638 silly prepareForInstallMany adding delayed-stream@0.0.5 from combined-stream dependencies
+639 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/package.json
+640 silly prepareForInstallMany adding mime-db@~1.12.0 from mime-types dependencies
+641 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/package.json
+642 silly cache add args [ 'mime-db@~1.12.0', null ]
+643 verbose cache add spec mime-db@~1.12.0
+644 silly cache add args [ 'delayed-stream@0.0.5', null ]
+645 verbose cache add spec delayed-stream@0.0.5
+646 silly cache add parsed spec { raw: 'mime-db@~1.12.0',
+646 silly cache add   scope: null,
+646 silly cache add   name: 'mime-db',
+646 silly cache add   rawSpec: '~1.12.0',
+646 silly cache add   spec: '>=1.12.0 <1.13.0',
+646 silly cache add   type: 'range' }
+647 silly addNamed mime-db@>=1.12.0 <1.13.0
+648 verbose addNamed ">=1.12.0 <1.13.0" is a valid semver range for mime-db
+649 silly addNameRange { name: 'mime-db', range: '>=1.12.0 <1.13.0', hasData: false }
+650 silly mapToRegistry name mime-db
+651 silly mapToRegistry using default registry
+652 silly mapToRegistry registry https://registry.npmjs.org/
+653 silly mapToRegistry uri https://registry.npmjs.org/mime-db
+654 verbose addNameRange registry:https://registry.npmjs.org/mime-db not in flight; fetching
+655 silly cache add parsed spec { raw: 'delayed-stream@0.0.5',
+655 silly cache add   scope: null,
+655 silly cache add   name: 'delayed-stream',
+655 silly cache add   rawSpec: '0.0.5',
+655 silly cache add   spec: '0.0.5',
+655 silly cache add   type: 'version' }
+656 silly addNamed delayed-stream@0.0.5
+657 verbose addNamed "0.0.5" is a plain semver version for delayed-stream
+658 silly mapToRegistry name delayed-stream
+659 silly mapToRegistry using default registry
+660 silly mapToRegistry registry https://registry.npmjs.org/
+661 silly mapToRegistry uri https://registry.npmjs.org/delayed-stream
+662 verbose addNameVersion registry:https://registry.npmjs.org/delayed-stream not in flight; fetching
+663 verbose request uri https://registry.npmjs.org/delayed-stream
+664 verbose request no auth needed
+665 info attempt registry request try #1 at 9:16:15 PM
+666 verbose etag "3R3PDLMYOHW7LS95R001QU3HH"
+667 http request GET https://registry.npmjs.org/delayed-stream
+668 verbose request uri https://registry.npmjs.org/mime-db
+669 verbose request no auth needed
+670 info attempt registry request try #1 at 9:16:15 PM
+671 verbose etag "4ZOAOLAHIYYKUM9DZFCOAI1T1"
+672 http request GET https://registry.npmjs.org/mime-db
+673 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async/package.json
+674 info preinstall async@0.9.2
+675 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async/package.json
+676 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async/package.json
+677 silly install resolved []
+678 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+679 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+680 info linkStuff async@0.9.2
+681 silly linkStuff async@0.9.2 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules as its parent node_modules
+682 silly linkStuff async@0.9.2 is part of a global install
+683 silly linkStuff async@0.9.2 is installed into a global node_modules
+684 verbose linkBins async@0.9.2
+685 verbose linkMans async@0.9.2
+686 verbose rebuildBundles async@0.9.2
+687 info install async@0.9.2
+688 info postinstall async@0.9.2
+689 verbose unlock done using /Users/christine/.npm/_locks/async-a2b03d9e4787ca85.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/async
+690 silly gunzTarPerm extractEntry package.json
+691 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+692 silly gunzTarPerm extractEntry src/
+693 silly gunzTarPerm modified mode [ 'src/', 509, 493 ]
+694 silly gunzTarPerm extractEntry src/binding.cc
+695 silly gunzTarPerm modified mode [ 'src/binding.cc', 436, 420 ]
+696 silly gunzTarPerm extractEntry test/
+697 silly gunzTarPerm modified mode [ 'test/', 509, 493 ]
+698 silly gunzTarPerm extractEntry test/fixtures/
+699 silly gunzTarPerm modified mode [ 'test/fixtures/', 509, 493 ]
+700 silly gunzTarPerm extractEntry test/fixtures/tést.txt
+701 silly gunzTarPerm modified mode [ 'test/fixtures/tést.txt', 436, 420 ]
+702 silly gunzTarPerm extractEntry test/test.js
+703 silly gunzTarPerm modified mode [ 'test/test.js', 436, 420 ]
+704 http 304 https://registry.npmjs.org/delayed-stream
+705 silly get cb [ 304,
+705 silly get   { date: 'Thu, 25 Feb 2016 05:16:15 GMT',
+705 silly get     via: '1.1 varnish',
+705 silly get     'cache-control': 'max-age=300',
+705 silly get     etag: '"3R3PDLMYOHW7LS95R001QU3HH"',
+705 silly get     age: '187',
+705 silly get     connection: 'keep-alive',
+705 silly get     'x-served-by': 'cache-lax1430-LAX',
+705 silly get     'x-cache': 'HIT',
+705 silly get     'x-cache-hits': '10',
+705 silly get     'x-timer': 'S1456377375.233432,VS0,VE0',
+705 silly get     vary: 'Accept' } ]
+706 verbose etag https://registry.npmjs.org/delayed-stream from cache
+707 verbose get saving delayed-stream to /Users/christine/.npm/registry.npmjs.org/delayed-stream/.cache.json
+708 http 304 https://registry.npmjs.org/mime-db
+709 silly get cb [ 304,
+709 silly get   { date: 'Thu, 25 Feb 2016 05:16:15 GMT',
+709 silly get     via: '1.1 varnish',
+709 silly get     'cache-control': 'max-age=300',
+709 silly get     etag: '"4ZOAOLAHIYYKUM9DZFCOAI1T1"',
+709 silly get     age: '156',
+709 silly get     connection: 'keep-alive',
+709 silly get     'x-served-by': 'cache-lax1433-LAX',
+709 silly get     'x-cache': 'HIT',
+709 silly get     'x-cache-hits': '3',
+709 silly get     'x-timer': 'S1456377375.233179,VS0,VE0',
+709 silly get     vary: 'Accept' } ]
+710 verbose etag https://registry.npmjs.org/mime-db from cache
+711 verbose get saving mime-db to /Users/christine/.npm/registry.npmjs.org/mime-db/.cache.json
+712 silly addNameRange number 2 { name: 'mime-db', range: '>=1.12.0 <1.13.0', hasData: true }
+713 silly addNameRange versions [ 'mime-db',
+713 silly addNameRange   [ '0.0.0',
+713 silly addNameRange     '1.0.0',
+713 silly addNameRange     '1.0.1',
+713 silly addNameRange     '1.0.2',
+713 silly addNameRange     '1.0.3',
+713 silly addNameRange     '1.1.0',
+713 silly addNameRange     '1.1.1',
+713 silly addNameRange     '1.1.2',
+713 silly addNameRange     '1.2.0',
+713 silly addNameRange     '1.3.0',
+713 silly addNameRange     '1.3.1',
+713 silly addNameRange     '1.4.0',
+713 silly addNameRange     '1.5.0',
+713 silly addNameRange     '1.6.0',
+713 silly addNameRange     '1.6.1',
+713 silly addNameRange     '1.7.0',
+713 silly addNameRange     '1.8.0',
+713 silly addNameRange     '1.9.0',
+713 silly addNameRange     '1.9.1',
+713 silly addNameRange     '1.10.0',
+713 silly addNameRange     '1.11.0',
+713 silly addNameRange     '1.12.0',
+713 silly addNameRange     '1.13.0',
+713 silly addNameRange     '1.14.0',
+713 silly addNameRange     '1.15.0',
+713 silly addNameRange     '1.16.0',
+713 silly addNameRange     '1.17.0',
+713 silly addNameRange     '1.18.0',
+713 silly addNameRange     '1.19.0',
+713 silly addNameRange     '1.20.0',
+713 silly addNameRange     '1.21.0',
+713 silly addNameRange     '1.22.0' ] ]
+714 silly addNamed mime-db@1.12.0
+715 verbose addNamed "1.12.0" is a plain semver version for mime-db
+716 silly cache afterAdd delayed-stream@0.0.5
+717 verbose afterAdd /Users/christine/.npm/delayed-stream/0.0.5/package/package.json not in flight; writing
+718 silly cache afterAdd mime-db@1.12.0
+719 verbose afterAdd /Users/christine/.npm/mime-db/1.12.0/package/package.json not in flight; writing
+720 verbose afterAdd /Users/christine/.npm/delayed-stream/0.0.5/package/package.json written
+721 silly install resolved [ { author:
+721 silly install resolved      { name: 'Felix Geisendörfer',
+721 silly install resolved        email: 'felix@debuggable.com',
+721 silly install resolved        url: 'http://debuggable.com/' },
+721 silly install resolved     name: 'delayed-stream',
+721 silly install resolved     description: 'Buffers events from a stream until you are ready to handle them.',
+721 silly install resolved     version: '0.0.5',
+721 silly install resolved     homepage: 'https://github.com/felixge/node-delayed-stream',
+721 silly install resolved     repository:
+721 silly install resolved      { type: 'git',
+721 silly install resolved        url: 'git://github.com/felixge/node-delayed-stream.git' },
+721 silly install resolved     main: './lib/delayed_stream',
+721 silly install resolved     engines: { node: '>=0.4.0' },
+721 silly install resolved     dependencies: {},
+721 silly install resolved     devDependencies: { fake: '0.2.0', far: '0.0.1' },
+721 silly install resolved     _id: 'delayed-stream@0.0.5',
+721 silly install resolved     _engineSupported: true,
+721 silly install resolved     _npmVersion: '1.0.3',
+721 silly install resolved     _nodeVersion: 'v0.4.9-pre',
+721 silly install resolved     _defaultsLoaded: true,
+721 silly install resolved     dist:
+721 silly install resolved      { shasum: 'd4b1f43a93e8296dfe02694f4680bc37a313c73f',
+721 silly install resolved        tarball: 'http://registry.npmjs.org/delayed-stream/-/delayed-stream-0.0.5.tgz' },
+721 silly install resolved     scripts: {},
+721 silly install resolved     directories: {},
+721 silly install resolved     _shasum: 'd4b1f43a93e8296dfe02694f4680bc37a313c73f',
+721 silly install resolved     _resolved: 'https://registry.npmjs.org/delayed-stream/-/delayed-stream-0.0.5.tgz',
+721 silly install resolved     _from: 'delayed-stream@0.0.5',
+721 silly install resolved     bugs: { url: 'https://github.com/felixge/node-delayed-stream/issues' },
+721 silly install resolved     readme: 'ERROR: No README data found!' } ]
+722 info install delayed-stream@0.0.5 into /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+723 info installOne delayed-stream@0.0.5
+724 verbose installOne of delayed-stream to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream not in flight; installing
+725 verbose afterAdd /Users/christine/.npm/mime-db/1.12.0/package/package.json written
+726 silly install resolved [ { name: 'mime-db',
+726 silly install resolved     description: 'Media Type Database',
+726 silly install resolved     version: '1.12.0',
+726 silly install resolved     contributors: [ [Object], [Object], [Object] ],
+726 silly install resolved     license: 'MIT',
+726 silly install resolved     keywords: [ 'mime', 'db', 'type', 'types', 'database', 'charset', 'charsets' ],
+726 silly install resolved     repository: { type: 'git', url: 'https://github.com/jshttp/mime-db' },
+726 silly install resolved     devDependencies:
+726 silly install resolved      { bluebird: '2.9.27',
+726 silly install resolved        co: '4.5.4',
+726 silly install resolved        cogent: '1.0.1',
+726 silly install resolved        'csv-parse': '0.1.2',
+726 silly install resolved        gnode: '0.1.1',
+726 silly install resolved        istanbul: '0.3.9',
+726 silly install resolved        mocha: '1.21.5',
+726 silly install resolved        'raw-body': '2.1.0',
+726 silly install resolved        'stream-to-array': '2' },
+726 silly install resolved     files: [ 'HISTORY.md', 'LICENSE', 'README.md', 'db.json', 'index.js' ],
+726 silly install resolved     engines: { node: '>= 0.6' },
+726 silly install resolved     scripts:
+726 silly install resolved      { build: 'node scripts/build',
+726 silly install resolved        fetch: 'gnode scripts/extensions && gnode scripts/types',
+726 silly install resolved        test: 'mocha --reporter spec --bail --check-leaks test/',
+726 silly install resolved        'test-cov': 'istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/',
+726 silly install resolved        'test-travis': 'istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/',
+726 silly install resolved        update: 'npm run fetch && npm run build' },
+726 silly install resolved     gitHead: 'cf35cbba6b22f4a3b3eef9a32129ea5b7f0f91ee',
+726 silly install resolved     bugs: { url: 'https://github.com/jshttp/mime-db/issues' },
+726 silly install resolved     homepage: 'https://github.com/jshttp/mime-db',
+726 silly install resolved     _id: 'mime-db@1.12.0',
+726 silly install resolved     _shasum: '3d0c63180f458eb10d325aaa37d7c58ae312e9d7',
+726 silly install resolved     _from: 'mime-db@>=1.12.0 <1.13.0',
+726 silly install resolved     _npmVersion: '1.4.28',
+726 silly install resolved     _npmUser: { name: 'dougwilson', email: 'doug@somethingdoug.com' },
+726 silly install resolved     maintainers: [ [Object], [Object] ],
+726 silly install resolved     dist:
+726 silly install resolved      { shasum: '3d0c63180f458eb10d325aaa37d7c58ae312e9d7',
+726 silly install resolved        tarball: 'http://registry.npmjs.org/mime-db/-/mime-db-1.12.0.tgz' },
+726 silly install resolved     directories: {},
+726 silly install resolved     _resolved: 'https://registry.npmjs.org/mime-db/-/mime-db-1.12.0.tgz',
+726 silly install resolved     readme: 'ERROR: No README data found!' } ]
+727 info install mime-db@1.12.0 into /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+728 info installOne mime-db@1.12.0
+729 verbose installOne of mime-db to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types not in flight; installing
+730 verbose lock using /Users/christine/.npm/_locks/delayed-stream-8374f7ec0924c2a4.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+731 silly install write writing delayed-stream 0.0.5 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+732 verbose lock using /Users/christine/.npm/_locks/mime-db-d3749aacc4aa21e7.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+733 silly install write writing mime-db 1.12.0 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+734 verbose unbuild lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+735 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream is being purged from base /Users/christine/npm-global
+736 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+737 verbose unbuild lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+738 verbose tar unpack /Users/christine/.npm/delayed-stream/0.0.5/package.tgz
+739 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+740 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream is being purged
+741 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+742 silly gunzTarPerm modes [ '755', '644' ]
+743 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db is being purged from base /Users/christine/npm-global
+744 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+745 verbose tar unpack /Users/christine/.npm/mime-db/1.12.0/package.tgz
+746 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+747 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db is being purged
+748 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+749 silly gunzTarPerm modes [ '755', '644' ]
+750 silly gunzTarPerm extractEntry .gitignore
+751 silly gunzTarPerm extractEntry package.json
+752 silly gunzTarPerm modified mode [ 'package.json', 438, 420 ]
+753 silly gunzTarPerm extractEntry License
+754 silly gunzTarPerm extractEntry Makefile
+755 silly gunzTarPerm extractEntry README.md
+756 silly gunzTarPerm modified mode [ 'README.md', 438, 420 ]
+757 silly gunzTarPerm extractEntry LICENSE
+758 silly gunzTarPerm modified mode [ 'LICENSE', 438, 420 ]
+759 silly gunzTarPerm extractEntry package.json
+760 silly gunzTarPerm extractEntry Readme.md
+761 silly gunzTarPerm extractEntry index.js
+762 silly gunzTarPerm modified mode [ 'index.js', 438, 420 ]
+763 silly gunzTarPerm extractEntry HISTORY.md
+764 silly gunzTarPerm modified mode [ 'HISTORY.md', 438, 420 ]
+765 silly gunzTarPerm extractEntry lib/delayed_stream.js
+766 silly gunzTarPerm extractEntry test/common.js
+767 silly gunzTarPerm extractEntry db.json
+768 silly gunzTarPerm modified mode [ 'db.json', 438, 420 ]
+769 silly gunzTarPerm extractEntry test/run.js
+770 silly gunzTarPerm extractEntry test/integration/test-delayed-http-upload.js
+771 silly gunzTarPerm extractEntry test/integration/test-delayed-stream-auto-pause.js
+772 silly gunzTarPerm extractEntry test/integration/test-delayed-stream-pause.js
+773 silly gunzTarPerm extractEntry test/integration/test-delayed-stream.js
+774 silly gunzTarPerm extractEntry test/integration/test-handle-source-errors.js
+775 silly gunzTarPerm extractEntry test/integration/test-max-data-size.js
+776 silly gunzTarPerm extractEntry test/integration/test-pipe-resumes.js
+777 silly gunzTarPerm extractEntry test/integration/test-proxy-readable.js
+778 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream/package.json
+779 info preinstall delayed-stream@0.0.5
+780 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream/package.json
+781 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream/package.json
+782 silly install resolved []
+783 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+784 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+785 info linkStuff delayed-stream@0.0.5
+786 silly linkStuff delayed-stream@0.0.5 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules as its parent node_modules
+787 silly linkStuff delayed-stream@0.0.5 is part of a global install
+788 silly linkStuff delayed-stream@0.0.5 is installed into a global node_modules
+789 verbose linkBins delayed-stream@0.0.5
+790 verbose linkMans delayed-stream@0.0.5
+791 verbose rebuildBundles delayed-stream@0.0.5
+792 info install delayed-stream@0.0.5
+793 info postinstall delayed-stream@0.0.5
+794 verbose unlock done using /Users/christine/.npm/_locks/delayed-stream-8374f7ec0924c2a4.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream/node_modules/delayed-stream
+795 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+796 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+797 info linkStuff combined-stream@0.0.7
+798 silly linkStuff combined-stream@0.0.7 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules as its parent node_modules
+799 silly linkStuff combined-stream@0.0.7 is part of a global install
+800 silly linkStuff combined-stream@0.0.7 is installed into a global node_modules
+801 verbose linkBins combined-stream@0.0.7
+802 verbose linkMans combined-stream@0.0.7
+803 verbose rebuildBundles combined-stream@0.0.7
+804 verbose rebuildBundles [ 'delayed-stream' ]
+805 info install combined-stream@0.0.7
+806 info postinstall combined-stream@0.0.7
+807 verbose unlock done using /Users/christine/.npm/_locks/combined-stream-4495861877c9ce20.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/combined-stream
+808 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db/package.json
+809 info preinstall mime-db@1.12.0
+810 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db/package.json
+811 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db/package.json
+812 silly install resolved []
+813 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+814 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+815 info linkStuff mime-db@1.12.0
+816 silly linkStuff mime-db@1.12.0 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules as its parent node_modules
+817 silly linkStuff mime-db@1.12.0 is part of a global install
+818 silly linkStuff mime-db@1.12.0 is installed into a global node_modules
+819 verbose linkBins mime-db@1.12.0
+820 verbose linkMans mime-db@1.12.0
+821 verbose rebuildBundles mime-db@1.12.0
+822 info install mime-db@1.12.0
+823 info postinstall mime-db@1.12.0
+824 verbose unlock done using /Users/christine/.npm/_locks/mime-db-d3749aacc4aa21e7.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db
+825 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+826 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+827 info linkStuff mime-types@2.0.14
+828 silly linkStuff mime-types@2.0.14 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules as its parent node_modules
+829 silly linkStuff mime-types@2.0.14 is part of a global install
+830 silly linkStuff mime-types@2.0.14 is installed into a global node_modules
+831 verbose linkBins mime-types@2.0.14
+832 verbose linkMans mime-types@2.0.14
+833 verbose rebuildBundles mime-types@2.0.14
+834 verbose rebuildBundles [ 'mime-db' ]
+835 info install mime-types@2.0.14
+836 info postinstall mime-types@2.0.14
+837 verbose unlock done using /Users/christine/.npm/_locks/mime-types-6018aa8eb94f7d91.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data/node_modules/mime-types
+838 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+839 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+840 info linkStuff form-data@0.2.0
+841 silly linkStuff form-data@0.2.0 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules as its parent node_modules
+842 silly linkStuff form-data@0.2.0 is part of a global install
+843 silly linkStuff form-data@0.2.0 is installed into a global node_modules
+844 verbose linkBins form-data@0.2.0
+845 verbose linkMans form-data@0.2.0
+846 verbose rebuildBundles form-data@0.2.0
+847 verbose rebuildBundles [ 'async', 'combined-stream', 'mime-types' ]
+848 info install form-data@0.2.0
+849 info postinstall form-data@0.2.0
+850 verbose unlock done using /Users/christine/.npm/_locks/form-data-8c73daf32bc53c3a.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/form-data
+851 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/package.json
+852 info preinstall mmmagic@0.4.1
+853 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/package.json
+854 silly prepareForInstallMany adding nan@^2.0.8 from mmmagic dependencies
+855 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/package.json
+856 silly cache add args [ 'nan@^2.0.8', null ]
+857 verbose cache add spec nan@^2.0.8
+858 silly cache add parsed spec { raw: 'nan@^2.0.8',
+858 silly cache add   scope: null,
+858 silly cache add   name: 'nan',
+858 silly cache add   rawSpec: '^2.0.8',
+858 silly cache add   spec: '>=2.0.8 <3.0.0',
+858 silly cache add   type: 'range' }
+859 silly addNamed nan@>=2.0.8 <3.0.0
+860 verbose addNamed ">=2.0.8 <3.0.0" is a valid semver range for nan
+861 silly addNameRange { name: 'nan', range: '>=2.0.8 <3.0.0', hasData: false }
+862 silly mapToRegistry name nan
+863 silly mapToRegistry using default registry
+864 silly mapToRegistry registry https://registry.npmjs.org/
+865 silly mapToRegistry uri https://registry.npmjs.org/nan
+866 verbose addNameRange registry:https://registry.npmjs.org/nan not in flight; fetching
+867 verbose request uri https://registry.npmjs.org/nan
+868 verbose request no auth needed
+869 info attempt registry request try #1 at 9:16:15 PM
+870 verbose etag "7Y2U1A5TWU1O0YTKGMD4FB8ZN"
+871 http request GET https://registry.npmjs.org/nan
+872 http 304 https://registry.npmjs.org/nan
+873 silly get cb [ 304,
+873 silly get   { date: 'Thu, 25 Feb 2016 05:16:15 GMT',
+873 silly get     via: '1.1 varnish',
+873 silly get     'cache-control': 'max-age=300',
+873 silly get     etag: '"7Y2U1A5TWU1O0YTKGMD4FB8ZN"',
+873 silly get     age: '293',
+873 silly get     connection: 'keep-alive',
+873 silly get     'x-served-by': 'cache-lax1420-LAX',
+873 silly get     'x-cache': 'HIT',
+873 silly get     'x-cache-hits': '4',
+873 silly get     'x-timer': 'S1456377375.869497,VS0,VE0',
+873 silly get     vary: 'Accept' } ]
+874 verbose etag https://registry.npmjs.org/nan from cache
+875 verbose get saving nan to /Users/christine/.npm/registry.npmjs.org/nan/.cache.json
+876 silly addNameRange number 2 { name: 'nan', range: '>=2.0.8 <3.0.0', hasData: true }
+877 silly addNameRange versions [ 'nan',
+877 silly addNameRange   [ '0.3.0-wip',
+877 silly addNameRange     '0.3.0-wip2',
+877 silly addNameRange     '0.3.0',
+877 silly addNameRange     '0.3.1',
+877 silly addNameRange     '0.3.2',
+877 silly addNameRange     '0.4.0',
+877 silly addNameRange     '0.4.1',
+877 silly addNameRange     '0.4.2',
+877 silly addNameRange     '0.4.3',
+877 silly addNameRange     '0.4.4',
+877 silly addNameRange     '0.5.0',
+877 silly addNameRange     '0.5.1',
+877 silly addNameRange     '0.5.2',
+877 silly addNameRange     '0.6.0',
+877 silly addNameRange     '0.7.0',
+877 silly addNameRange     '0.7.1',
+877 silly addNameRange     '0.8.0',
+877 silly addNameRange     '1.0.0',
+877 silly addNameRange     '1.1.0',
+877 silly addNameRange     '1.1.1',
+877 silly addNameRange     '1.1.2',
+877 silly addNameRange     '1.2.0',
+877 silly addNameRange     '1.3.0',
+877 silly addNameRange     '1.4.0',
+877 silly addNameRange     '1.4.1',
+877 silly addNameRange     '1.5.0',
+877 silly addNameRange     '1.4.2',
+877 silly addNameRange     '1.4.3',
+877 silly addNameRange     '1.5.1',
+877 silly addNameRange     '1.5.2',
+877 silly addNameRange     '1.6.0',
+877 silly addNameRange     '1.5.3',
+877 silly addNameRange     '1.6.1',
+877 silly addNameRange     '1.6.2',
+877 silly addNameRange     '1.7.0',
+877 silly addNameRange     '1.8.0',
+877 silly addNameRange     '1.8.1',
+877 silly addNameRange     '1.8.2',
+877 silly addNameRange     '1.8.3',
+877 silly addNameRange     '1.8.4',
+877 silly addNameRange     '1.9.0',
+877 silly addNameRange     '2.0.0',
+877 silly addNameRange     '2.0.1',
+877 silly addNameRange     '2.0.2',
+877 silly addNameRange     '2.0.3',
+877 silly addNameRange     '2.0.4',
+877 silly addNameRange     '2.0.5',
+877 silly addNameRange     '2.0.6',
+877 silly addNameRange     '2.0.7',
+877 silly addNameRange     '2.0.8',
+877 silly addNameRange     '2.0.9',
+877 silly addNameRange     '2.1.0',
+877 silly addNameRange     '2.2.0' ] ]
+878 silly addNamed nan@2.2.0
+879 verbose addNamed "2.2.0" is a plain semver version for nan
+880 silly cache afterAdd nan@2.2.0
+881 verbose afterAdd /Users/christine/.npm/nan/2.2.0/package/package.json not in flight; writing
+882 verbose afterAdd /Users/christine/.npm/nan/2.2.0/package/package.json written
+883 silly install resolved [ { name: 'nan',
+883 silly install resolved     version: '2.2.0',
+883 silly install resolved     description: 'Native Abstractions for Node.js: C++ header for Node 0.8 -> 4 compatibility',
+883 silly install resolved     main: 'include_dirs.js',
+883 silly install resolved     repository: { type: 'git', url: 'git://github.com/nodejs/nan.git' },
+883 silly install resolved     scripts:
+883 silly install resolved      { test: 'tap --gc test/js/*-test.js',
+883 silly install resolved        'rebuild-tests': 'node-gyp rebuild --msvs_version=2013 --directory test',
+883 silly install resolved        docs: 'doc/.build.sh' },
+883 silly install resolved     contributors:
+883 silly install resolved      [ [Object],
+883 silly install resolved        [Object],
+883 silly install resolved        [Object],
+883 silly install resolved        [Object],
+883 silly install resolved        [Object],
+883 silly install resolved        [Object],
+883 silly install resolved        [Object] ],
+883 silly install resolved     devDependencies:
+883 silly install resolved      { bindings: '~1.2.1',
+883 silly install resolved        commander: '^2.8.1',
+883 silly install resolved        glob: '^5.0.14',
+883 silly install resolved        'node-gyp': '~3.0.1',
+883 silly install resolved        tap: '~0.7.1',
+883 silly install resolved        xtend: '~4.0.0' },
+883 silly install resolved     license: 'MIT',
+883 silly install resolved     bugs: { url: 'https://github.com/nodejs/nan/issues' },
+883 silly install resolved     homepage: 'https://github.com/nodejs/nan#readme',
+883 silly install resolved     _id: 'nan@2.2.0',
+883 silly install resolved     _shasum: '779c07135629503cf6a7b7e6aab33049b3c3853c',
+883 silly install resolved     _resolved: 'https://registry.npmjs.org/nan/-/nan-2.2.0.tgz',
+883 silly install resolved     _from: 'nan@>=2.0.8 <3.0.0',
+883 silly install resolved     _npmVersion: '3.3.6',
+883 silly install resolved     _nodeVersion: '5.0.0',
+883 silly install resolved     _npmUser: { name: 'kkoopa', email: 'bbyholm@abo.fi' },
+883 silly install resolved     dist:
+883 silly install resolved      { shasum: '779c07135629503cf6a7b7e6aab33049b3c3853c',
+883 silly install resolved        tarball: 'http://registry.npmjs.org/nan/-/nan-2.2.0.tgz' },
+883 silly install resolved     maintainers: [ [Object], [Object] ],
+883 silly install resolved     directories: {},
+883 silly install resolved     readme: 'ERROR: No README data found!' } ]
+884 info install nan@2.2.0 into /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+885 info installOne nan@2.2.0
+886 verbose installOne of nan to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic not in flight; installing
+887 verbose lock using /Users/christine/.npm/_locks/nan-7b854d18ce345df5.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+888 silly install write writing nan 2.2.0 to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+889 verbose unbuild lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+890 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan is being purged from base /Users/christine/npm-global
+891 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+892 verbose tar unpack /Users/christine/.npm/nan/2.2.0/package.tgz
+893 verbose tar unpacking to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+894 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan is being purged
+895 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+896 silly gunzTarPerm modes [ '755', '644' ]
+897 silly gunzTarPerm extractEntry package.json
+898 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+899 silly gunzTarPerm extractEntry README.md
+900 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+901 silly gunzTarPerm extractEntry include_dirs.js
+902 silly gunzTarPerm modified mode [ 'include_dirs.js', 436, 420 ]
+903 silly gunzTarPerm extractEntry nan_converters.h
+904 silly gunzTarPerm modified mode [ 'nan_converters.h', 436, 420 ]
+905 silly gunzTarPerm extractEntry LICENSE.md
+906 silly gunzTarPerm modified mode [ 'LICENSE.md', 436, 420 ]
+907 silly gunzTarPerm extractEntry .dntrc
+908 silly gunzTarPerm modified mode [ '.dntrc', 436, 420 ]
+909 silly gunzTarPerm extractEntry appveyor.yml
+910 silly gunzTarPerm modified mode [ 'appveyor.yml', 436, 420 ]
+911 silly gunzTarPerm extractEntry doc/new.md
+912 silly gunzTarPerm modified mode [ 'doc/new.md', 436, 420 ]
+913 silly gunzTarPerm extractEntry doc/.build.sh
+914 silly gunzTarPerm modified mode [ 'doc/.build.sh', 509, 493 ]
+915 silly gunzTarPerm extractEntry doc/buffers.md
+916 silly gunzTarPerm modified mode [ 'doc/buffers.md', 436, 420 ]
+917 silly gunzTarPerm extractEntry doc/callback.md
+918 silly gunzTarPerm modified mode [ 'doc/callback.md', 436, 420 ]
+919 silly gunzTarPerm extractEntry doc/converters.md
+920 silly gunzTarPerm modified mode [ 'doc/converters.md', 436, 420 ]
+921 silly gunzTarPerm extractEntry doc/errors.md
+922 silly gunzTarPerm modified mode [ 'doc/errors.md', 436, 420 ]
+923 silly gunzTarPerm extractEntry doc/maybe_types.md
+924 silly gunzTarPerm modified mode [ 'doc/maybe_types.md', 436, 420 ]
+925 silly gunzTarPerm extractEntry doc/methods.md
+926 silly gunzTarPerm modified mode [ 'doc/methods.md', 436, 420 ]
+927 silly gunzTarPerm extractEntry doc/asyncworker.md
+928 silly gunzTarPerm modified mode [ 'doc/asyncworker.md', 436, 420 ]
+929 silly gunzTarPerm extractEntry doc/node_misc.md
+930 silly gunzTarPerm modified mode [ 'doc/node_misc.md', 436, 420 ]
+931 silly gunzTarPerm extractEntry doc/object_wrappers.md
+932 silly gunzTarPerm modified mode [ 'doc/object_wrappers.md', 436, 420 ]
+933 silly gunzTarPerm extractEntry doc/persistent.md
+934 silly gunzTarPerm modified mode [ 'doc/persistent.md', 436, 420 ]
+935 silly gunzTarPerm extractEntry doc/scopes.md
+936 silly gunzTarPerm modified mode [ 'doc/scopes.md', 436, 420 ]
+937 silly gunzTarPerm extractEntry doc/script.md
+938 silly gunzTarPerm modified mode [ 'doc/script.md', 436, 420 ]
+939 silly gunzTarPerm extractEntry doc/string_bytes.md
+940 silly gunzTarPerm modified mode [ 'doc/string_bytes.md', 436, 420 ]
+941 silly gunzTarPerm extractEntry doc/v8_internals.md
+942 silly gunzTarPerm modified mode [ 'doc/v8_internals.md', 436, 420 ]
+943 silly gunzTarPerm extractEntry doc/v8_misc.md
+944 silly gunzTarPerm modified mode [ 'doc/v8_misc.md', 436, 420 ]
+945 silly gunzTarPerm extractEntry nan.h
+946 silly gunzTarPerm modified mode [ 'nan.h', 436, 420 ]
+947 silly gunzTarPerm extractEntry nan_callbacks.h
+948 silly gunzTarPerm modified mode [ 'nan_callbacks.h', 436, 420 ]
+949 silly gunzTarPerm extractEntry nan_callbacks_12_inl.h
+950 silly gunzTarPerm modified mode [ 'nan_callbacks_12_inl.h', 436, 420 ]
+951 silly gunzTarPerm extractEntry nan_callbacks_pre_12_inl.h
+952 silly gunzTarPerm modified mode [ 'nan_callbacks_pre_12_inl.h', 436, 420 ]
+953 silly gunzTarPerm extractEntry nan_converters_43_inl.h
+954 silly gunzTarPerm modified mode [ 'nan_converters_43_inl.h', 436, 420 ]
+955 silly gunzTarPerm extractEntry nan_converters_pre_43_inl.h
+956 silly gunzTarPerm modified mode [ 'nan_converters_pre_43_inl.h', 436, 420 ]
+957 silly gunzTarPerm extractEntry nan_implementation_12_inl.h
+958 silly gunzTarPerm modified mode [ 'nan_implementation_12_inl.h', 436, 420 ]
+959 silly gunzTarPerm extractEntry nan_implementation_pre_12_inl.h
+960 silly gunzTarPerm modified mode [ 'nan_implementation_pre_12_inl.h', 436, 420 ]
+961 silly gunzTarPerm extractEntry nan_maybe_43_inl.h
+962 silly gunzTarPerm modified mode [ 'nan_maybe_43_inl.h', 436, 420 ]
+963 silly gunzTarPerm extractEntry nan_maybe_pre_43_inl.h
+964 silly gunzTarPerm modified mode [ 'nan_maybe_pre_43_inl.h', 436, 420 ]
+965 silly gunzTarPerm extractEntry nan_new.h
+966 silly gunzTarPerm modified mode [ 'nan_new.h', 436, 420 ]
+967 silly gunzTarPerm extractEntry nan_object_wrap.h
+968 silly gunzTarPerm modified mode [ 'nan_object_wrap.h', 436, 420 ]
+969 silly gunzTarPerm extractEntry nan_persistent_12_inl.h
+970 silly gunzTarPerm modified mode [ 'nan_persistent_12_inl.h', 436, 420 ]
+971 silly gunzTarPerm extractEntry nan_persistent_pre_12_inl.h
+972 silly gunzTarPerm modified mode [ 'nan_persistent_pre_12_inl.h', 436, 420 ]
+973 silly gunzTarPerm extractEntry nan_string_bytes.h
+974 silly gunzTarPerm modified mode [ 'nan_string_bytes.h', 436, 420 ]
+975 silly gunzTarPerm extractEntry nan_typedarray_contents.h
+976 silly gunzTarPerm modified mode [ 'nan_typedarray_contents.h', 436, 420 ]
+977 silly gunzTarPerm extractEntry nan_weak.h
+978 silly gunzTarPerm modified mode [ 'nan_weak.h', 436, 420 ]
+979 silly gunzTarPerm extractEntry CHANGELOG.md
+980 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 436, 420 ]
+981 silly gunzTarPerm extractEntry tools/package.json
+982 silly gunzTarPerm modified mode [ 'tools/package.json', 436, 420 ]
+983 silly gunzTarPerm extractEntry tools/README.md
+984 silly gunzTarPerm modified mode [ 'tools/README.md', 436, 420 ]
+985 silly gunzTarPerm extractEntry tools/1to2.js
+986 silly gunzTarPerm modified mode [ 'tools/1to2.js', 509, 493 ]
+987 verbose write writing to /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan/package.json
+988 info preinstall nan@2.2.0
+989 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan/package.json
+990 verbose readDependencies loading dependencies from /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan/package.json
+991 silly install resolved []
+992 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+993 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+994 info linkStuff nan@2.2.0
+995 silly linkStuff nan@2.2.0 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules as its parent node_modules
+996 silly linkStuff nan@2.2.0 is part of a global install
+997 silly linkStuff nan@2.2.0 is installed into a global node_modules
+998 verbose linkBins nan@2.2.0
+999 verbose linkMans nan@2.2.0
+1000 verbose rebuildBundles nan@2.2.0
+1001 info install nan@2.2.0
+1002 info postinstall nan@2.2.0
+1003 verbose unlock done using /Users/christine/.npm/_locks/nan-7b854d18ce345df5.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic/node_modules/nan
+1004 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+1005 info build /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+1006 info linkStuff mmmagic@0.4.1
+1007 silly linkStuff mmmagic@0.4.1 has /Users/christine/npm-global/lib/node_modules/http-request/node_modules as its parent node_modules
+1008 silly linkStuff mmmagic@0.4.1 is part of a global install
+1009 silly linkStuff mmmagic@0.4.1 is installed into a global node_modules
+1010 verbose linkBins mmmagic@0.4.1
+1011 verbose linkMans mmmagic@0.4.1
+1012 verbose rebuildBundles mmmagic@0.4.1
+1013 verbose rebuildBundles [ 'nan' ]
+1014 info install mmmagic@0.4.1
+1015 verbose unsafe-perm in lifecycle false
+1016 info mmmagic@0.4.1 Failed to exec install script
+1017 verbose unlock done using /Users/christine/.npm/_locks/mmmagic-2874fc52d56b1185.lock for /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+1018 verbose about to build /Users/christine/npm-global/lib/node_modules/http-request
+1019 verbose unlock done using /Users/christine/.npm/_locks/http-request-96840ff6994acc41.lock for /Users/christine/npm-global/lib/node_modules/http-request
+1020 verbose stack Error: mmmagic@0.4.1 install: `node-gyp rebuild`
+1020 verbose stack Exit status 1
+1020 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+1020 verbose stack     at EventEmitter.emit (events.js:110:17)
+1020 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+1020 verbose stack     at ChildProcess.emit (events.js:110:17)
+1020 verbose stack     at maybeClose (child_process.js:1015:16)
+1020 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+1021 verbose pkgid mmmagic@0.4.1
+1022 verbose cwd /Users/christine/git/buddy-test/v2/data-record/movie-test
+1023 error Darwin 15.2.0
+1024 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "http-request"
+1025 error node v0.12.5
+1026 error npm  v2.11.2
+1027 error code ELIFECYCLE
+1028 error mmmagic@0.4.1 install: `node-gyp rebuild`
+1028 error Exit status 1
+1029 error Failed at the mmmagic@0.4.1 install script 'node-gyp rebuild'.
+1029 error This is most likely a problem with the mmmagic package,
+1029 error not with npm itself.
+1029 error Tell the author that this fails on your system:
+1029 error     node-gyp rebuild
+1029 error You can get their info via:
+1029 error     npm owner ls mmmagic
+1029 error There is likely additional logging output above.
+1030 verbose exit [ 1, true ]
+1031 verbose unbuild lib/node_modules/http-request/node_modules/mmmagic
+1032 info preuninstall mmmagic@0.4.1
+1033 info uninstall mmmagic@0.4.1
+1034 verbose unbuild rmStuff mmmagic@0.4.1 from /Users/christine/npm-global/lib/node_modules
+1035 verbose unbuild rmStuff in /Users/christine/npm-global/lib/node_modules/http-request/node_modules
+1036 info postuninstall mmmagic@0.4.1
+1037 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic is being purged from base /Users/christine/npm-global
+1038 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+1039 silly vacuum-fs purging /Users/christine/npm-global/lib/node_modules/http-request/node_modules/mmmagic
+1040 silly vacuum-fs quitting because other entries in /Users/christine/npm-global/lib/node_modules/http-request/node_modules
+1041 verbose unbuild lib/node_modules/http-request
+1042 info preuninstall http-request@0.7.0
+1043 info uninstall http-request@0.7.0
+1044 verbose unbuild rmStuff http-request@0.7.0 from /Users/christine/npm-global/lib/node_modules
+1045 info postuninstall http-request@0.7.0
+1046 silly gentlyRm /Users/christine/npm-global/lib/node_modules/http-request is being purged from base /Users/christine/npm-global
+1047 verbose gentlyRm don't care about contents; nuking /Users/christine/npm-global/lib/node_modules/http-request
+1048 silly vacuum-fs purging /Users/christine/npm-global/lib/node_modules/http-request
+1049 silly vacuum-fs quitting because other entries in /Users/christine/npm-global/lib/node_modules
