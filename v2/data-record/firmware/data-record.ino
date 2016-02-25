@@ -6,6 +6,11 @@
 
 // Some definitions for the SD card
 #define SPI_CONFIGURATION 0
+#define SYSTEM_CONFIGURATION 0
+
+
+
+
 //------------------------------------------------------------------------------
 // Setup SPI configuration.
 #if SPI_CONFIGURATION == 0
@@ -99,8 +104,7 @@ int sdlastrecord=0;        // the last time we recorded to an SD card
 int sdrecthreshold=1000;   // the amount of time that needs to pass between SD card recordings
 File myFile;               // this is our SD card file variable
 
-// FOR WI-FI ONLY (Photon)
-// SYSTEM_MODE(SEMI_AUTOMATIC);
+SYSTEM_THREAD(ENABLED);
 
 void setup() {
     // Get the time

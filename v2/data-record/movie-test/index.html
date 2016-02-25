@@ -124,6 +124,9 @@ function updateData() {
         else {
             x.domain(d3.extent(data, function(d) { return d.date; }));
             y.domain([0, 20]);
+            var xAxis = d3.svg.axis().scale(x)
+            .orient("bottom").ticks(20)
+            .tickFormat(d3.time.format("%H:%M:%S"));
         }
 
     // Select the section we want to apply our changes to
