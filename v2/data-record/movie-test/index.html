@@ -7,18 +7,18 @@ body { font: 10px sans-serif;}
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: #777777;
   shape-rendering: crispEdges;
 }
 
 .y.axis path {
   fill: none;
-  stroke: #000;
+  stroke: #777777;
   shape-rendering: crispEdges;
 }
 
 .brush .extent {
-  stroke: #fff;
+  stroke: #f0f0f0;
   fill-opacity: .125;
   shape-rendering: crispEdges;
 }
@@ -26,6 +26,7 @@ body { font: 10px sans-serif;}
 .line {
   fill: none;
 }
+
 
 </style>
 <body>
@@ -35,14 +36,33 @@ body { font: 10px sans-serif;}
 
 <script>
 
+var divtext="";
+
+var labels = 
+    [{"name":"creepy dude describes death by crucifixion","x0":"00:03:00","x1":"00:03:05"},
+        {"name":"graphic images of a psychopath being born in a fish market","x0":"00:05:00","x1":"00:06:15"},
+        {"name":"beautiful evocative images of nature scents","x0":"00:10:20","x1":"00:13:00"},
+        {"name":"creation of a perfume","x0":"00:45:00","x1":"00:50:00"},
+        {"name":"meditating in a cave","x0":"00:57:00","x1":"01:01:00"},
+        {"name":"first intentional violent murder","x0":"01:19:05","x1":"01:19:15"},
+        {"name":"murderer spotted in shadow","x0":"01:24:55","x1":"01:25:35"},
+        {"name":"remains of victims discovered","x0":"01:41:40","x1":"01:42:20"},
+        {"name":"murderer spotted in house","x0":"01:47:25","x1":"01:47:50"},
+        {"name":"tortured by alan rickman","x0":"01:56:15","x1":"01:56:20"},
+        {"name":"awaiting execution","x0":"01:56:20","x1":"01:57:05"}];
+
+
 // Set the dimensions of the canvas / graph
 var margin = {top: 10, right: 10, bottom: 100, left: 40},
     margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+    margin3 = {top: 20, right: 10, bottom: 20, left: 80},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom,
-    height2 = 500 - margin2.top - margin2.bottom;
+    height2 = 500 - margin2.top - margin2.bottom,
+    height3 = 600 - margin3.top - margin3.bottom;
 
-var color = d3.scale.category10();
+var color = d3.scale.category10()
+    .range(["#00adef"]);
 
 // Parse the date / time
 var parseDate = d3.time.format("%H:%M:%S").parse;
@@ -88,6 +108,17 @@ svg.append("defs").append("clipPath")
     .attr("width", width)
     .attr("height", height);
 
+// add the name of the section
+svg.append("foreignObject")
+    .attr("width",width)
+    .attr("height",height3)
+    .attr("font-family","sans-serif")
+    .append("xhtml:body")
+    .attr("id","words")
+    .html('<div><p>stuff that happened during the movie<p></div>')
+  .attr("transform", "translate(" + margin3.left + "," + margin3.top + ")");
+
+
 var focus = svg.append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       
@@ -125,8 +156,6 @@ data=d;
     y2.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
                d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
     
-
-
 
     var focuslineGroups = focus.selectAll("g")
         .data(sources)
@@ -168,6 +197,56 @@ data=d;
       .selectAll("rect")
         .attr("y", -6)
         .attr("height", height2 + 7);
+
+    svg.append("rect")
+          .attr("class", "overlay")
+          .attr("width", width)
+          .attr("height", height)
+          .style("fill-opacity","0")
+          .on("mousemove", mousemove)
+
+
+    function mousemove() {
+    var lastlabel=0;
+    var m = x.invert(d3.mouse(this)[0]);
+    for (i = 0; i<labels.length; i++) {
+        if (m>parseDate(labels[i].x0) && m<parseDate(labels[i].x1)) {
+            if (lastlabel!=i) {
+                console.log(m);
+                console.log(labels[i].name);
+                svg.select("svg #section-text").transition()
+                    .delay(500)
+                    .text(labels[i].name)
+            }            
+        }
+        else {svg.select("p").transition()
+                    .delay(500)
+                    .text("stuff that happened during the movie")}
+    }
+
+  }
+
+for (i = 0; i<labels.length; i++) {
+    var l = (parseDate(labels[i].x0));
+    var r = (parseDate(labels[i].x1));
+    var wid = x(r)-x(l);
+    var col;
+    if (i%2==0) {
+        col="#27ae60"
+    }
+    else {
+        col="#f39c12"
+    }
+    svg.append("rect")
+    .attr("x",x(l))
+    .attr("width",wid)
+    .attr("height",height2)
+    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")")
+    .style("fill-opacity",".5")
+    .style("fill",col)
+    // .on("mouseover", drawBrush(l,r))
+    }
+
 });
  
 function brush() {
@@ -191,5 +270,25 @@ function brush() {
   focus.select(".y.axis").call(yAxis);
 }
 
+// function drawBrush(a,b) {
+//     brush.extent([a,b])
+
+//     // now draw the brush to match our extent
+//     // use transition to slow it down so we can see what is happening
+//     // remove transition so just d3.select(".brush") to just draw
+//     brush(d3.select(".brush").transition());
+
+//     // now fire the brushstart, brushmove, and brushend events
+//     // remove transition so just d3.select(".brush") to just draw
+//     brush.event(d3.select(".brush").transition().delay(1000))
+//   }
+
+// function brushed() {
+//     x.domain(brush.empty() ? x2.domain() : brush.extent());
+//     focus.select(".area").attr("d", area);
+//     focus.select(".x.axis").call(xAxis);
+//   }
+
 </script>
-</body>
+<div id="section-name">
+</div></body>
