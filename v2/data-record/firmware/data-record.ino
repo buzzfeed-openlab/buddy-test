@@ -8,8 +8,21 @@
 #define SPI_CONFIGURATION 0
 #define SYSTEM_CONFIGURATION 0
 
+//------------------------------------------------------------------------------
+// Setup system configuration.
 
+#if SYSTEM_CONFIGURATION == 0
+// using a photon purely for data
+SYSTEM_MODE(SEMI_AUTOMATIC);
 
+#elif SYSTEM_CONFIGURATION == 1
+// using a photon and publishing data
+
+#elif SYSTEM_CONFIGURATION == 2
+// using an electron purely for data
+
+#elif SYSTEM_CONFIGURATION == 3
+// using an electron and publishing data
 
 //------------------------------------------------------------------------------
 // Setup SPI configuration.
