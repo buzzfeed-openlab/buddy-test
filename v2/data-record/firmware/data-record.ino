@@ -16,13 +16,22 @@
 SYSTEM_MODE(SEMI_AUTOMATIC);
 
 #elif SYSTEM_CONFIGURATION == 1
-// using a photon and publishing data
+// using an electron purely for data
+SYSTEM_MODE(SEMI_AUTOMATIC);
 
 #elif SYSTEM_CONFIGURATION == 2
-// using an electron purely for data
+// using a photon and publishing data
 
 #elif SYSTEM_CONFIGURATION == 3
 // using an electron and publishing data
+
+#elif SYSTEM_CONFIGURATION == 4
+// using a photon and publishing data and giving feedback
+
+#elif SYSTEM_CONFIGURATION == 5
+// using an electron and publishing data and giving feedback
+
+#endif
 
 //------------------------------------------------------------------------------
 // Setup SPI configuration.
