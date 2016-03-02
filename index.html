@@ -32,7 +32,7 @@ body { font: 10px sans-serif;}
 <body>
 
 <!-- load the d3.js library -->    
-<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="d3.min.js"></script>
 
 <script>
 
@@ -268,6 +268,7 @@ for (i = 0; i<labels.length; i++) {
     .style("fill-opacity",".5")
     .style("fill",col)
     .style("pointer-events","none")
+    // .on("mouseover", drawBrush(l,r))
     }
 
 });

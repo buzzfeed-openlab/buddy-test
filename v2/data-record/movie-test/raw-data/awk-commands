@@ -1,5 +1,0 @@
-awk 'BEGIN{FS=",";OFS=","};{print $2,$3}' movie >movie-av
-
-awk 'BEGIN{FS=",";OFS=","};{print $1}' movie-av | awk 'BEGIN{FS=":";OFS=":"};{print $1*3600+$2*60+$3-(21*3600+6*60+4)}' | awk 'BEGIN{OFS=":"}; {print int($1/3600),int(($1%3600)/60),int(($1%3600)%60)}' > movie-time-scaled
-
-cut -d, -f2 movie-av | paste -d, movie-time-scaled - > movie-time-scaled-av
