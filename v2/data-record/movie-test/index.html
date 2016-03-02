@@ -96,6 +96,7 @@ var line2 = d3.svg.line()
     .interpolate("cubic")
     .x(function(d) {return x2(d.date); })
     .y(function(d) {return y2(d.close); });
+
 // Adds the svg canvas
 var svg = d3.select("body")
     .append("svg")
@@ -108,16 +109,10 @@ svg.append("defs").append("clipPath")
     .attr("width", width)
     .attr("height", height);
 
-// add the name of the section
-svg.append("foreignObject")
-    .attr("width",width)
-    .attr("height",height3)
-    .attr("font-family","sans-serif")
-    .append("xhtml:body")
-    .attr("id","words")
-    .html('<div><p>stuff that happened during the movie<p></div>')
-  .attr("transform", "translate(" + margin3.left + "," + margin3.top + ")");
-
+svg.append("textlabel")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
 
 var focus = svg.append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -132,6 +127,22 @@ var data;
 d3.csv("data.csv", function(error, d) {
  
 data=d;
+
+// add labels
+for (var i=0; i<data.length; i++) {
+  var m = parseDate(data[i].date);
+  for (var r=0; r<labels.length; r++) {
+    if (m>parseDate(labels[r].x0) && m<parseDate(labels[r].x1)) {
+      data[i].label = labels[r].name;
+      console.log(labels[r].name);
+    }
+    else {
+      data[i].label = "";
+    }
+  }
+}
+
+console.log(data);
 
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
  
@@ -175,7 +186,7 @@ data=d;
     focus.append("g")
         .attr("class", "y axis")
         .call(yAxis);
-        
+
     var contextlineGroups = context.selectAll("g")
         .data(sources)
       .enter().append("g");
@@ -203,27 +214,20 @@ data=d;
           .attr("width", width)
           .attr("height", height)
           .style("fill-opacity","0")
+//          .on("mouseover", function() { focus.style("display", null); })
+//          .on("mouseout", function() { focus.style("display", "none"); })
           .on("mousemove", mousemove)
-
 
     function mousemove() {
     var lastlabel=0;
-    var m = x.invert(d3.mouse(this)[0]);
-    for (i = 0; i<labels.length; i++) {
-        if (m>parseDate(labels[i].x0) && m<parseDate(labels[i].x1)) {
-            if (lastlabel!=i) {
-                console.log(m);
-                console.log(labels[i].name);
-                svg.select("svg #section-text").transition()
-                    .delay(500)
-                    .text(labels[i].name)
-            }            
-        }
-        else {svg.select("p").transition()
-                    .delay(500)
-                    .text("stuff that happened during the movie")}
-    }
-
+    var m = x.invert(d3.mouse(this)[0]),
+        i = bisect(data, m, 1),
+        d0 = data[i - 1],
+        d1 = data[i],
+        d = m - d0.date > d1.date - m ? d1 : d0;
+//    focus.attr("transform", "translate(" + x(d.date) + "," + y(d.close) + ")");
+//    focus.select("text").text(d.label);
+    console.log(d.label);
   }
 
 for (i = 0; i<labels.length; i++) {
