@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> /* set the CSS */
+
+body { font: 10px sans-serif;}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #777777;
+  shape-rendering: crispEdges;
+}
+
+.y.axis path {
+  fill: none;
+  stroke: #777777;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #f0f0f0;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+}
+
+
+</style>
+<body>
+
+<!-- load the d3.js library -->    
+<script src="d3.min.js"></script>
+
+<script>
+
+// define some labels to be put in the graph on mouseover
+var labels = 
+    [{"name":"creepy dude describes death by crucifixion","x0":"00:03:00","x1":"00:03:05"},
+        {"name":"graphic images of a psychopath being born in a fish market","x0":"00:05:00","x1":"00:06:15"},
+        {"name":"beautiful evocative images of nature scents","x0":"00:10:20","x1":"00:13:00"},
+        {"name":"creation of a perfume","x0":"00:45:00","x1":"00:50:00"},
+        {"name":"meditating in a cave","x0":"00:57:00","x1":"01:01:00"},
+        {"name":"first intentional violent murder","x0":"01:19:05","x1":"01:19:15"},
+        {"name":"murderer spotted in shadow","x0":"01:24:55","x1":"01:25:35"},
+        {"name":"remains of victims discovered","x0":"01:41:40","x1":"01:42:20"},
+        {"name":"murderer spotted in house","x0":"01:47:25","x1":"01:47:50"},
+        {"name":"tortured by alan rickman","x0":"01:56:15","x1":"01:56:20"},
+        {"name":"awaiting execution","x0":"01:56:20","x1":"01:57:05"}];
+
+
+// Set the dimensions of the canvas / graph
+var margin = {top: 10, right: 10, bottom: 100, left: 40},
+    margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+    margin3 = {top: 20, right: 10, bottom: 20, left: 80},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom,
+    height2 = 500 - margin2.top - margin2.bottom,
+    height3 = 600 - margin3.top - margin3.bottom;
+
+// add the color scale for the line
+var color = d3.scale.category10()
+    .range(["#00adef"]);
+
+// Parse the date / time
+var parseDate = d3.time.format("%H:%M:%S").parse;
+
+// Set the ranges
+var x = d3.time.scale().range([0, width]),
+    x2 = d3.time.scale().range([0, width]),
+    y = d3.scale.linear().range([height, 0]),
+    y2 = d3.scale.linear().range([height2, 0]);
+// Define the axes
+var  xAxis = d3.svg.axis().scale(x)
+      .orient("bottom").ticks(12)
+      .tickFormat(d3.time.format("%H:%M:%S")),
+    xAxis2 = d3.svg.axis().scale(x2).orient("bottom").tickFormat(d3.time.format("%H:%M:%S")),
+    yAxis = d3.svg.axis().scale(y)
+      .orient("left").ticks(10);
+
+// make the brush that acts on the zoomable lower graph
+var brush = d3.svg.brush()
+    .x(x2)
+    .on("brush", brush);
+
+// define the line that is on the top graph (which changes)
+var line = d3.svg.line()
+    .defined(function(d) { return !isNaN(d.close); })
+    .interpolate("cubic")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+
+// define the line that is on the bottom graph (which does not change)
+var line2 = d3.svg.line()
+    .defined(function(d) { return !isNaN(d.close); })
+    .interpolate("cubic")
+    .x(function(d) {return x2(d.date); })
+    .y(function(d) {return y2(d.close); });
+
+// Add the svg canvas
+var svg = d3.select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+svg.append("defs").append("clipPath")
+    .attr("id", "clip")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append("textlabel")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+var focus = svg.append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+var context = svg.append("g")
+  .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+var bisect = d3.bisector(function(d) { return d.date; }).right;
+
+var data;
+
+d3.csv("data.csv", function(error, d) {
+ 
+data=d;
+
+// add labels
+for (var i=0; i<data.length; i++) {
+  var m = parseDate(data[i].date);
+  for (var r=0; r<labels.length; r++) {
+    if (m>parseDate(labels[r].x0) && m<parseDate(labels[r].x1)) {
+      data[i].label = labels[r].name;
+      console.log(data[i]);
+    }
+  }
+}
+
+console.log(data);
+
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+ 
+    data.forEach(function(d) {
+      d.date = parseDate(d.date);
+    });
+ 
+    data.sort(function(a, b) {
+    return a.date - b.date;
+  });
+
+  var sources = color.domain().map(function(name) {
+      return {
+        name: name,
+        values: data.map(function(d) {
+          return {date: d.date, close: +d[name]};
+        })
+      };
+    });
+
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+
+    y.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
+               d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
+    x2.domain(x.domain());
+    y2.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
+               d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
+    
+
+    var focuslineGroups = focus.selectAll("g")
+        .data(sources)
+      .enter().append("g");
+      
+    var focuslines = focuslineGroups.append("path")
+        .attr("class","line")
+        .attr("d", function(d) { return line(d.values); })
+        .style("stroke", function(d) {return color(d.name);})
+        .attr("clip-path", "url(#clip)");
+    
+    focus.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+ 
+    focus.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+    var contextlineGroups = context.selectAll("g")
+        .data(sources)
+      .enter().append("g");
+    
+    var contextLines = contextlineGroups.append("path")
+        .attr("class", "line")
+        .attr("d", function(d) { return line2(d.values); })
+        .style("stroke", function(d) {return color(d.name);})
+        .attr("clip-path", "url(#clip)");
+ 
+    context.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height2 + ")")
+        .call(xAxis2);
+ 
+    context.append("g")
+        .attr("class", "x brush")
+        .call(brush)
+      .selectAll("rect")
+        .attr("y", -6)
+        .attr("height", height2 + 7);
+
+  var info = svg.append("g")
+      .attr("class", "focus")
+      .style("display", "none");
+
+  info.append("circle")
+       .attr("r", 4.5)
+       .attr("fill-opacity",".5")
+      .attr("transform", "translate(" + margin.left + ", " + margin.top + ")")
+
+  info.append("text")
+      .attr("x", 9)
+      .attr("transform", "translate(" + margin.left + ", -" + margin.top + ")")
+      .attr("dy", "12 px");
+
+  svg.append("rect")
+      .attr("class", "overlay")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+      .style("fill-opacity","0")
+      .on("mouseover", function() { info.style("display", null); })
+      .on("mouseout", function() { info.style("display", "none"); })
+      .on("mousemove", mousemove);
+
+    function mousemove() {
+    var lastlabel=0;
+    var m = x.invert(d3.mouse(this)[0]),
+        i = bisect(data, m, 1),
+        d0 = data[i - 1],
+        d1 = data[i],
+        d = m - d0.date > d1.date - m ? d1 : d0;
+    info.attr("transform", "translate(" + x(d.date)+ "," + y(d.close) + ")");
+    info.select("text").text(d.label);
+    console.log(d);
+  }
+
+for (i = 0; i<labels.length; i++) {
+    var l = (parseDate(labels[i].x0));
+    var r = (parseDate(labels[i].x1));
+    var wid = x(r)-x(l);
+    var col;
+    if (i%2==0) {
+        col="#27ae60"
+    }
+    else {
+        col="#f39c12"
+    }
+    svg.append("rect")
+    .attr("x",x(l))
+    .attr("width",wid)
+    .attr("height",height2)
+    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")")
+    .style("fill-opacity",".5")
+    .style("fill",col)
+    .style("pointer-events","none")
+    // .on("mouseover", drawBrush(l,r))
+    }
+
+});
+ 
+function brush() {
+  x.domain(brush.empty() ? x2.domain() : brush.extent());
+  var minindex = bisect(data,brush.extent()[0]);
+  var maxindex = bisect(data,brush.extent()[1]);
+  var subset=data.slice(minindex,maxindex);
+  var sources = color.domain().map(function(name) {
+      return {
+        name: name,
+        values: subset.map(function(d) {
+          return {date: d.date, close: +d[name]};
+        })
+      };
+    });
+  y.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
+               d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
+
+  focus.selectAll("path.line").attr("d",  function(d) {return line(d.values)});
+  focus.select(".x.axis").call(xAxis);
+  focus.select(".y.axis").call(yAxis);
+}
+
+</script>
+<div id="section-name">
+</div></body>
