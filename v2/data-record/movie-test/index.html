@@ -36,8 +36,7 @@ body { font: 10px sans-serif;}
 
 <script>
 
-var divtext="";
-
+// define some labels to be put in the graph on mouseover
 var labels = 
     [{"name":"creepy dude describes death by crucifixion","x0":"00:03:00","x1":"00:03:05"},
         {"name":"graphic images of a psychopath being born in a fish market","x0":"00:05:00","x1":"00:06:15"},
@@ -61,6 +60,7 @@ var margin = {top: 10, right: 10, bottom: 100, left: 40},
     height2 = 500 - margin2.top - margin2.bottom,
     height3 = 600 - margin3.top - margin3.bottom;
 
+// add the color scale for the line
 var color = d3.scale.category10()
     .range(["#00adef"]);
 
@@ -74,30 +74,32 @@ var x = d3.time.scale().range([0, width]),
     y2 = d3.scale.linear().range([height2, 0]);
 // Define the axes
 var  xAxis = d3.svg.axis().scale(x)
-    .orient("bottom").ticks(12)
-    .tickFormat(d3.time.format("%H:%M:%S")),
-
+      .orient("bottom").ticks(12)
+      .tickFormat(d3.time.format("%H:%M:%S")),
     xAxis2 = d3.svg.axis().scale(x2).orient("bottom").tickFormat(d3.time.format("%H:%M:%S")),
-
     yAxis = d3.svg.axis().scale(y)
-    .orient("left").ticks(10);
+      .orient("left").ticks(10);
 
+// make the brush that acts on the zoomable lower graph
 var brush = d3.svg.brush()
     .x(x2)
     .on("brush", brush);
 
+// define the line that is on the top graph (which changes)
 var line = d3.svg.line()
     .defined(function(d) { return !isNaN(d.close); })
     .interpolate("cubic")
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.close); });
+
+// define the line that is on the bottom graph (which does not change)
 var line2 = d3.svg.line()
     .defined(function(d) { return !isNaN(d.close); })
     .interpolate("cubic")
     .x(function(d) {return x2(d.date); })
     .y(function(d) {return y2(d.close); });
 
-// Adds the svg canvas
+// Add the svg canvas
 var svg = d3.select("body")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -134,10 +136,7 @@ for (var i=0; i<data.length; i++) {
   for (var r=0; r<labels.length; r++) {
     if (m>parseDate(labels[r].x0) && m<parseDate(labels[r].x1)) {
       data[i].label = labels[r].name;
-      console.log(labels[r].name);
-    }
-    else {
-      data[i].label = "";
+      console.log(data[i]);
     }
   }
 }
@@ -150,6 +149,10 @@ console.log(data);
       d.date = parseDate(d.date);
     });
  
+    data.sort(function(a, b) {
+    return a.date - b.date;
+  });
+
   var sources = color.domain().map(function(name) {
       return {
         name: name,
@@ -209,14 +212,30 @@ console.log(data);
         .attr("y", -6)
         .attr("height", height2 + 7);
 
-    svg.append("rect")
-          .attr("class", "overlay")
-          .attr("width", width)
-          .attr("height", height)
-          .style("fill-opacity","0")
-//          .on("mouseover", function() { focus.style("display", null); })
-//          .on("mouseout", function() { focus.style("display", "none"); })
-          .on("mousemove", mousemove)
+  var info = svg.append("g")
+      .attr("class", "focus")
+      .style("display", "none");
+
+  info.append("circle")
+       .attr("r", 4.5)
+       .attr("fill-opacity",".5")
+      .attr("transform", "translate(" + margin.left + ", " + margin.top + ")")
+
+  info.append("text")
+      .attr("x", 9)
+      .attr("transform", "translate(" + margin.left + ", -" + margin.top + ")")
+      .attr("dy", "12 px");
+
+  svg.append("rect")
+      .attr("class", "overlay")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+      .style("fill-opacity","0")
+      .on("mouseover", function() { info.style("display", null); })
+      .on("mouseout", function() { info.style("display", "none"); })
+      .on("mousemove", mousemove);
 
     function mousemove() {
     var lastlabel=0;
@@ -225,9 +244,9 @@ console.log(data);
         d0 = data[i - 1],
         d1 = data[i],
         d = m - d0.date > d1.date - m ? d1 : d0;
-//    focus.attr("transform", "translate(" + x(d.date) + "," + y(d.close) + ")");
-//    focus.select("text").text(d.label);
-    console.log(d.label);
+    info.attr("transform", "translate(" + x(d.date)+ "," + y(d.close) + ")");
+    info.select("text").text(d.label);
+    console.log(d);
   }
 
 for (i = 0; i<labels.length; i++) {
