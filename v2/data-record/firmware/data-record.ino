@@ -6,7 +6,7 @@
 
 // Some definitions for the SD card
 #define SPI_CONFIGURATION 0
-#define SYSTEM_CONFIGURATION 0
+#define SYSTEM_CONFIGURATION 1
 
 //------------------------------------------------------------------------------
 // Setup system configuration.
@@ -14,22 +14,52 @@
 #if SYSTEM_CONFIGURATION == 0
 // using a photon purely for data
 SYSTEM_MODE(SEMI_AUTOMATIC);
+int cellConfig=0;
+int serialConfig=1;
+int sdConfig=1;
+int pubConfig=0;
+int feedbackConfig=0;
 
 #elif SYSTEM_CONFIGURATION == 1
 // using an electron purely for data
 SYSTEM_MODE(SEMI_AUTOMATIC);
+int cellConfig=1;
+int serialConfig=1;
+int sdConfig=1;
+int pubConfig=0;
+int feedbackConfig=0;
 
 #elif SYSTEM_CONFIGURATION == 2
 // using a photon and publishing data
+int cellConfig=0;
+int serialConfig=1;
+int sdConfig=1;
+int pubConfig=1;
+int feedbackConfig=0;
 
 #elif SYSTEM_CONFIGURATION == 3
 // using an electron and publishing data
+int cellConfig=1;
+int serialConfig=1;
+int sdConfig=1;
+int pubConfig=1;
+int feedbackConfig=0;
 
 #elif SYSTEM_CONFIGURATION == 4
 // using a photon and publishing data and giving feedback
+int cellConfig=0;
+int serialConfig=1;
+int sdConfig=1;
+int pubConfig=1;
+int feedbackConfig=1;
 
 #elif SYSTEM_CONFIGURATION == 5
 // using an electron and publishing data and giving feedback
+int cellConfig=1;
+int serialConfig=1;
+int sdConfig=1;
+int pubConfig=1;
+int feedbackConfig=1;
 
 #endif
 
@@ -131,20 +161,20 @@ SYSTEM_THREAD(ENABLED);
 void setup() {
     // Get the time
 
-    // FOR CELLULAR
-    Time.zone(-8);
-    Particle.syncTime();
+    if (cellConfig==1) {
+      Time.zone(-8);
+      Particle.syncTime();
+    }
 
-    // FOR WI-FI ONLY (Photon)
-    /*--------------------
-    WiFi.on();
-    Time.zone(-8);
-    Particle.syncTime();
-    WiFi.off();
-    --------------------*/
+    /*else {
+      WiFi.on();
+      Time.zone(-8);
+      Particle.syncTime();
+      WiFi.off();
+    }*/
 
     // Set up serial
-    Serial.begin(9600);
+    if (serialConfig==1) {Serial.begin(9600);}
 
     // Declare pin modes
     pinMode(VIBPIN,OUTPUT);
@@ -156,8 +186,10 @@ void setup() {
     digitalWrite(POWERPIN,HIGH);
 
     // Start up your SD card
-    if (!sd.begin(chipSelect, SPI_HALF_SPEED)) {
-      sd.initErrorHalt();
+    if (sdConfig==1) {
+      if (!sd.begin(chipSelect, SPI_HALF_SPEED)) {
+        sd.initErrorHalt();
+      }
     }
 }
 
@@ -172,26 +204,31 @@ void loop() {
     // get the diff
     diff = getDiff();
 
-    // use the diff to calculate state
-    state = getState();
+    if (feedbackConfig==1) {
+      // use the diff to calculate state
+      state = getState();
 
-    int q = doState();
+      int q = doState();
 
-    // use little q penalty to calculate big Q penalty
-    // restrict between the QMin and QMax bounds
-    Q = restrict(Q+q,QMin,QMax);
+      // use little q penalty to calculate big Q penalty
+      // restrict between the QMin and QMax bounds
+      Q = restrict(Q+q,QMin,QMax);
 
-    // get the current value to be written to the vibration motor
-    int y = getVibration();
+      // get the current value to be written to the vibration motor
+      int y = getVibration();
 
-    // write that value to the vibration motor
-    // can comment this out for pure data record
-//    analogWrite(VIBPIN,y);
+      analogWrite(VIBPIN,y);
+    }
 
-//    recordSerial();
-    recordSD();
+    if (serialConfig==1) {
+      recordSerial();
+    }
 
-    if (publishflag==1) {
+    if (sdConfig==1) {
+      recordSD();
+    }
+
+    if (pubConfig==1 && publishflag==1) {
       recordCloud();
     }
 
