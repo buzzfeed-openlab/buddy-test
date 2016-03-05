@@ -6,7 +6,7 @@
 
 // Some definitions for the SD card
 #define SPI_CONFIGURATION 0
-#define SYSTEM_CONFIGURATION 1
+#define SYSTEM_CONFIGURATION 3
 
 //------------------------------------------------------------------------------
 // Setup system configuration.
