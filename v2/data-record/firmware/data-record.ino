@@ -156,14 +156,20 @@ int sdlastrecord=0;        // the last time we recorded to an SD card
 int sdrecthreshold=1000;   // the amount of time that needs to pass between SD card recordings
 File myFile;               // this is our SD card file variable
 
-SYSTEM_THREAD(ENABLED);
+//SYSTEM_THREAD(ENABLED);
 
 void setup() {
     // Get the time
 
     if (cellConfig==1) {
+      Cellular.on();
+      Cellular.connect();
       Time.zone(-8);
       Particle.syncTime();
+      if (pubConfig==0) {
+        Cellular.disconnect();
+        Cellular.off();
+      }
     }
 
     /*else {
@@ -204,19 +210,19 @@ void loop() {
     // get the diff
     diff = getDiff();
 
+    // use the diff to calculate state
+    state = getState();
+
+    int q = doState();
+
+    // use little q penalty to calculate big Q penalty
+    // restrict between the QMin and QMax bounds
+    Q = restrict(Q+q,QMin,QMax);
+
+    // get the current value to be written to the vibration motor
+    int y = getVibration();
+
     if (feedbackConfig==1) {
-      // use the diff to calculate state
-      state = getState();
-
-      int q = doState();
-
-      // use little q penalty to calculate big Q penalty
-      // restrict between the QMin and QMax bounds
-      Q = restrict(Q+q,QMin,QMax);
-
-      // get the current value to be written to the vibration motor
-      int y = getVibration();
-
       analogWrite(VIBPIN,y);
     }
 
