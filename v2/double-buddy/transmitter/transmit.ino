@@ -20,8 +20,8 @@ SYSTEM_MODE(SEMI_AUTOMATIC);
 int analogvalue;  // the actual value of squeeze coming from SQUEEZEPIN
 int vibMin=50;    // minimum vibration needed for the vibration to be felt
 int vibMax=200;   // the maximum vibration produced
-int yMin=1200;    // the minimum input of the conductive yarn (value when not compressed)
-int yMax=6000;    // the maximum input of the conductive yarn (value at its most compressed)
+int yMin=250;    // the minimum input of the conductive yarn (value when not compressed)
+int yMax=600;    // the maximum input of the conductive yarn (value at its most compressed)
 
 
 /*

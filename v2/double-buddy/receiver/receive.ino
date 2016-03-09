@@ -80,7 +80,7 @@ void setup(void)
   //
 
   Serial.begin(57600); // make sure serial terminal is closed before booting the Core
-  while(!Serial.available()) Particle.process(); // wait for user to open serial terminal and press enter
+//  while(!Serial.available()) Particle.process(); // wait for user to open serial terminal and press enter
   SERIAL("ROLE: RECEIVING\n\r");
   SERIAL("*** PRESS 'T' to begin transmitting to the other node\n\r");
 
