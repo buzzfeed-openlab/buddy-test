@@ -16,8 +16,8 @@ Buddy's outputs, which can be hooked individually to any of the inputs, include:
 0  Vibration intensity: amplitude of the vibration
 1  Vibration pattern: pattern (period) of the vibration
 2  Light intensity: brightness of the rgb led
-3  Light color: color of the rgb led
-4  Light pattern: pattern (rapidness of "breathing") of the rgb led
+3  Light pattern: pattern (rapidness of "breathing") of the rgb led
+4  Light color: color of the rgb led
 
 An example of hooking up inputs and outputs might include:
   input   |   output
@@ -35,53 +35,74 @@ The hookup listed above would be: 3,0,2,1,4
 */
 
 #include "math.h"
-#include "DS18B20.h"
+/*#include "DS18B20.h"*/
 #include "Particle-OneWire.h"
+#include "neopixel.h"
+
+#define PIXEL_PIN D1
+#define LED_COUNT 1
+#define LED_TYPE WS2812B
 
 #define VIB_PIN D0
 #define LED_PIN D1
 #define TOUCH_PIN A0
 #define LIGHT_PIN A1
-#define TEMP_PIN A2
+/*#define TEMP_PIN A2*/
 #define SOUND_PIN A3
 
 float pi=3.14;            // pi. duh.
 float e = 2.72;           // and his friend e.
 
-// temperature values
-DS18B20 ds18b20 = DS18B20(A2); //Sets Pin A2
+// temperature values-- forget this, use weather api isntead
+/*DS18B20 ds18b20 = DS18B20(A2); //Sets Pin A2
 int led = D7;
 double celsius;
 double fahrenheit=0;
 int DS18B20nextSampleTime;
 int DS18B20_SAMPLE_INTERVAL = 2500;
-int dsAttempts = 0;
+int dsAttempts = 0;*/
 
 //  Here are some math values for the sin function
-int vibPeriod=2000;          // seconds per cycle of the sin function
+int vibNum=0;   // lets you know which cycle you are on
+int vibTotal=1;   // number of distinct vibration cycles we have
 int vibT=0;                  // current time elapsed (starts at 0)
-int vibMaxPower=50;          // highest y value of the function, which gets reset
-int vibMidPower=vibMaxPower/2;  // amplitude!
-int vibThreshold=50;         // y displacement of the sin function-- a power threshold added for vibration to be felt
+int vibLastT=0;
+int vibPeriod[]=[2000];          // seconds per cycle of the sin function
+int vibMaxPower[]=[50];          // highest y value of the function, which gets reset
+int vibMidPower;  // amplitude! Set to vibMaxPower[r]/2 in every loop
+int vibThreshold[]=[50];         // y displacement of the sin function-- a power threshold added for vibration to be felt
 
-// Light values
-int ledPeriod=2000;          // seconds per cycle of the sin function
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_TYPE);
+
+// Light cycle values
+int ledNum=0;   // lets you know which cycle you are on
+int ledTotal=2;   // total number of values in the LED array
 int ledT=0;                  // current time elapsed (starts at 0)
-int ledMaxPower=50;          // highest y value of the function, which gets reset
-int ledMidPower=ledMaxPower/2;  // amplitude!
-int ledThreshold=50;         // y displacement of the sin function-- a power threshold added for vibration to be felt
+int ledLastT=0;
+int ledPeriod[]=[2000,1000];          // seconds per cycle of the sin function
+int ledMaxPower[]=[50,50];          // highest y value of the function, which gets reset
+int ledMidPower;  // amplitude! Set to ledMaxPower[r]/2 in every loop
+int ledThreshold[]=[50,50];         // y displacement of the sin function-- a power threshold added for vibration to be felt
+int ledR[]=[255,255];
+int ledG[]=[255,255];
+int ledB[]=[255,255];
 
-// Color values
-int ledR=255;
-int ledG=255;
-int ledB=255;
-
-// input values
+// input values, all are scaled as x/1000
 time_t timeVal;
 int touchVal;
 int lightVal;
 int tempVal;
 int soundVal;
+// there are several weather values we keep track of
+int precipVal[]; // hourly percent likelihood of precipitation
+int rainVal[];  // hourly value of if it is rain (0), sleet (1), or snow (2)
+int lightEstimate[];  // value that predicts brightness level of outside (x/1000) as read by photoresistor
+
+
+// temperature input calibrations
+int tempMax=100;    // the maximum temperature we expect in F
+int tempMin=0;    // the minimum temperature we expect in F
+
 
 //  configuration values
 int cellConfig=1;
@@ -96,12 +117,15 @@ void setup() {
   pinMode(LED_PIN,OUTPUT);
   pinMode(TOUCH_PIN, INPUT);
   pinMode(LIGHT_PIN, INPUT);
-  pinMode(TEMP_PIN, INPUT);
+  /*pinMode(TEMP_PIN, INPUT);*/
   pinMode(SOUND_PIN, INPUT);
+
+  strip.show(); // Initialize all pixels to 'off'
 
 }
 
 void loop() {
+
   // get all the input values
   // time
   int currentTime=Time.now();
@@ -114,10 +138,10 @@ void loop() {
   lightVal = analogRead(LIGHT_PIN);
 
   // temperature
-  if (millis() > DS18B20nextSampleTime){
+  /*if (millis() > DS18B20nextSampleTime){
     getTemp();
     tempVal = fahrenheit;
-  }
+  }*/
 
   // sound
   soundVal = analogRead(SOUND_PIN);
@@ -127,30 +151,127 @@ void loop() {
   // do those things
 }
 
+void vibrate() {
+  vibT=millis()%vibPeriod;
+  int y = vibThreshold + vibMidPower + vibMidPower*sin(2*pi*vibT/vibPeriod);
+  analogwrite(VIB_PIN,y);
+}
+
+void lightUp() {
+
+  ledT=millis()%ledPeriod;
+
+  if (ledT<ledLastT) {  // if it is less than the last time, we're in a new cycle
+    // switch to the next ledNum
+    ledNum++;
+    if (ledNum=ledTotal) {
+      ledNum=0;
+      // hypothetically this can also be used as a marker to
+      // count or recalibrate based on sensors between periods
+    }
+  }
+
+  ledMidPower=ledMaxPower[ledNum]/2;
+  int y = ledThreshold[ledNum] + ledMidPower + ledMidPower+sin(2*pi*ledT[ledNum]/ledPeriod[ledNum]);
+  // scale y by power range
+  int rScale = scale(y,ledThreshold[ledNum],ledThreshold[ledNum]+ledMidPower, 0,ledR[ledNum]);
+  int gScale = scale(y,ledThreshold[ledNum],ledThreshold+ledMidPower[ledNum], 0,ledG[ledNum]);
+  int bScale = scale(y,ledThreshold[ledNum],ledThreshold+ledMidPower[ledNum], 0,ledB[ledNum]);
+
+  strip.setPixelColor(0, strip.Color(rScale,gScale,bScale));
+  strip.show();
+
+  ledLastT=ledT;
+
+}
+
 int getTimeVal(time_t time) {
-  if (Time.hour(time)>=2 && Time.hour(time)<6) {
-    return 1;
+
+  // minutes should be mapped to the domain of a sin function
+  // get the y value and use that to interpret
+
+  int tx = Time.hour(time)+Time.minute(time);
+
+  int recal = 1000*sin(2*pi*tx/1440)
+
+  return recal;
+
+}
+
+// parseTime function tells you what to do with the values when they come in
+
+void parseTime(int val, int pos, int cycle) {
+  // takes in original value and intended output
+  // input time value should be divided by 1000 to rescale
+  if (pos==0) { // vibration intensity
+    // transmit to vibMaxPower
+    vibMaxPower[cycle]=val*vibMaxPower[cycle]/1000;
+    // adjust vibMinPower
+    vibMidPower=vibMaxPower/2;
   }
-  else if (Time.hour(time)>=6 && Time.hour(time)<10) {
-    return 2;
+  else if (pos==1) { // vibration pattern
+    // scale by vibPeriod
+    vibPeriod[cycle]=val*vibPeriod[cycle]/1000;
   }
-  else if (Time.hour(time)>=10 && Time.hour(time)<14) {
-    return 3;
+  else if (pos==2) {  // light intensity
+    // transmit to ledMaxPower
+    ledMaxPower[cycle]=val*ledMaxPower[cycle]/1000;
+    // adjust ledMidPower
+    ledMidPower=ledMaxPower/2;
   }
-  else if (Time.hour(time)>=14 && Time.hour(time)<18) {
-    return 4;
+  else if (pos==3) { // light pattern
+    // scale by ledPeriod
+    ledPeriod[cycle]=val*ledPeriod[cycle]/1000;
   }
-  else if (Time.hour(time)>=18 && Time.hour(time)<22) {
-    return 5;
-  }
-  else if ((Time.hour(time)>=22 && Time.hour(time)<24) || (Time.hour(time)>=0 && Time.hour(time)<2)) {
-    timeVal = 6;
+  else { // must be pos==4
+    // light color
+    // matters greatly on input
+
+    // red should be max at noon
+    ledR[cycle]=val*255/1000;
+
+    // grn should come up to half of red.
+    ledG[cycle]=val*123/1000;
+
+    // blu should be max at midnight
+    ledB[cycle]=255-val*255/1000;
+
   }
 }
 
-// add parseTime function that tells you what to do with the values when they come in
+void getWeather(){
 
-void getTemp(){
+// hit the weather api, get weather.
+// Maybe get this for the day at midnight every day
+// and then put all the values in so you only have to hit the api once a day.
+// put everything into arrays based on hour
+// precipVal, rainVal, and lightEstimate
+
+// probably should just do blue for rain and add red when warm rain and green when snow
+// pattern for the weather color should probably hook up to light so that the weather color is longer
+// if our light level is consistent with outside
+
+
+
+
+}
+
+void getTemp(int temp){
+
+// hit the weather api, get temp
+
+// we are going to scale so that higher temperature means higher value
+
+  int tempr = restrict(temp,tempMin,tempMax);
+  int value = scale(tempr,tempMin,tempMax,0,1000);
+
+  // should use this to scale the ledR that hooks up with temperature
+
+  return value;
+
+}
+
+/*void getTemp(){
     if(!ds18b20.search()){
       ds18b20.resetsearch();
       celsius = ds18b20.getTemperature();
@@ -172,7 +293,7 @@ void getTemp(){
       DS18B20nextSampleTime = millis() + DS18B20_SAMPLE_INTERVAL;
       Serial.println(fahrenheit);
     }
-}
+}*/
 
 // add parseTemp function that tells you what to do with the values when they come in
 
@@ -181,6 +302,24 @@ void getTemp(){
 // add parseLight function that tells you what to do with the values when they come in
 
 // add parseSound function that tells you what to do with the values when they come in
+
+//sets high and low bounds for an integer x
+int restrict(int x, int min, int max) {
+  if (x>max) {
+    return max;
+  }
+  else if (x<min) {
+    return min;
+  }
+  else {
+    return x;
+  }
+}
+
+int scale(int x, int xmin, int xmax, int min, int max) {
+  int scaled = min+max*(x-xmin)/(xmax-xmin);
+  return scaled;
+}
 
 
 int setVibIntensity(String command) {
