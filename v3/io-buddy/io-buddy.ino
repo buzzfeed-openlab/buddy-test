@@ -67,10 +67,10 @@ int vibNum=0;   // lets you know which cycle you are on
 int vibTotal=1;   // number of distinct vibration cycles we have
 int vibT=0;                  // current time elapsed (starts at 0)
 int vibLastT=0;
-int vibPeriod[]=[2000];          // seconds per cycle of the sin function
-int vibMaxPower[]=[50];          // highest y value of the function, which gets reset
+int vibPeriod [6] ={2000};          // seconds per cycle of the sin function
+int vibMaxPower [6] ={50};          // highest y value of the function, which gets reset
 int vibMidPower;  // amplitude! Set to vibMaxPower[r]/2 in every loop
-int vibThreshold[]=[50];         // y displacement of the sin function-- a power threshold added for vibration to be felt
+int vibThreshold [6] ={50};         // y displacement of the sin function-- a power threshold added for vibration to be felt
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_TYPE);
 
@@ -79,13 +79,13 @@ int ledNum=0;   // lets you know which cycle you are on
 int ledTotal=2;   // total number of values in the LED array
 int ledT=0;                  // current time elapsed (starts at 0)
 int ledLastT=0;
-int ledPeriod[]=[2000,1000];          // seconds per cycle of the sin function
-int ledMaxPower[]=[50,50];          // highest y value of the function, which gets reset
+int ledPeriod [6] ={2000,1000};          // seconds per cycle of the sin function
+int ledMaxPower [6] ={50,50};          // highest y value of the function, which gets reset
 int ledMidPower;  // amplitude! Set to ledMaxPower[r]/2 in every loop
-int ledThreshold[]=[50,50];         // y displacement of the sin function-- a power threshold added for vibration to be felt
-int ledR[]=[255,255];
-int ledG[]=[255,255];
-int ledB[]=[255,255];
+int ledThreshold [6] ={50,50};         // y displacement of the sin function-- a power threshold added for vibration to be felt
+int ledR [6] ={255,255};
+int ledG [6] ={255,255};
+int ledB [6] ={255,255};
 
 // input values, all are scaled as x/1000
 time_t timeVal;
@@ -94,9 +94,9 @@ int lightVal;
 int tempVal;
 int soundVal;
 // there are several weather values we keep track of
-int precipVal[]; // hourly percent likelihood of precipitation
-int rainVal[];  // hourly value of if it is rain (0), sleet (1), or snow (2)
-int lightEstimate[];  // value that predicts brightness level of outside (x/1000) as read by photoresistor
+int precipVal [24]; // hourly percent likelihood of precipitation
+int rainVal [24];  // hourly value of if it is rain (0), sleet (1), or snow (2)
+int lightEstimate [24];  // value that predicts brightness level of outside (x/1000) as read by photoresistor
 
 
 // temperature input calibrations
@@ -152,14 +152,25 @@ void loop() {
 }
 
 void vibrate() {
-  vibT=millis()%vibPeriod;
-  int y = vibThreshold + vibMidPower + vibMidPower*sin(2*pi*vibT/vibPeriod);
-  analogwrite(VIB_PIN,y);
+
+  if (vibT<vibLastT) {  // if it is less than the last time, we're in a new cycle
+    // switch to the next ledNum
+    vibNum++;
+    if (vibNum=vibTotal) {
+      vibNum=0;
+      // hypothetically this can also be used as a marker to
+      // count or recalibrate based on sensors between periods
+    }
+  }
+
+  vibT=millis()%vibPeriod[vibNum];
+  int y = vibThreshold[vibNum] + vibMidPower + vibMidPower*sin(2*pi*vibT/vibPeriod[vibNum]);
+  analogWrite(VIB_PIN,y);
 }
 
 void lightUp() {
 
-  ledT=millis()%ledPeriod;
+  ledT=millis()%ledPeriod[ledNum];
 
   if (ledT<ledLastT) {  // if it is less than the last time, we're in a new cycle
     // switch to the next ledNum
@@ -172,11 +183,11 @@ void lightUp() {
   }
 
   ledMidPower=ledMaxPower[ledNum]/2;
-  int y = ledThreshold[ledNum] + ledMidPower + ledMidPower+sin(2*pi*ledT[ledNum]/ledPeriod[ledNum]);
+  int y = ledThreshold[ledNum] + ledMidPower + ledMidPower+sin(2*pi*ledT/ledPeriod[ledNum]);
   // scale y by power range
   int rScale = scale(y,ledThreshold[ledNum],ledThreshold[ledNum]+ledMidPower, 0,ledR[ledNum]);
-  int gScale = scale(y,ledThreshold[ledNum],ledThreshold+ledMidPower[ledNum], 0,ledG[ledNum]);
-  int bScale = scale(y,ledThreshold[ledNum],ledThreshold+ledMidPower[ledNum], 0,ledB[ledNum]);
+  int gScale = scale(y,ledThreshold[ledNum],ledThreshold[ledNum]+ledMidPower, 0,ledG[ledNum]);
+  int bScale = scale(y,ledThreshold[ledNum],ledThreshold[ledNum]+ledMidPower, 0,ledB[ledNum]);
 
   strip.setPixelColor(0, strip.Color(rScale,gScale,bScale));
   strip.show();
@@ -192,7 +203,7 @@ int getTimeVal(time_t time) {
 
   int tx = Time.hour(time)+Time.minute(time);
 
-  int recal = 1000*sin(2*pi*tx/1440)
+  int recal = 1000*sin(2*pi*tx/1440);
 
   return recal;
 
@@ -207,7 +218,7 @@ void parseTime(int val, int pos, int cycle) {
     // transmit to vibMaxPower
     vibMaxPower[cycle]=val*vibMaxPower[cycle]/1000;
     // adjust vibMinPower
-    vibMidPower=vibMaxPower/2;
+    vibMidPower=vibMaxPower[cycle]/2;
   }
   else if (pos==1) { // vibration pattern
     // scale by vibPeriod
@@ -217,7 +228,7 @@ void parseTime(int val, int pos, int cycle) {
     // transmit to ledMaxPower
     ledMaxPower[cycle]=val*ledMaxPower[cycle]/1000;
     // adjust ledMidPower
-    ledMidPower=ledMaxPower/2;
+    ledMidPower=ledMaxPower[cycle]/2;
   }
   else if (pos==3) { // light pattern
     // scale by ledPeriod
@@ -256,7 +267,7 @@ void getWeather(){
 
 }
 
-void getTemp(int temp){
+int getTemp(int temp){
 
 // hit the weather api, get temp
 
@@ -321,7 +332,7 @@ int scale(int x, int xmin, int xmax, int min, int max) {
   return scaled;
 }
 
-
+/*
 int setVibIntensity(String command) {
   char inputStr[64];
   command.toCharArray(inputStr,64);
@@ -372,7 +383,7 @@ int setLedPattern(String command) {
   command.toCharArray(inputStr,64);
   int newPeriod = atoi(inputStr);
   ledPeriod=newPeriod;
-}
+}*/
 
 int wave(int t, int threshold, int period, int midPower) {
   return threshold+midPower+midPower*sin(2*pi*t/period);
