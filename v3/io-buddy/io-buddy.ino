@@ -130,7 +130,7 @@ void loop() {
   // time
   int currentTime=Time.now();
   timeVal = getTimeVal(currentTime);
-
+  parseTime(timeVal,3,0);
   // touch
   touchVal = analogRead(TOUCH_PIN);
 
