@@ -1,43 +1,11 @@
-/* io-buddy.ino
+/* io-test.ino
 ----------------
-Firmware for Buddy's first simple input-to-output emotional anchoring program.
-This involves inputs being directly translated to sensory and haptic outputs
-for Buddy's user.
-Buddy has several senses that map to outputs the user in turn can sense.
-
-Buddy's senses for the purpose of this firmware include:
-0  Time: Buddy knows what time it is
-1  Touch: Buddy knows how hard he is being squeezed
-2  Light: Buddy senses the amount of light through a photoresistor
-3  Temp: Buddy knows the temperature of the room, or at least of his sensor
-4  Sound: Buddy knows how loud the room is (but does not record actual sound)
-
-Buddy's outputs, which can be hooked individually to any of the inputs, include:
-0  Vibration intensity: amplitude of the vibration
-1  Vibration pattern: pattern (period) of the vibration
-2  Light intensity: brightness of the rgb led
-3  Light pattern: pattern (rapidness of "breathing") of the rgb led
-4  Light color: color of the rgb led
-
-An example of hooking up inputs and outputs might include:
-  input   |   output
-  -------------------
-  Time    |   light color
-  Touch   |   vib intensity
-  Light   |   light intensity
-  Temp    |   vib pattern
-  Sound   |   light pattern
-
-How do we hook these things up to each other?
-You can call a function the command line that hooks up one ID to another ID.
-The hookup listed above would be: 3,0,2,1,4
-
+test firwmare for buddy's io to make sure all of it works
 */
 
-#include "math.h"
-/*#include "DS18B20.h"*/
-/*#include "Particle-OneWire.h"*/
+
 #include "neopixel.h"
+#include "math.h"
 
 #define PIXEL_PIN D1
 #define LED_COUNT 1
@@ -48,19 +16,9 @@ The hookup listed above would be: 3,0,2,1,4
 #define TOUCH_PIN A0
 #define LIGHT_PIN A1
 #define SOUND_PIN A2
-/*#define TEMP_PIN A3*/
 
 float pi=3.14;            // pi. duh.
 float e = 2.72;           // and his friend e.
-
-// temperature values-- forget this, use weather api isntead
-/*DS18B20 ds18b20 = DS18B20(A2); //Sets Pin A2
-int led = D7;
-double celsius;
-double fahrenheit=0;
-int DS18B20nextSampleTime;
-int DS18B20_SAMPLE_INTERVAL = 2500;
-int dsAttempts = 0;*/
 
 //  Here are some math values for the sin function
 int vibNum=0;   // lets you know which cycle you are on
@@ -90,66 +48,96 @@ int ledB [6] ={255,255};
 // input values, all are scaled as x/1000
 time_t timeVal;
 int touchVal;
+int touchMin = 50;
+int touchMax = 700;
 int lightVal;
-int tempVal;
+int lightMin = 0;
+int lightMax = 500;
 int soundVal;
+int soundMin = 0;
+int soundMax = 1500;
+
 // there are several weather values we keep track of
 int precipVal [24]; // hourly percent likelihood of precipitation
-int rainVal [24];  // hourly value of if it is rain (0), sleet (1), or snow (2)
+float snowVal [24];  // hourly value of if it is rain (0) or snow (1)
 int lightEstimate [24];  // value that predicts brightness level of outside (x/1000) as read by photoresistor
-
-
-// temperature input calibrations
+int tempFeelVal [24];
+int tempVal [24];
 int tempMax=100;    // the maximum temperature we expect in F
 int tempMin=0;    // the minimum temperature we expect in F
-
+int lasthour=24;  // set to an impossible value to start
 
 //  configuration values
 int cellConfig=1;
 int pubConfig=1;
 
 void setup() {
-  Time.zone(-8);
+  Time.zone(-7);
   Particle.syncTime();
+
+  Serial.begin(9600);
 
   // Declare pin modes
   pinMode(VIB_PIN,OUTPUT);
   pinMode(LED_PIN,OUTPUT);
   pinMode(TOUCH_PIN, INPUT);
   pinMode(LIGHT_PIN, INPUT);
-  /*pinMode(TEMP_PIN, INPUT);*/
   pinMode(SOUND_PIN, INPUT);
 
-  strip.show(); // Initialize all pixels to 'off'
-  digitalWrite(VIB_PIN,LOW);
+  Particle.function("vib",vibrate);
+  Particle.function("set",setColor);
+  Particle.function("getWeather",getWeather);
 
+  Particle.subscribe("hook-response/get_weather_SF", gotWeatherData, MY_DEVICES);
+
+  strip.show(); // Initialize all pixels to 'off'
+
+  // get weather for right now
+  Particle.publish("get_weather_SF",PRIVATE);
 }
 
 void loop() {
 
   // get all the input values
+
   // time
-  int currentTime=Time.now();
-  timeVal = getTimeVal(currentTime);
+  timeVal = getTime();
   parseTime(timeVal,3,0);
+  /*Serial.print(timeVal);
+  Serial.print("   ");*/
+
   // touch
-  touchVal = analogRead(TOUCH_PIN);
+  touchVal = getTouch();
+  /*Serial.print(touchVal);
+  Serial.print("   ");*/
 
   // light
-  lightVal = analogRead(LIGHT_PIN);
+  lightVal = getLight();
+  /*Serial.print(lightVal);
+  Serial.print("   ");*/
 
-  // temperature
-  /*if (millis() > DS18B20nextSampleTime){
-    getTemp();
-    tempVal = fahrenheit;
-  }*/
+  // temperature and weather
 
   // sound
-  soundVal = analogRead(SOUND_PIN);
-
+  soundVal = getSound();
+  /*Serial.print(soundVal);
+  Serial.print("   ");*/
   // figure out how things are hooked up
   // make waves for light and vibration
   // do those things
+
+  int hourtime=Time.hour();
+  if (hourtime!=lasthour) {
+    if (hourtime==23) {
+      getWeather("");
+    }
+    parseWeather(hourtime+1,4,1);
+    lasthour=hourtime;
+  }
+
+//  vibrate();
+  /*lightUp();*/
+  /*Serial.println();*/
 }
 
 void vibrate() {
@@ -167,6 +155,7 @@ void vibrate() {
   vibT=millis()%vibPeriod[vibNum];
   int y = vibThreshold[vibNum] + vibMidPower + vibMidPower*sin(2*pi*vibT/vibPeriod[vibNum]);
   analogWrite(VIB_PIN,y);
+
 }
 
 void lightUp() {
@@ -197,12 +186,14 @@ void lightUp() {
 
 }
 
-int getTimeVal(time_t time) {
+int getTime() {
+
+  int currentTime=Time.now();
 
   // minutes should be mapped to the domain of a sin function
   // get the y value and use that to interpret
 
-  int tx = Time.hour(time)+Time.minute(time);
+  int tx = Time.hour(currentTime)+Time.minute(currentTime);
 
   int recal = 1000*sin(2*pi*tx/1440);
 
@@ -251,72 +242,152 @@ void parseTime(int val, int pos, int cycle) {
   }
 }
 
-void getWeather(){
+int getWeather(String command) {
+  Particle.publish("get_weather_SF",PRIVATE);
+  for (int x; x<24; x++) {
+    tempVal[x]=scale(tempVal[x],tempMin,tempMax,0,1000);
+    tempFeelVal[x]=scale(tempFeelVal[x],tempMin,tempMax,0,1000);
+    // snowVal already calibrated in gotWeatherData
+    precipVal[x]=scale(precipVal[x],0,100,0,1000);
+    lightEstimate[x]=precipVal[x]; // for now this can just be the precipitation likelihood but should make better algorithm later
+  }
 
-// hit the weather api, get weather.
-// Maybe get this for the day at midnight every day
-// and then put all the values in so you only have to hit the api once a day.
-// put everything into arrays based on hour
-// precipVal, rainVal, and lightEstimate
+}
+
+void gotWeatherData(const char *name, const char *data) {
+  String str = String(data);
+
+  char inputStr[256];
+  str.toCharArray(inputStr,256);
+
+  char *p;
+  p = strtok(inputStr,"~");
+
+  while (p != NULL)
+  {
+    int r=atoi(p);
+    p = strtok (NULL, "~");
+    tempVal[r]=atoi(p);
+    p = strtok (NULL, "~");
+    tempFeelVal[r]=atoi(p);
+    p = strtok (NULL, "~");
+    snowVal[r]=1000*atof(p);
+    p = strtok (NULL, "~");
+    precipVal[r]=atoi(p);
+    p = strtok (NULL, "~");
+    /*Serial.println(String(r));
+    Serial.println(String(tempVal[r]));
+    Serial.println(String(tempFeelVal[r]));
+    Serial.println(String(snowVal[r]));
+    Serial.println(String(precipVal[r]));*/
+  }
+/*
+  for (int q=0; q<24; q++) {
+    Serial.println(tempVal[q]);
+  }*/
+}
+
+void parseWeather(int val, int pos, int cycle){
+  // in this case, val = current hour
+
+  if (pos==4) {
+    // red should be max if hot
+    ledR[cycle]=tempFeelVal[val]*255/1000;
+
+    // grn should max if snow.
+    ledG[cycle]=snowVal[val]*255/1000;
+
+    // blu should be max at full rain
+    ledB[cycle]=precipVal[val]*255/1000;
+
+    /*strip.setPixelColor(0, strip.Color(ledR[cycle],ledG[cycle],ledB[cycle]));
+    strip.show();*/
+  }
 
 // probably should just do blue for rain and add red when warm rain and green when snow
 // pattern for the weather color should probably hook up to light so that the weather color is longer
 // if our light level is consistent with outside
 
-
-
-
 }
 
-int getTemp(int temp){
+/*int parseTemp(int temp){
 
 // hit the weather api, get temp
 
 // we are going to scale so that higher temperature means higher value
 
-  int tempr = restrict(temp,tempMin,tempMax);
-  int value = scale(tempr,tempMin,tempMax,0,1000);
+  int x = restrict(temp,tempMin,tempMax);
+  int value = scale(x,tempMin,tempMax,0,1000);
 
   // should use this to scale the ledR that hooks up with temperature
 
   return value;
 
-}
-
-/*void getTemp(){
-    if(!ds18b20.search()){
-      ds18b20.resetsearch();
-      celsius = ds18b20.getTemperature();
-      Serial.println(celsius);
-      while (!ds18b20.crcCheck() && dsAttempts < 4){
-        Serial.println("Caught bad value.");
-        dsAttempts++;
-        Serial.print("Attempts to Read: ");
-        Serial.println(dsAttempts);
-        if (dsAttempts == 3){
-          delay(1000);
-        }
-        ds18b20.resetsearch();
-        celsius = ds18b20.getTemperature();
-        continue;
-      }
-      dsAttempts = 0;
-      fahrenheit = ds18b20.convertToFahrenheit(celsius);
-      DS18B20nextSampleTime = millis() + DS18B20_SAMPLE_INTERVAL;
-      Serial.println(fahrenheit);
-    }
 }*/
 
 // add parseTemp function that tells you what to do with the values when they come in
 
+int getTouch() {
+  int x = restrict(analogRead(TOUCH_PIN),touchMin,touchMax);
+  int value = scale(x,touchMin,touchMax,0,1000);
+  return value;
+}
 // add parseTouch function that tells you what to do with the values when they come in
 
+int getLight() {
+  int x = restrict(analogRead(LIGHT_PIN),lightMin,lightMax);
+  int value = scale(x,lightMin,lightMax,0,1000);
+  return value;
+}
 // add parseLight function that tells you what to do with the values when they come in
+
+int getSound() {
+  int x = restrict(analogRead(SOUND_PIN),soundMin,soundMax);
+  int value = scale(x,soundMin,soundMax,0,1000);
+  return value;
+}
 
 // add parseSound function that tells you what to do with the values when they come in
 
-//sets high and low bounds for an integer x
+int vibrate(String command) {
+    char inputStr[64];
+    command.toCharArray(inputStr,64);
+    char *p = strtok(inputStr,",");
+    vibPeriod[0] = atoi(p);
+    p = strtok(NULL,",");
+    vibMaxPower[0] = atoi(p);
+    vibMidPower=vibMaxPower[0]/2;
+    p = strtok(NULL,",");
+    vibThreshold[0] = atoi(p);
+}
+
+int setColor(String command) {
+    char inputStr[64];
+    command.toCharArray(inputStr,64);
+    char *p = strtok(inputStr,",");
+    int red = atoi(p);
+    p = strtok(NULL,",");
+    int grn = atoi(p);
+    p = strtok(NULL,",");
+    int blu = atoi(p);
+    p = strtok(NULL,",");
+    colorAll(strip.Color(red, grn, blu), 50);
+}
+
+// Set all pixels in the strip to a solid color, then wait (ms)
+void colorAll(uint32_t c, uint8_t wait) {
+  uint16_t i;
+
+  for(i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, c);
+  }
+  strip.show();
+  delay(wait);
+}
+
+
 int restrict(int x, int min, int max) {
+  //sets high and low bounds for an integer x
   if (x>max) {
     return max;
   }
@@ -331,61 +402,4 @@ int restrict(int x, int min, int max) {
 int scale(int x, int xmin, int xmax, int min, int max) {
   int scaled = min+max*(x-xmin)/(xmax-xmin);
   return scaled;
-}
-
-/*
-int setVibIntensity(String command) {
-  char inputStr[64];
-  command.toCharArray(inputStr,64);
-  char *p = strtok(inputStr,",");
-  int newMaxPower = atoi(p);
-  p = strtok(NULL,",");
-  int newThreshold = atoi(p);
-  vibMaxPower=newMaxPower;
-  vibMidPower=newMaxPower/2;
-  vibThreshold=newThreshold;
-}
-
-int setVibPattern(String command) {
-  char inputStr[64];
-  command.toCharArray(inputStr,64);
-  int newPeriod = atoi(inputStr);
-  vibPeriod=newPeriod;
-}
-
-int setLedIntensity(String command) {
-  char inputStr[64];
-  command.toCharArray(inputStr,64);
-  char *p = strtok(inputStr,",");
-  int newMaxPower = atoi(p);
-  p = strtok(NULL,",");
-  int newThreshold = atoi(p);
-  ledMaxPower=newMaxPower;
-  ledMidPower=newMaxPower/2;
-  ledThreshold=newThreshold;
-}
-
-int setLedColor(String command) {
-  char inputStr[64];
-  command.toCharArray(inputStr,64);
-  char *p = strtok(inputStr,",");
-  int red = atoi(p);
-  p = strtok(NULL,",");
-  int grn = atoi(p);
-  p = strtok(NULL,",");
-  int blu = atoi(p);
-  ledR=red;
-  ledG=grn;
-  ledB=blu;
-}
-
-int setLedPattern(String command) {
-  char inputStr[64];
-  command.toCharArray(inputStr,64);
-  int newPeriod = atoi(inputStr);
-  ledPeriod=newPeriod;
-}*/
-
-int wave(int t, int threshold, int period, int midPower) {
-  return threshold+midPower+midPower*sin(2*pi*t/period);
 }
