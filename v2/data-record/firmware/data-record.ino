@@ -30,18 +30,18 @@ int pubConfig=0;
 int feedbackConfig=0;
 
 #elif SYSTEM_CONFIGURATION == 2
-// using a photon and publishing data
+// using a photon and publishing data but no SD recording
 int cellConfig=0;
 int serialConfig=1;
-int sdConfig=1;
+int sdConfig=0;
 int pubConfig=1;
 int feedbackConfig=0;
 
 #elif SYSTEM_CONFIGURATION == 3
-// using an electron and publishing data
+// using an electron and publishing data but no SD recording
 int cellConfig=1;
 int serialConfig=1;
-int sdConfig=1;
+int sdConfig=0;
 int pubConfig=1;
 int feedbackConfig=0;
 
