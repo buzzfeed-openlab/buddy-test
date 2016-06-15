@@ -4,64 +4,12 @@
 #include "math.h"
 #include "SdFat.h"
 
+// uncomment for offline use:
+SYSTEM_MODE(SEMI_AUTOMATIC);
+
+
 // Some definitions for the SD card
 #define SPI_CONFIGURATION 0
-#define SYSTEM_CONFIGURATION 3
-
-//------------------------------------------------------------------------------
-// Setup system configuration.
-
-#if SYSTEM_CONFIGURATION == 0
-// using a photon purely for data
-SYSTEM_MODE(SEMI_AUTOMATIC);
-int cellConfig=0;
-int serialConfig=1;
-int sdConfig=1;
-int pubConfig=0;
-int feedbackConfig=0;
-
-#elif SYSTEM_CONFIGURATION == 1
-// using an electron purely for data
-SYSTEM_MODE(SEMI_AUTOMATIC);
-int cellConfig=1;
-int serialConfig=1;
-int sdConfig=1;
-int pubConfig=0;
-int feedbackConfig=0;
-
-#elif SYSTEM_CONFIGURATION == 2
-// using a photon and publishing data
-int cellConfig=0;
-int serialConfig=1;
-int sdConfig=1;
-int pubConfig=1;
-int feedbackConfig=0;
-
-#elif SYSTEM_CONFIGURATION == 3
-// using an electron and publishing data
-int cellConfig=1;
-int serialConfig=1;
-int sdConfig=1;
-int pubConfig=1;
-int feedbackConfig=0;
-
-#elif SYSTEM_CONFIGURATION == 4
-// using a photon and publishing data and giving feedback
-int cellConfig=0;
-int serialConfig=1;
-int sdConfig=1;
-int pubConfig=1;
-int feedbackConfig=1;
-
-#elif SYSTEM_CONFIGURATION == 5
-// using an electron and publishing data and giving feedback
-int cellConfig=1;
-int serialConfig=1;
-int sdConfig=1;
-int pubConfig=1;
-int feedbackConfig=1;
-
-#endif
 
 //------------------------------------------------------------------------------
 // Setup SPI configuration.
@@ -92,6 +40,13 @@ const uint8_t chipSelect = D0;
 #define VIBPIN D0
 #define POWERPIN D6
 #define SQUEEZEPIN A0
+
+// configuration values
+#define sdConfig 1
+#define serialConfig 1
+#define feedbackConfig 0
+#define pubConfig 0
+
 
 // Purr Wave Values
 //    We create the purr with a sin wave that increases power past a particular threshold in order to be felt by the user.
@@ -161,7 +116,7 @@ File myFile;               // this is our SD card file variable
 void setup() {
     // Get the time
 
-    if (cellConfig==1) {
+    /*if (cellConfig==1) {
       Cellular.on();
       Cellular.connect();
       Time.zone(-8);
@@ -170,7 +125,7 @@ void setup() {
         Cellular.disconnect();
         Cellular.off();
       }
-    }
+    }*/
 
     /*else {
       WiFi.on();
@@ -180,7 +135,7 @@ void setup() {
     }*/
 
     // Set up serial
-    if (serialConfig==1) {Serial.begin(9600);}
+    if (serialConfig==1) { Serial.begin(9600); }
 
     // Declare pin modes
     pinMode(VIBPIN,OUTPUT);
