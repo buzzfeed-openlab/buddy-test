@@ -7,10 +7,6 @@
 // uncomment for offline use:
 SYSTEM_MODE(SEMI_AUTOMATIC);
 
-
-// Some definitions for the SD card
-#define SPI_CONFIGURATION 0
-
 //------------------------------------------------------------------------------
 // Setup SPI configuration.
 #if SPI_CONFIGURATION == 0
