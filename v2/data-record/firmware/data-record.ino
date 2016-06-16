@@ -4,6 +4,8 @@
 #include "math.h"
 #include "SdFat.h"
 
+#define SPI_CONFIGURATION 0
+
 // uncomment for offline use:
 SYSTEM_MODE(SEMI_AUTOMATIC);
 
