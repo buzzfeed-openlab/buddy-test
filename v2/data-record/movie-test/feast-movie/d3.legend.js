@@ -62,7 +62,7 @@ d3.legend = function(g) {
                 selected_keys.splice(selected_keys.indexOf(d.key),1);
 
             }
-            dispatch.load(d,selected_keys);
+            // dispatch.load(circles,d,selected_keys);
           })
     
     // Reposition and resize the box

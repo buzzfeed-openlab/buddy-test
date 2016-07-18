@@ -42,10 +42,9 @@ body { font: 10px sans-serif;}
 <script src="d3.min.js"></script>
 <script src="d3.legend.js"></script>
 
-
 <script>
 
-
+var dispatch = d3.dispatch("load");
 
 // define some labels to be put in the graph on mouseover
 var labels = 
@@ -104,7 +103,7 @@ svg.append("textlabel")
     .attr("height", height);
 
 // add the color scale for the line
-var color = d3.scale.category10();
+var color = d3.scale.category20();
 
 // Parse the date / time
 var parseDate = d3.time.format("%M:%S").parse;
@@ -149,9 +148,11 @@ var context = svg.append("g")
 
 var bisect = d3.bisector(function(d) { return d.date; }).right;
 
-var dispatch = d3.dispatch("load");
-
 var data;
+
+  // all_keys = ['10'];
+var all_keys = ['01','02','03','04','05','06','07','08','09','10','11'];
+var selected_keys = ['10','02']; // keys that have been clicked
 
 d3.csv("data/scaled_data.csv", function(error, d) {
  
@@ -163,7 +164,7 @@ d3.csv("data/scaled_data.csv", function(error, d) {
     for (var r=0; r<labels.length; r++) {
       if (m>parseDate(labels[r].x0) && m<parseDate(labels[r].x1)) {
         data[i].label = labels[r].name;
-        console.log(data[i]);
+        // console.log(data[i]);
       }
     }
   }
@@ -171,11 +172,8 @@ d3.csv("data/scaled_data.csv", function(error, d) {
   // add images
   for (var i=0; i<data.length; i++) {
     data[i].image = (Math.floor(i/2)+1)+'.gif';
-    console.log(data[i]);
+    // console.log(data[i]);
   }
-
-  all_keys = ['01','02','03','04','05','06','07','08','09','10','11'];
-  selected_keys = ['01','02','03','04','05','06','07','08','09','10','11'];
 
   data.forEach(function(d) {
      d.date = parseDate(d.date);
@@ -184,51 +182,13 @@ d3.csv("data/scaled_data.csv", function(error, d) {
   data.sort(function(a, b) {
     return a.date - b.date;
   });
-
-  dispatch.load(d,selected_keys);
-
-
-  legend = svg.append("g")
-    .attr("class","legend")
-    .attr("transform","translate("+60+",25)")
-    .style("font-size","12px")
-    .call(d3.legend)
-
-})
-
-dispatch.on("load.line", function(d,selected_keys) {
-  d3.selectAll('svg > g > *').remove();
-  // define the line that is on the top graph (which changes)
-var line = d3.svg.line()
-    .defined(function(d) { return !isNaN(d.close); })
-    .interpolate("cubic")
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.close); });
-
-// define the line that is on the bottom graph (which does not change)
-var line2 = d3.svg.line()
-    .defined(function(d) { return !isNaN(d.close); })
-    .interpolate("cubic")
-    .x(function(d) {return x2(d.date); })
-    .y(function(d) {return y2(d.close); });
-
-var focus = svg.append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      
-var context = svg.append("g")
-  .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
-
-var bisect = d3.bisector(function(d) { return d.date; }).right;
-
-});
-
-dispatch.on("load.graph", function(d,selected_keys) {
   
-  console.log("setting lines based on selected key array: ");
-  console.log(selected_keys);
+  // console.log("setting lines based on selected key array: ");
+  // console.log(selected_keys);
+
   // sets all the lines
   // color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
-  color.domain(d3.keys(data[0]).filter(function(key) { return selected_keys.indexOf(key)!==-1; }));
+  color.domain(d3.keys(data[0]).filter(function(key) { return all_keys.indexOf(key)!==-1; }));
  
 
   var sources = color.domain().map(function(name) {
@@ -247,7 +207,6 @@ dispatch.on("load.graph", function(d,selected_keys) {
     x2.domain(x.domain());
     y2.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
                d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
-    
 
     var focuslineGroups = focus.selectAll("g")
         .data(sources)
@@ -258,6 +217,7 @@ dispatch.on("load.graph", function(d,selected_keys) {
         .attr("class","line")
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) {return color(d.name);})
+        .style("opacity", "0.5")
         .attr("clip-path", "url(#clip)");
     
     focus.append("g")
@@ -277,8 +237,9 @@ dispatch.on("load.graph", function(d,selected_keys) {
         .attr("class", "line")
         .attr("d", function(d) { return line2(d.values); })
         .style("stroke", function(d) {return color(d.name);})
+        .style("opacity", "0.5")
         .attr("clip-path", "url(#clip)");
- 
+
     context.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height2 + ")")
@@ -293,6 +254,7 @@ dispatch.on("load.graph", function(d,selected_keys) {
 
   var info = svg.append("g")
       .attr("class", "focus")
+      .attr("transform", "translate(" + margin.left + ", " + 0 + ")")
       .style("display", "none");
 
   info.append("line")
@@ -302,7 +264,6 @@ dispatch.on("load.graph", function(d,selected_keys) {
        .attr("y2", height)
        .attr("stroke-width",1)
        .attr("stroke","grey")
-      .attr("transform", "translate(" + margin.left + ", -" + 380 + ")")
 
   // info.append("text")
   //     .attr("x", 9)
@@ -310,11 +271,33 @@ dispatch.on("load.graph", function(d,selected_keys) {
   //     .attr("dy", "12 px");
 
   info.append("image")
-        .attr("x", function(d) { return -25;})
-        .attr("y", function(d) { return -25;})
-        .attr("transform", "translate(" + 75 + ", -" + height + ")")
+        // .attr("x", function(d) { return -25;})
+        // .attr("y", function(d) { return -25;})
+        // .attr("transform", "translate(" + 75 + ", -" + height + ")")
         .attr("height", 200)
         .attr("width", 120);
+
+  // info.append("circle")
+  //   .attr("r","10")
+  //   .attr("fill","none")
+  //   .attr("stroke-width",1)
+  //   .attr("stroke","grey")
+  //   .attr("opacity", "1.0");
+
+  var circles=[];
+
+  for (var q=0; q<all_keys.length; q++) {
+    var thisCircle = info.append('circle')
+      .attr("r","10")
+      .attr("fill","none")
+      .attr("stroke-width",2)
+      .attr("opacity", "1.0")
+      .on("click",function() {console.log("clicked")});
+    circles.push(thisCircle);
+    // draw a circle here
+  }
+
+  // console.log(circles);
 
   svg.append("rect")
       .attr("class", "overlay")
@@ -327,23 +310,26 @@ dispatch.on("load.graph", function(d,selected_keys) {
       .on("mouseout", function() { info.style("display", "none"); })
       .on("mousemove", mousemove);
 
+  legend = svg.append("g")
+    .attr("class","legend")
+    .attr("transform","translate("+60+",25)")
+    .style("font-size","12px")
+    .call(d3.legend)
   function mousemove() {
     var lastlabel=0;
     var m = x.invert(d3.mouse(this)[0]),
+        m0 = d3.mouse(this),
         i = bisect(data, m, 1),
         d0 = data[i - 1],
         d1 = data[i],
         d = m - d0.date > d1.date - m ? d1 : d0;
-    info.attr("transform", "translate(" + x(d.date)+ "," + height + ")");
+    // info.attr("transform", "translate(" + x(d.date)+ "," + height + ")");
+    info.select("line").attr("transform", "translate(" + x(d.date)+ "," + margin.top + ")");
     // info.select("text").text(d.label);
     info.select("image").attr("xlink:href", 'img/'+d.image)
-    if (d3.mouse(this)[0]>3*width/4) {
-      info.select("image").attr("transform", "translate(-" + 75 + ", -" + height + ")")
-    }
-    else if (d3.mouse(this)[0]<width/4) {
-      info.select("image").attr("transform", "translate(" + 75 + ", -" + height + ")")
-    }
-    console.log(d);
+    info.select("image").attr("transform", "translate(" + x(d.date) + ", " +10 + ")")
+    dispatch.load(circles,d,selected_keys);
+
   }
 
   for (i = 0; i<labels.length; i++) {
@@ -365,11 +351,20 @@ dispatch.on("load.graph", function(d,selected_keys) {
       .style("fill-opacity",".5")
       .style("fill",col)
       .style("pointer-events","none")
-      // .on("mouseover", drawBrush(l,r))
       }
 
 });
  
+dispatch.on("load.circles", function(circles,d,selected_keys) {
+  for (var q=0; q<selected_keys.length; q++) {
+      thisColor=color.range()[color.domain().indexOf(selected_keys[q])];
+      circles[all_keys.indexOf(selected_keys[q])]
+        .attr("transform", "translate(" + x(d.date)+ "," + y(d[selected_keys[q]]) +0+ ")")
+        .attr("stroke",thisColor)
+        .attr("");
+    }
+});
+
 function brush() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());
   var minindex = bisect(data,brush.extent()[0]);
