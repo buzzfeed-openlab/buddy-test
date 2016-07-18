@@ -2,6 +2,8 @@
 // (C) 2012 ziggy.jonsson.nyc@gmail.com
 // MIT licence
 
+// edited (poorly) by christine sunu to include line toggling
+
 (function() {
 d3.legend = function(g) {
   g.each(function() {
@@ -25,7 +27,6 @@ d3.legend = function(g) {
 
     items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
 
-    
     li.selectAll("text")
         .data(items,function(d) { return d.key})
         .call(function(d) { d.enter().append("text")})
@@ -41,7 +42,28 @@ d3.legend = function(g) {
         .attr("cy",function(d,i) { return i-0.25+"em"})
         .attr("cx",0)
         .attr("r","0.4em")
-        .style("fill",function(d) { console.log(d.value.color);return d.value.color})  
+        .style("fill",function(d) { return d.value.color})
+        .on('mouseover', function(d) {
+            console.log('hovering on '+d.key)
+            // highlight line
+        })
+        .on('mouseout',function(d) {
+            console.log('back to normal...')
+        })
+        .on('click', function(d) {
+            console.log('clicked '+d.key);
+            // remove from selected_keys
+            if (selected_keys.indexOf(d.key)===-1) {
+                // not in the index, add it
+                selected_keys.push(d.key);
+            }
+            else {
+                // in the index, remove it
+                selected_keys.splice(selected_keys.indexOf(d.key),1);
+
+            }
+            dispatch.load(d,selected_keys);
+          })
     
     // Reposition and resize the box
     var lbbox = li[0][0].getBBox()  
