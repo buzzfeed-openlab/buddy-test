@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style> /* set the CSS */
+
+body { font: 10px sans-serif;}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #777777;
+  shape-rendering: crispEdges;
+}
+
+.y.axis path {
+  fill: none;
+  stroke: #777777;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #f0f0f0;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+}
+
+.legend rect {
+  fill:white;
+  stroke:black;
+  opacity:0.5;}
+
+</style>
+<title> Buddy Watches Feast, a story of life through food </title>
+</head>
+<body>
+
+<!-- load the d3.js library -->    
+<script src="d3.min.js"></script>
+<script src="d3.legend.js"></script>
+
+<script>
+
+var dispatch = d3.dispatch("load");
+
+// define some labels to be put in the graph on mouseover
+
+var labels = 
+    [
+        {"name":"first french fry","x0":"00:20","x1":"00:30"},
+        {"name":"french fry offered from hand","x0":"00:30","x1":"00:42","subject":[{"02":"cautious joy"},{"04":"Sad and hopeful"},{"05":"cute"},{"08":"Happy"}]},
+        {"name":"kibble for the first time!","x0":"00:43","x1":"00:54","subject":[{"01":"D'aaawwwwwe"},{"03":"Appreciation of cuteness"},{"05":"cute"},{"06":"Love! Very heartwarming, reminds me of my own pup"},{"09":"Joy"}]},
+        {"name":"second time kibble","x0":"00:55","x1":"01:00","subject":[{"09":"Joy"},{"10":"Ennui"}]},
+        {"name":"eggs and bacon! first time for human food","x0":"01:05","x1":"01:10","subject":[{"01":"Happy - people food is delicious!"},{"02":"warmth"},{"10":"Ennui"}]},
+        {"name":"human food montage","x0":"01:11","x1":"01:35","subject":[{"02":"warmth"},{"05":"hungry"},{"10":"Ennui"},{"11":"Excitement"}]},
+        {"name":"football game food explosion","x0":"01:36","x1":"01:42","subject":[{"02":"warmth"},{"05":"hungry"},{"10":"Ennui"},{"11":"Excitement"}]},
+        {"name":"owner meets her","x0":"01:43","x1":"01:51"},
+        {"name":"first date","x0":"01:52","x1":"02:10"},
+        {"name":"brussel sprout disapproval","x0":"02:11","x1":"02:25","subject":[{"01":"Compassion/Empathy?"},{"08":"Amused and also slightly disgusted"},{"10":"Ennui"}]},
+        {"name":"healthy food dating montage","x0":"02:26","x1":"02:49","subject":[{"02":"loneliness/sadness/familiarity"},{"03":"Sadness"},{"05":"hungry"},{"10":"Ennui"},{"11":"Disappointment"}]},
+        {"name":"the fight","x0":"02:50","x1":"03:00","subject":[{"01":"Sad - I've been there"}]},
+        {"name":"food binging","x0":"03:01","x1":"03:17","subject":[{"01":"Bittersweet/Conflicting feelings."},{"05":"sympathetic"},{"10":"Ennui"}]},
+        {"name":"opens spaghetti with garnish","x0":"03:18","x1":"03:20","subject":[{"10":"Ennui"}]},
+        {"name":"winston and his owner look at the parsley (first clear image of human face)","x0":"03:25","x1":"03:40","subject":[{"09":"Sad"},{"10":"Ennui"}]},
+        {"name":"winston takes green stuff","x0":"03:41","x1":"03:52","subject":[{"01":"Anticipation/Excitement"},{"03":"Anxiety"},{"04":"Hopeful"},{"06":"Love! Very heartwarming, reminds me of my own pup"},{"10":"Ennui"}]},
+        {"name":"winston running to her","x0":"03:53","x1":"04:00","subject":[{"01":"Anticipation/Excitement"},{"03":"Anxiety"},{"04":"Hopeful"},{"10":"Ennui"}]},
+        {"name":"winston resists steaks","x0":"04:01","x1":"04:04","subject":[{"01":"Anticipation/Excitement"},{"03":"Anxiety"},{"04":"Hopeful"},{"08":"Happy"},{"10":"Ennui"}]},
+        {"name":"winston chases her green shoes through the restaurant","x0":"04:05","x1":"04:15","subject":[{"01":"Anticipation/Excitement"},{"03":"Anxiety"},{"04":"Hopeful"},{"10":"Ennui"}]},
+        {"name":"winston places the green stuff at her feet, owner arrives","x0":"04:16","x1":"04:36","subject":[{"01":"Anticipation/Excitement"},{"05":"happy"},{"10":"Ennui"},{"11":"Hope"}]},
+        {"name":"wedding!","x0":"04:37","x1":"04:45","subject":[{"01":"Joy"},{"05":"happy"}]},
+        {"name":"happily married montage","x0":"04:46","x1":"04:54"},
+        {"name":"winston alone, but satisfied","x0":"04:55","x1":"05:11","subject":[{"01":"Content"},{"02":"acceptance"}]},
+        {"name":"the first meatball","x0":"05:12","x1":"05:19","subject":[{"01":"Curious"},{"02":"hope"},{"06":"Love! Very heartwarming, reminds me of my own pup"}]},
+        {"name":"following a meatball trail","x0":"05:20","x1":"05:30","subject":[{"06":"Love! Very heartwarming, reminds me of my own pup"}]},
+        {"name":"the baby's face, leans over an drops meatball","x0":"05:31","x1":"05:43","subject":[{"01":"Charmed"},{"02":"joy!!"},{"05":"joy"},{"06":"Love! Very heartwarming, reminds me of my own pup"},{"09":"Joy again /relieved for pup"},{"10":"Disappointment"}]},
+        {"name":"good times with cupcakes, happy end!","x0":"05:44","x1":"05:54","subject":[{"01":"HAPPY!"},{"04":"Sad and happy at the same time"},{"10":"Disappointment"}]},
+        {"name":"credits with happy epilogue images","x0":"05:55","x1":"06:10"}
+    ];
+
+// Set the dimensions of the canvas / graph
+var margin = {top: 10, right: 10, bottom: 100, left: 40},
+    margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+    margin3 = {top: 20, right: 10, bottom: 20, left: 80},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom,
+    height2 = 500 - margin2.top - margin2.bottom,
+    height3 = 600 - margin3.top - margin3.bottom;
+
+// Add the svg canvas
+var svg = d3.select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+svg.append("defs").append("clipPath")
+    .attr("id", "clip")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append("textlabel")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+// add the color scale for the line
+var color = d3.scale.category10();
+
+// Parse the date / time
+var parseDate = d3.time.format("%M:%S").parse;
+
+// Set the ranges
+var x = d3.time.scale().range([0, width]),
+    x2 = d3.time.scale().range([0, width]),
+    y = d3.scale.linear().range([height, 0]),
+    y2 = d3.scale.linear().range([height2, 0]);
+// Define the axes
+var  xAxis = d3.svg.axis().scale(x)
+      .orient("bottom").ticks(12)
+      .tickFormat(d3.time.format("%M:%S")),
+    xAxis2 = d3.svg.axis().scale(x2).orient("bottom").tickFormat(d3.time.format("%M:%S")),
+    yAxis = d3.svg.axis().scale(y)
+      .orient("left").ticks(10);
+
+// make the brush that acts on the zoomable lower graph
+var brush = d3.svg.brush()
+    .x(x2)
+    .on("brush", brush);
+
+// define the line that is on the top graph (which changes)
+var line = d3.svg.line()
+    .defined(function(d) { return !isNaN(d.close); })
+    .interpolate("cubic")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+
+// define the line that is on the bottom graph (which does not change)
+var line2 = d3.svg.line()
+    .defined(function(d) { return !isNaN(d.close); })
+    .interpolate("cubic")
+    .x(function(d) {return x2(d.date); })
+    .y(function(d) {return y2(d.close); });
+
+var focus = svg.append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+var context = svg.append("g")
+  .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+var bisect = d3.bisector(function(d) { return d.date; }).right;
+
+var data;
+
+var all_keys = ['01','02','03','04','05','06','07','08','09','10','11'];
+var selected_keys = ['01']; // keys that have been clicked
+
+d3.csv("scaled_data.csv", function(error, d) {
+ 
+  data=d;
+
+  // add labels
+  for (var i=0; i<data.length; i++) {
+    var m = parseDate(data[i].date);
+    for (var r=0; r<labels.length; r++) {
+      if (m>parseDate(labels[r].x0) && m<parseDate(labels[r].x1)) {
+        data[i].label = {'label':labels[r].name,'subject':labels[r].subject};
+      }
+    }
+  }
+
+  // add images
+  for (var i=0; i<data.length; i++) {
+    data[i].image = (Math.floor(i/2)+1)+'.gif';
+  }
+
+  data.forEach(function(d) {
+     d.date = parseDate(d.date);
+   });
+ 
+  data.sort(function(a, b) {
+    return a.date - b.date;
+  });
+  
+  color.domain(d3.keys(data[0]).filter(function(key) { return all_keys.indexOf(key)!==-1; }));
+ 
+
+  var sources = color.domain().map(function(name) {
+      return {
+        name: name,
+        values: data.map(function(d) {
+          return {date: d.date, close: +d[name]};
+        })
+      };
+    });
+
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+
+    y.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
+               d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
+    x2.domain(x.domain());
+    y2.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
+               d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
+
+    var focuslineGroups = focus.selectAll("g")
+        .data(sources)
+      .enter().append("g");
+      
+    var focuslines = focuslineGroups.append("path")
+        .attr("data-legend",function(d) { if ( d.name!="image") {return d.name} })
+        .attr("class","line")
+        .attr("d", function(d) { return line(d.values); })
+        .style("stroke", function(d) {return color(d.name);})
+        .style("opacity", "0.8")
+        .attr("clip-path", "url(#clip)");
+    
+    focus.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+ 
+    focus.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+    var contextlineGroups = context.selectAll("g")
+        .data(sources)
+      .enter().append("g");
+    
+    var contextLines = contextlineGroups.append("path")
+        .attr("class", "line")
+        .attr("d", function(d) { return line2(d.values); })
+        .style("stroke", function(d) {return color(d.name);})
+        .style("opacity", "0.5")
+        .attr("clip-path", "url(#clip)");
+
+    context.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height2 + ")")
+        .call(xAxis2);
+ 
+    context.append("g")
+        .attr("class", "x brush")
+        .call(brush)
+      .selectAll("rect")
+        .attr("y", -6)
+        .attr("height", height2 + 7);
+
+  var info = svg.append("g")
+      .attr("class", "focus")
+      .attr("transform", "translate(" + margin.left + ", " + 0 + ")")
+      .style("display", "none");
+
+  info.append("line")
+       .attr("x1", 0)
+       .attr("y1", 0)
+       .attr("x2", 0)
+       .attr("y2", height)
+       .attr("stroke-width",1)
+       .attr("stroke","grey")
+
+  info.append("image")
+        .attr("height", 200)
+        .attr("width", 120);
+
+
+  for (var q=0; q<all_keys.length; q++) {
+    info.append('circle')
+      .attr("id",all_keys[q])
+      .attr("r","5")
+      .attr("fill","none")
+      .attr("stroke-width",2)
+      .attr("opacity", "1.0");
+
+    info.append('text')
+      .attr("id",all_keys[q])
+      .attr("x",9)
+  }
+
+  svg.append("rect")
+      .attr("class", "overlay")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+      .style("fill-opacity","0")
+      .on("mouseover", function() { info.style("display", null); })
+      .on("mouseout", function() { info.style("display", "none"); })
+      .on("mousemove", mousemove);
+
+  legend = svg.append("g")
+    .attr("class","legend")
+    .attr("transform","translate("+60+",25)")
+    .style("font-size","12px")
+    .call(d3.legend)
+  function mousemove() {
+    var lastlabel=0;
+    var m = x.invert(d3.mouse(this)[0]),
+        i = bisect(data, m, 1),
+        d0 = data[i - 1],
+        d1 = data[i],
+        d = m - d0.date > d1.date - m ? d1 : d0;
+    info.select("line").attr("transform", "translate(" + x(d.date)+ "," + margin.top + ")");
+
+    if (d.label) {
+      if (d.label.subject) {
+        for (var u=0; u<d.label.subject.length; u++) {
+          var thisKey=Object.keys(d.label.subject[u])[0];
+          if (selected_keys.includes(thisKey)) {
+            // console.log(d.label.subject[u][thisKey]);
+            d3.selectAll("text[id='"+thisKey+"']")
+              .text(d.label.subject[u][thisKey])
+              .attr("transform", "translate(" + x(d.date)+ "," + (y(d[thisKey])+12) +0+ ")");
+          }
+        }
+      }
+      else {
+        for (var c=0; c<all_keys.length; c++) {
+          d3.selectAll("text[id='"+all_keys[c]+"']").text("");
+        }
+      }
+    }
+    else {
+        for (var c=0; c<all_keys.length; c++) {
+          d3.selectAll("text[id='"+all_keys[c]+"']").text("");
+        }
+      }
+
+    info.select("image").attr("xlink:href", 'img/'+d.image)
+    info.select("image").attr("transform", "translate("+((width-100)/2)+", -60)")
+    dispatch.load(d,selected_keys);
+
+  }
+
+
+  for (i = 0; i<labels.length; i++) {
+      var l = (parseDate(labels[i].x0));
+      var r = (parseDate(labels[i].x1));
+      var wid = x(r)-x(l);
+      var position = all_keys.indexOf(labels[i].subject);
+      var col;
+      if (labels[i].subject) {
+        var subjectArray=[];
+        for (var b=0; b<labels[i].subject.length; b++) {
+          subjectArray.push(Object.keys(labels[i].subject[b])[0]);
+        }
+        for (var q=0; q<subjectArray.length; q++) {
+          col=color.range()[color.domain().indexOf(subjectArray[q])];
+          svg.append("rect")
+            .attr("id", function(d){ return subjectArray[q] })
+            .attr("x",x(l))
+            .attr("width",wid)
+            .attr("height",height2)
+            .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")")
+            .style("fill-opacity",".3")
+            .style("fill",col)
+            .style("pointer-events","none")
+            .style("display","none")
+        }
+      }
+      
+      
+      
+      }
+
+    for (var r=0; r<all_keys.length; r++) {
+      var labelLength=d3.selectAll("rect[id='"+all_keys[r]+"']")[0].length;
+      if (selected_keys.indexOf(all_keys[r])===-1) {
+        d3.selectAll("rect[id='"+all_keys[r]+"']").style("display","none");
+      }
+      else {
+        d3.selectAll("rect[id='"+all_keys[r]+"']").style("display",null);
+      }
+    }
+
+});
+ 
+dispatch.on("load.circles", function(d,selected_keys) {
+  for (var q=0; q<selected_keys.length; q++) {
+      thisColor=color.range()[color.domain().indexOf(selected_keys[q])];
+
+      d3.selectAll("circle[id='"+selected_keys[q]+"']")
+        .attr("transform", "translate(" + x(d.date)+ "," + (y(d[selected_keys[q]])+10)+ ")")
+        .attr("stroke",thisColor)
+    }
+
+  for (var p=0; p<all_keys.length; p++) {
+    if (selected_keys.indexOf(all_keys[p])===-1) {
+      // if a key in all_keys is not in selected_keys then turn it off
+      d3.selectAll("circle[id='"+all_keys[p]+"']").style("display","none")
+    }
+    else {
+      d3.selectAll("circle[id='"+all_keys[p]+"']").style("display",null)
+    }
+  }
+});
+
+dispatch.on("load.fill", function(d,all_keys) {
+  // also if you are over the area with labels you need to change color
+  var thisColor;
+  for (var q=0; q<all_keys.length; q++) {
+    thisColor=color.range()[color.domain().indexOf(all_keys[q])];
+    
+    if (!d.label || !d.label.subject) {
+      d3.selectAll("circle[id='"+all_keys[q]+"']")
+        .attr("fill","none");
+    }
+    else {
+      // go through and if you find subject that overlaps with selected keys, change attribute.
+      for (var w=0; w<d.label.subject.length; w++) {
+        var subjectPos=all_keys.indexOf(d.label.subject[w]);
+        if (subjectPos===-1) {
+          var thisCircle = d3.selectAll("circle[id='"+Object.keys(d.label.subject[w])+"']");
+          thisCircle.attr("fill",function() {return thisCircle.attr("stroke")});
+        }
+      }
+    }
+  }
+})
+
+dispatch.on("load.rectangles",function() {
+  for (var r=0; r<all_keys.length; r++) {
+    if (selected_keys.indexOf(all_keys[r])===-1) {
+        d3.selectAll("rect[id='"+all_keys[r]+"']").style("display","none");
+    }
+    else {
+        d3.selectAll("rect[id='"+all_keys[r]+"']").style("display",null);
+    }
+  }
+});
+
+function brush() {
+  x.domain(brush.empty() ? x2.domain() : brush.extent());
+  var minindex = bisect(data,brush.extent()[0]);
+  var maxindex = bisect(data,brush.extent()[1]);
+  var subset=data.slice(minindex,maxindex);
+  var sources = color.domain().map(function(name) {
+      return {
+        name: name,
+        values: subset.map(function(d) {
+          return {date: d.date, close: +d[name]};
+        })
+      };
+    });
+  y.domain([d3.min(sources, function(c) { return d3.min(c.values, function(v) { return v.close; }); }),
+               // d3.max(sources, function(d) { return d3.max(d.values, function(v) { return v.close; }); }) ]);
+               100]);
+
+  focus.selectAll("path.line").attr("d",  function(d) {return line(d.values)});
+  focus.select(".x.axis").call(xAxis);
+  focus.select(".y.axis").call(yAxis);
+}
+
+</script>
+<div id="section-name">
+</div></body>
