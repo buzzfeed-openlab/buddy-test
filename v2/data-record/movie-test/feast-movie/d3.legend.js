@@ -43,26 +43,37 @@ d3.legend = function(g) {
         .attr("cx",0)
         .attr("r","0.4em")
         .style("fill",function(d) { return d.value.color})
+        .attr("stroke",function(d) { return d.value.color})
+        .style("fill-opacity",function(d) {
+            if (selected_keys.indexOf(d.key)!==-1) {
+                // not in the index, add it
+                return "1.0";
+            }
+            else {
+                return "0.0";
+            }})
+        .attr("stroke-width","1")
         .on('mouseover', function(d) {
-            console.log('hovering on '+d.key)
+            // console.log('hovering on '+d.key)
             // highlight line
         })
         .on('mouseout',function(d) {
-            console.log('back to normal...')
+            // console.log('back to normal...')
         })
         .on('click', function(d) {
-            console.log('clicked '+d.key);
+            // console.log('clicked '+d.key);
             // remove from selected_keys
             if (selected_keys.indexOf(d.key)===-1) {
                 // not in the index, add it
                 selected_keys.push(d.key);
+                d3.select(this).style("fill-opacity","1.0");
             }
             else {
                 // in the index, remove it
                 selected_keys.splice(selected_keys.indexOf(d.key),1);
-
+                d3.select(this).style("fill-opacity","0.0");
             }
-            // dispatch.load(circles,d,selected_keys);
+            // dispatch.load(d,selected_keys);
           })
     
     // Reposition and resize the box
