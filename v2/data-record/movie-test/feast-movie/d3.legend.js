@@ -74,6 +74,14 @@ d3.legend = function(g) {
                 d3.select(this).style("fill-opacity","0.0");
             }
             // dispatch.load(d,selected_keys);
+              for (var r=0; r<all_keys.length; r++) {
+                if (selected_keys.indexOf(all_keys[r])===-1) {
+                    d3.selectAll("rect[id='"+all_keys[r]+"']").style("display","none");
+                }
+                else {
+                    d3.selectAll("rect[id='"+all_keys[r]+"']").style("display",null);
+                }
+              }
           })
     
     // Reposition and resize the box
