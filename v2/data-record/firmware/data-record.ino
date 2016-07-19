@@ -35,16 +35,22 @@ const uint8_t chipSelect = D0;
 //------------------------------------------------------------------------------
 
 // Pin Values
-#define VIBPIN D0
-#define POWERPIN D6
-#define SQUEEZEPIN A0
+#define vibPin D0
+#define powerPin D6
+#define squeezePin A0
+#define switchPin D7
+#define powerPinB D4
+#define buttonPin D3
 
 // configuration values
 #define sdConfig 1
 #define serialConfig 1
 #define feedbackConfig 0
-#define pubConfig 0
+int pubConfig=1;
 
+int buttonMarker = 0;
+int buttonLastPress = 0;
+int buttonTimeChanged = 0;
 
 // Purr Wave Values
 //    We create the purr with a sin wave that increases power past a particular threshold in order to be felt by the user.
@@ -78,7 +84,7 @@ int inactionB=0;          // no value added or subtracted from Q
 // State Determination Values
 //   things that help us define whether Buddy should purr or not.
 //   The state is dependent on the difference between Buddy's analogvalue readings.
-int analogvalue;          // the actual value of squeeze coming from SQUEEZEPIN
+int analogvalue;          // the actual value of squeeze coming from squeezePin
 int readperiod=3000;      // the time over which we average analogvalue readings
 int lastread=0;           // the time at which we finished our last baseline
 int baseline;             // baseline from which we calculate diff, to be calculated every readperiod
@@ -106,7 +112,7 @@ int publishflag=0;         // tells us if we should publish or not, based on the
 int lastpublish=0;         // gives time of last publish
 int publishthreshold=5000; // the min time that must pass between publishes
 int sdlastrecord=0;        // the last time we recorded to an SD card
-int sdrecthreshold=1000;   // the amount of time that needs to pass between SD card recordings
+int sdrecthreshold=0;   // the amount of time that needs to pass between SD card recordings
 File myFile;               // this is our SD card file variable
 
 //SYSTEM_THREAD(ENABLED);
@@ -114,7 +120,9 @@ File myFile;               // this is our SD card file variable
 void setup() {
     // Get the time
 
-    /*if (cellConfig==1) {
+
+// comment in the follow for cellular
+/*
       Cellular.on();
       Cellular.connect();
       Time.zone(-8);
@@ -122,27 +130,29 @@ void setup() {
       if (pubConfig==0) {
         Cellular.disconnect();
         Cellular.off();
-      }
-    }*/
+*/
 
-    /*else {
+// comment in the follow for wifi
       WiFi.on();
-      Time.zone(-8);
+      Time.zone(-7);
+      Particle.connect();
       Particle.syncTime();
-      WiFi.off();
-    }*/
 
     // Set up serial
     if (serialConfig==1) { Serial.begin(9600); }
 
     // Declare pin modes
-    pinMode(VIBPIN,OUTPUT);
-    pinMode(POWERPIN, OUTPUT);
-    pinMode(SQUEEZEPIN, INPUT);
+    pinMode(vibPin,OUTPUT);
+    pinMode(powerPin, OUTPUT);
+    pinMode(powerPinB, OUTPUT);
+    pinMode(squeezePin, INPUT);
+    pinMode(switchPin, INPUT_PULLDOWN);
+    pinMode(buttonPin, INPUT_PULLDOWN);
 
-    // Turn on your power pin (this just gives us a constant level of power)
-    // Could also just use 3v3 pin
-    digitalWrite(POWERPIN,HIGH);
+    // Turn on your power pins (this just gives us a constant level of power)
+    // Could also just use 3v3 pin, I wanted them spaced a particular way on the board with less soldering
+    digitalWrite(powerPin,HIGH);
+    digitalWrite(powerPinB,HIGH);
 
     // Start up your SD card
     if (sdConfig==1) {
@@ -150,15 +160,54 @@ void setup() {
         sd.initErrorHalt();
       }
     }
+
 }
 
 
 void loop() {
+
+  if (pubConfig==0 && digitalRead(switchPin)==HIGH) {
+    WiFi.on();
+    Serial.println("Going online...");
+    Particle.connect();
+    pubConfig=1;
+  }
+  else if (pubConfig==1 && digitalRead(switchPin)==LOW) {
+    Serial.println("Turning off wifi...");
+    WiFi.off();
+    pubConfig=0;
+  }
+  else {
+
     // what time is it
     t = millis();
 
+    // check for button press
+    int buttonState=digitalRead(buttonPin);
+
+    if (buttonState!=buttonLastPress) {
+      // state just changed
+      if (buttonState) {  // it's pressed
+        buttonTimeChanged=t;
+        Serial.println("Now button is on.");
+      }
+      else {  // it's released
+        if (t-buttonTimeChanged>5000) {
+          // sleep command
+          Serial.println("Button held for "+String(t-buttonTimeChanged)+" ms, going to sleep.");
+          System.sleep(buttonPin,RISING);
+        }
+        else {
+          // command to record the timing
+          Serial.println("Button pressed and released, recording <------------>");
+          buttonMarker=1;
+        }
+      }
+      buttonLastPress=buttonState;
+    }
+
     // get analogvalue
-    analogvalue = analogRead(SQUEEZEPIN);
+    analogvalue = analogRead(squeezePin);
 
     // get the diff
     diff = getDiff();
@@ -176,7 +225,7 @@ void loop() {
     int y = getVibration();
 
     if (feedbackConfig==1) {
-      analogWrite(VIBPIN,y);
+      analogWrite(vibPin,y);
     }
 
     if (serialConfig==1) {
@@ -190,6 +239,10 @@ void loop() {
     if (pubConfig==1 && publishflag==1) {
       recordCloud();
     }
+
+    buttonMarker=0;
+
+  }
 
 }
 
@@ -317,6 +370,9 @@ int getVibration() {
 }
 
 void recordSerial() {
+  if (buttonMarker==1) {
+    Serial.println("<------------>");
+  }
   Serial.print(state);
   Serial.print("    ");
   Serial.print(analogvalue);
@@ -341,6 +397,9 @@ void recordSD() {
     }
 
     // if the file opened okay, write to it:
+    if (buttonMarker==1) {
+      myFile.println("<------------>");
+    }
     myFile.print(Time.year(logTime));
     myFile.print("-");
     myFile.print(Time.month(logTime));
@@ -365,6 +424,7 @@ void recordSD() {
   if (sdlastrecord>t) {
     sdlastrecord=t;
   }
+
 }
 
 void recordCloud() {
@@ -375,6 +435,9 @@ void recordCloud() {
   if ((t-lastpublish)>publishthreshold) {
     Particle.publish("librato_bVal",val,PRIVATE);
     Particle.publish("librato_bBase",base,PRIVATE);
+    if (buttonMarker==1) {
+      Particle.publish("librato_bMark",PRIVATE);
+    }
     lastpublish=t;
   }
   // in case of values wrapping around
